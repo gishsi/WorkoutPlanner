@@ -1,6 +1,7 @@
 package uk.ac.aber.dcs.cs31620.jud28.workoutplanner.logic
 
-import org.junit.Assert.*
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertNotNull
 import org.junit.Test
 import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.logic.models.Exercise
 import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.logic.models.Workout

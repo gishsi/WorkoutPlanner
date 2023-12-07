@@ -12,6 +12,11 @@ import androidx.navigation.NavHostController
 import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.R
 import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.ui.components.ApplicationScaffold
 
+/**
+ * Provides insight of the week of the workouts.
+ *
+ * @author Julia Drozdz
+ */
 @Composable
 fun WeeklyScreen(navController: NavHostController) {
     val coroutineScope = rememberCoroutineScope()

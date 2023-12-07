@@ -3,12 +3,9 @@ package uk.ac.aber.dcs.cs31620.jud28.workoutplanner.ui.components
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.CalendarMonth
 import androidx.compose.material.icons.filled.FitnessCenter
 import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.filled.Info
-import androidx.compose.material.icons.filled.ThumbUp
 import androidx.compose.material3.DrawerState
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -28,7 +25,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavController
 import androidx.navigation.NavGraph.Companion.findStartDestination
-import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.R
 import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.ui.navigation.Screen
@@ -37,12 +33,8 @@ import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.ui.theme.WorkoutPlannerTheme
 /**
  * Navigation drawer for pages
  *
- * todo: resource strings, make the entries go to the correct placing
- * todo for later: ui
- *
  * @author Julia Drozdz
  */
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun NavigationDrawer(

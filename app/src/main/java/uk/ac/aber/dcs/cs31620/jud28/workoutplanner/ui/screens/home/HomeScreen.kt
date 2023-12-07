@@ -12,6 +12,11 @@ import androidx.navigation.NavHostController
 import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.R
 import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.ui.components.ApplicationScaffold
 
+/**
+ * Home screen. User can see or add a workout for the day here.
+ *
+ * @author Julia Drozdz
+ */
 @Composable
 fun HomeScreen(navController: NavHostController) {
     val coroutineScope = rememberCoroutineScope()

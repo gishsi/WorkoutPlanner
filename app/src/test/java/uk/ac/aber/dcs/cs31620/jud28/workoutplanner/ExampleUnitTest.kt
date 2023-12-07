@@ -1,8 +1,7 @@
 package uk.ac.aber.dcs.cs31620.jud28.workoutplanner
 
+import org.junit.Assert.assertEquals
 import org.junit.Test
-
-import org.junit.Assert.*
 import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.logic.Uded
 
 /**

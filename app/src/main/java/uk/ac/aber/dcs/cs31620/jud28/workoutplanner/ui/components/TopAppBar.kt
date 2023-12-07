@@ -18,7 +18,6 @@ import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.ui.theme.WorkoutPlannerTheme
  *
  * @author Julia Drozdz
  */
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TopAppBar(

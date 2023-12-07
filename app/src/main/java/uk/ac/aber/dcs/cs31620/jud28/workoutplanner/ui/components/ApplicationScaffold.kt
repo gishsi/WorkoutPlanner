@@ -32,7 +32,6 @@ fun ApplicationScaffold(
         drawerState = drawerState,
         closeDrawer = {
             coroutineScope.launch {
-                // We know it will be open
                 drawerState.close()
             }
         }

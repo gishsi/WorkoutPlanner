@@ -30,7 +30,6 @@ import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.ui.navigation.screensInBottom
  *
  * @author Julia Drozdz
  */
-
 @Composable
 fun NavigationBar(
     navController: NavController

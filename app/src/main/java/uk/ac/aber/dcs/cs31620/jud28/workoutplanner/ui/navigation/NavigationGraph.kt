@@ -10,6 +10,13 @@ import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.ui.screens.exercisesList.Exer
 import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.ui.screens.home.HomeScreen
 import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.ui.screens.weekly.WeeklyScreen
 
+/**
+ * Build a navigation graph for the application
+ *
+ * @see Screen
+ *
+ * @author Julia Drozdz
+ */
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun NavigationGraph() {
