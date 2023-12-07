@@ -6,9 +6,11 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavHostController
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
+import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.R
 
 /**
  * Top level scaffold for all pages.
@@ -20,7 +22,8 @@ import kotlinx.coroutines.launch
 fun ApplicationScaffold(
     navController: NavHostController,
     coroutineScope: CoroutineScope,
-    pageContent: @Composable (innerPadding: PaddingValues) -> Unit = {}
+    topBarLabel: String = stringResource(id = R.string.app_name),
+    pageContent: @Composable (innerPadding: PaddingValues) -> Unit = {},
 ) {
     var drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
 
@@ -44,7 +47,9 @@ fun ApplicationScaffold(
                             drawerState.open()
                         }
                     }
-                })
+                },
+                label = topBarLabel
+                )
             },
             bottomBar = {
                 NavigationBar(navController)

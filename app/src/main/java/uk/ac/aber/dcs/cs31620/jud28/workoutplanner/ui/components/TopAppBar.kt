@@ -9,7 +9,9 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.R
+import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.ui.theme.WorkoutPlannerTheme
 
 /**
  * Top level scaffold for all pages.
@@ -19,10 +21,13 @@ import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TopAppBar(onClick: () -> Unit) {
+fun TopAppBar(
+    onClick: () -> Unit = {},
+    label: String = stringResource(id = R.string.app_name),
+    ) {
     CenterAlignedTopAppBar(
         title = {
-            Text(stringResource(id = R.string.app_name))
+            Text(label)
         },
         navigationIcon = {
             IconButton(onClick = onClick) {
@@ -33,4 +38,12 @@ fun TopAppBar(onClick: () -> Unit) {
             }
         }
     )
+}
+
+@Preview
+@Composable
+private fun MainPageTopAppBarPreview() {
+    WorkoutPlannerTheme(dynamicColor = false) {
+        TopAppBar(label = "Preview")
+    }
 }
