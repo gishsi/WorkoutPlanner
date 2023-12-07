@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">WorkoutPlanner</string>
+    <string name="nav_drawer_menu">temp</string>
+    <string name="nav_home">Home</string>
+    <string name="nav_weekly">Weekly</string>
+    <string name="nav_exercises_list">Exercises list</string>
+    <string name="nav_add_exercise">Add an exercise</string>
+    <string name="nav_workouts_list">Workouts list</string>
+    <string name="nav_add_workout">Add a workout</string>
+    <string name="vec_graphics_no_workout">No workout vector graphic</string>
 </resources>

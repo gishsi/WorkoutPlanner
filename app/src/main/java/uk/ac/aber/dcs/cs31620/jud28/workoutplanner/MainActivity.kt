@@ -1,9 +1,11 @@
 package uk.ac.aber.dcs.cs31620.jud28.workoutplanner
 
 import android.annotation.SuppressLint
+import android.os.Build
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -37,16 +39,24 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHost
+import androidx.navigation.compose.rememberNavController
 import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.logic.exercises
 import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.logic.getAllExercises
 import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.logic.models.Exercise
 import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.logic.models.Workout
 import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.logic.removeExercise
 import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.logic.workouts
+import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.ui.navigation.NavigationGraph
+import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.ui.navigation.Screen
+import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.ui.screens.exercisesList.ExercisesListScreen
+import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.ui.screens.home.HomeScreen
+import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.ui.screens.weekly.WeeklyScreen
 import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.ui.theme.WorkoutPlannerTheme
 import java.lang.Exception
 
 class MainActivity : ComponentActivity() {
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -56,7 +66,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    Application()
+                    NavigationGraph()
                 }
             }
         }
@@ -164,10 +174,11 @@ fun WorkoutCard(workout: Workout) {
 }
 
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Preview(showBackground = true)
 @Composable
-fun GreetingPreview() {
+fun MainActivityPreview() {
     WorkoutPlannerTheme {
-        Application()
+        NavigationGraph()
     }
 }
