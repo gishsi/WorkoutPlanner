@@ -24,11 +24,13 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavController
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.R
 import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.ui.navigation.Screen
 import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.ui.theme.WorkoutPlannerTheme
 
@@ -41,8 +43,6 @@ import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.ui.theme.WorkoutPlannerTheme
  * @author Julia Drozdz
  */
 
-data class NavigationDrawerItem(val icon: ImageVector, val label: String, val route: String)
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun NavigationDrawer(
@@ -54,17 +54,17 @@ fun NavigationDrawer(
     val items = listOf(
         NavigationDrawerItem(
             Icons.Default.Home ,
-            "Home",
+            stringResource(id = R.string.nav_home),
             Screen.Home.route
         ),
         NavigationDrawerItem(
             Icons.Default.CalendarMonth,
-            "Weekly",
+            stringResource(id = R.string.nav_weekly),
             Screen.Weekly.route,
         ),
         NavigationDrawerItem(
             Icons.Default.FitnessCenter,
-            "Exercises list",
+            stringResource(id = R.string.nav_exercises_list),
             Screen.ExercisesList.route
         ),
     )
@@ -107,6 +107,13 @@ fun NavigationDrawer(
         content = content,
     )
 }
+
+/**
+ *  Used to associate an icon and a label with a route.
+ */
+data class NavigationDrawerItem(val icon: ImageVector, val label: String, val route: String)
+
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Preview
 @Composable
