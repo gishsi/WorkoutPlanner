@@ -1,0 +1,21 @@
+<resources>
+    <string name="app_name">WorkoutPlanner</string>
+    <!--    Nav    -->
+    <string name="nav_drawer_menu">temp</string>
+    <string name="nav_home">Home</string>
+    <string name="nav_weekly">Weekly</string>
+    <string name="nav_exercises_list">Exercises list</string>
+    <string name="nav_add_exercise">Add an exercise</string>
+    <string name="nav_workouts_list">Workouts list</string>
+    <string name="nav_add_workout">Add a workout</string>
+    <string name="vec_graphics_no_workout">No workout vector graphic</string>
+    <!--    Top bar label   -->
+    <string name="home_top_bar_label">Workout of the day</string>
+    <string name="weekly_top_bar_label">This week</string>
+    <string name="exercises_list_top_bar_label">Exercises</string>
+    <string name="add_exercise_top_bar_label">Add an exercise</string>
+    <string name="edit_exercise_top_bar_label">Edit an exercise</string>
+    <string name="workouts_list_top_bar_label">Workouts</string>
+    <string name="add_workout_top_bar_label">Add a workout</string>
+    <string name="edit_workout_top_bar_label">Edit a workout</string>
+</resources>
