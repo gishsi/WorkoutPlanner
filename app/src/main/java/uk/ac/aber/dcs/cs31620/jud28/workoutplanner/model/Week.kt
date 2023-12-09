@@ -1,4 +1,4 @@
-package uk.ac.aber.dcs.cs31620.jud28.workoutplanner.logic.models
+package uk.ac.aber.dcs.cs31620.jud28.workoutplanner.model
 
 /**
  *  Represents a week of workouts.

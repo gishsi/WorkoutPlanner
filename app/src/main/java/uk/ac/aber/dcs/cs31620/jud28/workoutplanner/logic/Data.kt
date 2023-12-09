@@ -1,7 +1,7 @@
 package uk.ac.aber.dcs.cs31620.jud28.workoutplanner.logic
 
-import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.logic.models.Exercise
-import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.logic.models.Workout
+import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.model.Exercise
+import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.model.Workout
 
 /**
  *  Temporary data
