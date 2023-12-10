@@ -9,10 +9,10 @@ import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.model.Workout
  *  @author Julia Drozdz
  */
 
-var bicepCurl = Exercise("Bicep curl", 3, 10, 10F, "BC")
-var benchPress = Exercise("Bench press", 4, 8,  50F, "BP")
-var deadLift = Exercise("Dead lift", 3, 10, 70F, "DL")
-var squat = Exercise("Squat", 3, 10, 60F, "S")
+var bicepCurl = Exercise(1, "Bicep curl", 3, 10, 10F, "BC")
+var benchPress = Exercise(2, "Bench press", 4, 8,  50F, "BP")
+var deadLift = Exercise(3, "Dead lift", 3, 10, 70F, "DL")
+var squat = Exercise(4, "Squat", 3, 10, 60F, "S")
 
 var exercises = mutableMapOf<String, Exercise>(
     "Bicep curl" to bicepCurl,
