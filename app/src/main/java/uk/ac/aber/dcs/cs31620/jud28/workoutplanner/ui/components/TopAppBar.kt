@@ -3,7 +3,6 @@ package uk.ac.aber.dcs.cs31620.jud28.workoutplanner.ui.components
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material3.CenterAlignedTopAppBar
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
@@ -18,7 +17,6 @@ import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.ui.theme.WorkoutPlannerTheme
  *
  * @author Julia Drozdz
  */
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TopAppBar(
     onClick: () -> Unit = {},

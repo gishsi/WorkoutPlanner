@@ -11,17 +11,12 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.Create
-import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.Button
 import androidx.compose.material3.Checkbox
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
@@ -36,9 +31,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.logic.getAllExercises
-import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.logic.models.Exercise
 import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.logic.models.Workout
-import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.logic.removeExercise
 import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.logic.workouts
 import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.ui.navigation.NavigationGraph
 import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.ui.theme.WorkoutPlannerTheme
@@ -48,7 +41,7 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            WorkoutPlannerTheme {
+            WorkoutPlannerTheme(dynamicColor = false) {
                 // A surface container using the 'background' color from the theme
                 Surface(
                     modifier = Modifier.fillMaxSize(),
@@ -61,7 +54,6 @@ class MainActivity : ComponentActivity() {
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @SuppressLint("UnrememberedMutableState")
 @Composable
 fun Application() {
@@ -127,9 +119,6 @@ fun Application() {
     }
 }
 
-
-
-
 @Composable
 fun WorkoutCard(workout: Workout) {
     Row(modifier = Modifier
@@ -147,7 +136,7 @@ fun WorkoutCard(workout: Workout) {
 @Preview(showBackground = true)
 @Composable
 fun MainActivityPreview() {
-    WorkoutPlannerTheme {
+    WorkoutPlannerTheme(dynamicColor = false) {
         NavigationGraph()
     }
 }

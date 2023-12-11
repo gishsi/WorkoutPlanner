@@ -8,7 +8,6 @@ import androidx.compose.material.icons.filled.FitnessCenter
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material3.DrawerState
 import androidx.compose.material3.DrawerValue
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.ModalDrawerSheet
 import androidx.compose.material3.ModalNavigationDrawer
@@ -35,7 +34,6 @@ import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.ui.theme.WorkoutPlannerTheme
  *
  * @author Julia Drozdz
  */
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun NavigationDrawer(
     navController: NavController,
@@ -105,11 +103,9 @@ fun NavigationDrawer(
  */
 data class NavigationDrawerItem(val icon: ImageVector, val label: String, val route: String)
 
-
-@OptIn(ExperimentalMaterial3Api::class)
 @Preview
 @Composable
-private fun MainPageNavigationDrawerPreview() {
+private fun NavigationDrawerPreview() {
     WorkoutPlannerTheme(dynamicColor = false) {
         val navController = rememberNavController()
         val drawerState = rememberDrawerState(initialValue = DrawerValue.Open)
