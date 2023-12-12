@@ -3,6 +3,7 @@ package uk.ac.aber.dcs.cs31620.jud28.workoutplanner.ui.components
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.CalendarMonth
 import androidx.compose.material.icons.filled.FitnessCenter
 import androidx.compose.material.icons.filled.Home
@@ -56,6 +57,11 @@ fun NavigationDrawer(
             Icons.Default.FitnessCenter,
             stringResource(id = R.string.nav_exercises_list),
             Screen.ExercisesList.route
+        ),
+        NavigationDrawerItem(
+            Icons.Default.Add,
+            stringResource(id = R.string.nav_exercise_add),
+            Screen.ExerciseAdd.route
         ),
     )
 

@@ -6,12 +6,13 @@ package uk.ac.aber.dcs.cs31620.jud28.workoutplanner.ui.navigation
  *  @author Julia Drozdz
  */
 sealed class Screen(val route: String) {
-    object Home: Screen("Home")
-    object ExercisesList : Screen("ExercisesList")
-    object Weekly : Screen("Weekly")
-    object AddExercise : Screen("AddExercise")
-    object WorkoutsList : Screen("WorkoutsList")
-    object AddWorkout : Screen("AddWorkout")
+    object Home: Screen("home")
+    object Weekly : Screen("weekly")
+    object ExercisesList : Screen("exercises")
+    object ExerciseAdd : Screen("exercises/add")
+    object ExerciseEdit : Screen("exercises/edit/{exercise_id}")
+    object WorkoutsList : Screen("workouts")
+    object AddWorkout : Screen("workouts/add")
 }
 
 val screensInBottomBar = listOf(
