@@ -20,6 +20,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
@@ -35,7 +36,8 @@ import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.ui.theme.WorkoutPlannerTheme
  */
 @Composable
 fun ExerciseAddScreen(
-    navController: NavHostController
+    navController: NavHostController,
+    exerciseAddViewModel: ExerciseAddViewModel = viewModel()
 ) {
     val coroutineScope = rememberCoroutineScope()
 

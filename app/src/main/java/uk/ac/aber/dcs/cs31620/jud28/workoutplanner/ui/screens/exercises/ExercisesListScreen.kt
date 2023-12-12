@@ -33,14 +33,12 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.R
-import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.logic.bicepCurl
-import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.logic.exercises
 import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.logic.models.Exercise
-import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.logic.removeExercise
 import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.ui.components.ApplicationScaffold
 import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.ui.navigation.Screen
 import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.ui.theme.WorkoutPlannerTheme
@@ -51,9 +49,13 @@ import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.ui.theme.WorkoutPlannerTheme
  * @author Julia Drozdz
  */
 @Composable
-fun ExercisesListScreen(navController: NavHostController) {
+fun ExercisesListScreen(
+    navController: NavHostController,
+    exercisesListViewModel: ExercisesListViewModel = viewModel(),
+    exercisesDeleteViewModel: ExercisesDeleteViewModel = viewModel()
+) {
     val coroutineScope = rememberCoroutineScope()
-    val exercisesList = exercises.values.toList()
+    val exercisesList = exercisesListViewModel.allExercises
 
     ApplicationScaffold(
         navController = navController,
@@ -95,7 +97,8 @@ fun ExercisesListScreen(navController: NavHostController) {
                             deleteAction = {
                                 Log.d("EXE_LIST", "Deleting an exercise [${it.name}]")
 
-                                removeExercise(it.name)
+                                // exercisesDeleteViewModel.remove(it.name)
+                                exercisesDeleteViewModel.removeExercise(0)
                             },
                             showAction = true,
                         )
@@ -216,7 +219,7 @@ fun ExerciseListScreenPreview() {
 @Composable
 fun ExerciseCardPreview() {
     WorkoutPlannerTheme(dynamicColor = false) {
-        ExerciseCard(exercise = bicepCurl)
+        ExerciseCard(exercise = Exercise("Bicep curl", 3, 10, 10F, "BC"))
     }
 }
 

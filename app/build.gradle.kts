@@ -9,7 +9,7 @@ android {
 
     defaultConfig {
         applicationId = "uk.ac.aber.dcs.cs31620.jud28.workoutplanner"
-        minSdk = 23
+        minSdk = 26
         targetSdk =  34
         versionCode = 1
         versionName = "0.1-dev"

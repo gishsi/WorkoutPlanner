@@ -30,9 +30,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.logic.getAllExercises
+import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.logic.TempData
 import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.logic.models.Workout
-import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.logic.workouts
 import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.ui.navigation.NavigationGraph
 import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.ui.theme.WorkoutPlannerTheme
 
@@ -59,7 +58,7 @@ class MainActivity : ComponentActivity() {
 fun Application() {
     var localExercises = remember  {
         val pairs = buildList {
-            for (exercise in getAllExercises())
+            for (exercise in TempData.getAllExercises())
                 add(Pair(exercise.name, exercise))
         }
         mutableStateMapOf(*pairs.toTypedArray())
@@ -112,7 +111,7 @@ fun Application() {
         Text(text = "Workouts")
         // ******************* list of workouts ************************
         Column(modifier = Modifier.padding(4.dp)) {
-            for (workout in workouts.values) {
+            for (workout in TempData.workouts.values) {
                 WorkoutCard(workout)
             }
         }

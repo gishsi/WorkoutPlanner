@@ -17,10 +17,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.R
-import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.logic.bicepCurl
+import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.logic.models.Exercise
 import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.ui.components.ApplicationScaffold
 import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.ui.screens.exercises.ExerciseCard
 import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.ui.theme.WorkoutPlannerTheme
@@ -31,9 +32,13 @@ import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.ui.theme.WorkoutPlannerTheme
  * @author Julia Drozdz
  */
 @Composable
-fun HomeScreen(navController: NavHostController) {
+fun HomeScreen(
+    navController: NavHostController,
+    homeViewModel: HomeViewModel = viewModel()
+) {
     val coroutineScope = rememberCoroutineScope()
-
+    val workoutOfTheDay = homeViewModel.workoutForTheDay
+    
     ApplicationScaffold(
         navController = navController,
         coroutineScope = coroutineScope,
@@ -44,6 +49,7 @@ fun HomeScreen(navController: NavHostController) {
                 .padding(innerPadding)
                 .fillMaxSize()
         ) {
+            Text(workoutOfTheDay.name)
             HomeScreenContent()
         }
     }
@@ -85,15 +91,15 @@ fun WorkoutHomeScreenContentVariant() {
         }
         ExerciseCard(
             modifier = Modifier.padding(4.dp),
-            exercise = bicepCurl,
+            exercise = Exercise("Bicep curl", 3, 10, 10F, "BC"),
         )
         ExerciseCard(
             modifier = Modifier.padding(4.dp),
-            exercise = bicepCurl,
+            exercise = Exercise("Bench press", 4, 8,  50F, "BP"),
         )
         ExerciseCard(
             modifier = Modifier.padding(4.dp),
-            exercise = bicepCurl,
+            exercise = Exercise("Bench press", 4, 8,  50F, "BP"),
         )
     }
 }
