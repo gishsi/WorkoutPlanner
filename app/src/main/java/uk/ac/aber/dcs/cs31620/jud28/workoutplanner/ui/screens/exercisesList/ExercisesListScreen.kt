@@ -68,7 +68,9 @@ fun ExercisesListScreen(navController: NavHostController) {
                             Log.d("EXE_LIST", "Deleting an exercse [${it.name}]")
 
                             removeExercise(it.name)
-                        })
+                        },
+                        showAction = true,
+                    )
                 }
             }
         }
@@ -79,7 +81,8 @@ fun ExerciseCard(
     modifier: Modifier = Modifier,
     exercise: Exercise,
     editAction: (Exercise) -> Unit = {},
-    deleteAction: (Exercise) -> Unit = {}
+    deleteAction: (Exercise) -> Unit = {},
+    showAction: Boolean = false,
 ) {
     Card(
         modifier = modifier
@@ -98,13 +101,15 @@ fun ExerciseCard(
                 Text(text = "${exercise.weightInKilos} kg")
             }
 
-            Column {
-                Row {
-                    IconButton(onClick = { editAction(exercise) }) {
-                        Icon(imageVector = Icons.Filled.Create, contentDescription = "Edit an exercise todo: resource")
-                    }
-                    IconButton(onClick = { deleteAction(exercise) }) {
-                        Icon(imageVector = Icons.Filled.Delete, contentDescription = "Delete an exercise todo: resource")
+            if(showAction) {
+                Column {
+                    Row {
+                        IconButton(onClick = { editAction(exercise) }) {
+                            Icon(imageVector = Icons.Filled.Create, contentDescription = "Edit an exercise todo: resource")
+                        }
+                        IconButton(onClick = { deleteAction(exercise) }) {
+                            Icon(imageVector = Icons.Filled.Delete, contentDescription = "Delete an exercise todo: resource")
+                        }
                     }
                 }
             }
