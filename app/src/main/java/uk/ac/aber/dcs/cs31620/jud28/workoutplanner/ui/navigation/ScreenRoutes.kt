@@ -11,8 +11,9 @@ sealed class Screen(val route: String) {
     object ExercisesList : Screen("exercises")
     object ExerciseAdd : Screen("exercises/add")
     object ExerciseEdit : Screen("exercises/edit/{exercise_id}")
-    object WorkoutsList : Screen("workouts")
-    object AddWorkout : Screen("workouts/add")
+    object Workouts : Screen("workouts")
+    object WorkoutAdd : Screen("workouts/add")
+    object WorkoutEdit : Screen("workouts/edit/{workout_id}")
 }
 
 val screensInBottomBar = listOf(

@@ -7,6 +7,7 @@ import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.CalendarMonth
 import androidx.compose.material.icons.filled.FitnessCenter
 import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.SportsGymnastics
 import androidx.compose.material3.DrawerState
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.Icon
@@ -54,7 +55,7 @@ fun NavigationDrawer(
             Screen.Weekly.route,
         ),
         NavigationDrawerItem(
-            Icons.Default.FitnessCenter,
+            Icons.Default.SportsGymnastics,
             stringResource(id = R.string.nav_exercises_list),
             Screen.ExercisesList.route
         ),
@@ -62,6 +63,16 @@ fun NavigationDrawer(
             Icons.Default.Add,
             stringResource(id = R.string.nav_exercise_add),
             Screen.ExerciseAdd.route
+        ),
+        NavigationDrawerItem(
+            Icons.Default.FitnessCenter,
+            stringResource(id = R.string.nav_workouts_list),
+            Screen.Workouts.route
+        ),
+        NavigationDrawerItem(
+            Icons.Default.Add,
+            stringResource(id = R.string.nav_add_workout),
+            Screen.WorkoutAdd.route
         ),
     )
 

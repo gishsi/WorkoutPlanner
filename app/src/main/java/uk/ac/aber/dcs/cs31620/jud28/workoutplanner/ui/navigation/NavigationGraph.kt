@@ -15,6 +15,13 @@ import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.ui.screens.exercises.Exercise
 import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.ui.screens.home.HomeScreen
 import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.ui.screens.home.HomeViewModel
 import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.ui.screens.weekly.WeeklyScreen
+import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.ui.screens.workouts.WorkoutAddScreen
+import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.ui.screens.workouts.WorkoutAddViewModel
+import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.ui.screens.workouts.WorkoutDeleteViewModel
+import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.ui.screens.workouts.WorkoutEditScreen
+import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.ui.screens.workouts.WorkoutEditViewModel
+import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.ui.screens.workouts.WorkoutsScreen
+import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.ui.screens.workouts.WorkoutsViewModel
 
 /**
  * Build a navigation graph for the application
@@ -30,6 +37,10 @@ fun NavigationGraph(
     exercisesDeleteViewModel: ExercisesDeleteViewModel = viewModel(),
     exerciseAddViewModel: ExerciseAddViewModel = viewModel(),
     exerciseEditViewModel: ExerciseEditViewModel = viewModel(),
+    workoutsViewModel: WorkoutsViewModel = viewModel(),
+    workoutAddViewModel: WorkoutAddViewModel = viewModel(),
+    workoutEditViewModel: WorkoutEditViewModel = viewModel(),
+    workoutDeleteViewModel: WorkoutDeleteViewModel = viewModel(),
 ) {
     val navController = rememberNavController()
 
@@ -39,11 +50,32 @@ fun NavigationGraph(
     ) {
         composable(Screen.Home.route) { HomeScreen(navController, homeViewModel) }
         composable(Screen.Weekly.route) { WeeklyScreen(navController) }
-        composable(Screen.ExercisesList.route) { ExercisesListScreen(navController, exercisesListViewModel, exercisesDeleteViewModel) }
-        composable(Screen.ExerciseAdd.route) { ExerciseAddScreen(navController, exerciseAddViewModel) }
+        composable(Screen.ExercisesList.route) {
+            ExercisesListScreen(
+                navController,
+                exercisesListViewModel,
+                exercisesDeleteViewModel
+            )
+        }
+        composable(Screen.ExerciseAdd.route) {
+            ExerciseAddScreen(
+                navController,
+                exerciseAddViewModel
+            )
+        }
         composable(Screen.ExerciseEdit.route) { backStackEntry ->
             backStackEntry.arguments?.getString("exercise_id")
                 ?.let { ExerciseEditScreen(navController, exerciseEditViewModel, it) }
+        }
+        composable(Screen.Workouts.route) {
+            WorkoutsScreen(navController = navController, workoutsViewModel, workoutDeleteViewModel)
+        }
+        composable(Screen.WorkoutAdd.route) {
+            WorkoutAddScreen(navController = navController, workoutAddViewModel)
+        }
+        composable(Screen.WorkoutEdit.route) { backStackEntry ->
+            backStackEntry.arguments?.getString("workout_id")
+                ?.let { WorkoutEditScreen(navController, workoutEditViewModel, it) }
         }
     }
 }

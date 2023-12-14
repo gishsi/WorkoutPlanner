@@ -49,7 +49,6 @@ fun HomeScreen(
                 .padding(innerPadding)
                 .fillMaxSize()
         ) {
-            Text(workoutOfTheDay.name)
             HomeScreenContent()
         }
     }
