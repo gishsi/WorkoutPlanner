@@ -77,5 +77,6 @@ fun NavigationGraph(
             backStackEntry.arguments?.getString("workout_id")
                 ?.let { WorkoutEditScreen(navController, workoutEditViewModel, it) }
         }
+        composable(Screen.Weekly.route) { WeeklyScreen(navController) }
     }
 }

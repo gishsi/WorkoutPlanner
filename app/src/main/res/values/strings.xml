@@ -20,4 +20,6 @@
     <string name="edit_workout_top_bar_label">Edit a workout</string>
     <string name="cancel">Cancel</string>
     <string name="remove">Remove</string>
+    <string name="close">Close</string>
+    <string name="no_workout_in_weekly">Nothing here yet...</string>
 </resources>
