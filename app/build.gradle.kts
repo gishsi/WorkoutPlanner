@@ -10,7 +10,7 @@ android {
 
     defaultConfig {
         applicationId = "uk.ac.aber.dcs.cs31620.jud28.workoutplanner"
-        minSdk = 23
+        minSdk = 26
         targetSdk =  34
         versionCode = 1
         versionName = "0.1-dev"
@@ -84,9 +84,12 @@ dependencies {
     implementation("androidx.constraintlayout:constraintlayout-compose:1.0.1")
     //Room
     implementation("androidx.room:room-common:2.6.0")
+    implementation("androidx.lifecycle:lifecycle-common:2.6.0")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.6.0")
     ksp("androidx.room:room-compiler:2.5.1")
     implementation("androidx.room:room-runtime:2.6.1")
     implementation("androidx.room:room-ktx:2.6.1")
+
 
     // Testing
     testImplementation("junit:junit:4.13.2")

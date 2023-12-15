@@ -8,6 +8,8 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.ui.screens.exercisesList.ExercisesListScreen
 import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.ui.screens.home.HomeScreen
+import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.ui.screens.home.ItemEntryDestination
+import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.ui.screens.home.ItemEntryScreen
 import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.ui.screens.weekly.WeeklyScreen
 
 /**
@@ -24,8 +26,11 @@ fun NavigationGraph() {
 
     NavHost(
         navController = navController,
-        startDestination = Screen.Home.route
+        startDestination = ItemEntryDestination.route
     ) {
+        composable(route = ItemEntryDestination.route) {
+            ItemEntryScreen()
+        }
         composable(Screen.ExercisesList.route) { ExercisesListScreen(navController) }
         composable(Screen.Home.route) { HomeScreen(navController) }
         composable(Screen.Weekly.route) { WeeklyScreen(navController) }

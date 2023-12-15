@@ -20,9 +20,9 @@ import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.ui.theme.WorkoutPlannerTheme
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TopAppBar(
-    onClick: () -> Unit = {},
+fun WorkoutTopAppBar(
     label: String = stringResource(id = R.string.app_name),
+    onClick: () -> Unit = {},
     ) {
     CenterAlignedTopAppBar(
         title = {
@@ -43,6 +43,6 @@ fun TopAppBar(
 @Composable
 private fun MainPageTopAppBarPreview() {
     WorkoutPlannerTheme(dynamicColor = false) {
-        TopAppBar(label = "Preview")
+        WorkoutTopAppBar(label = "Preview")
     }
 }

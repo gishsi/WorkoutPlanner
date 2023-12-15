@@ -38,7 +38,7 @@ fun ApplicationScaffold(
     ) {
         Scaffold(
             topBar = {
-                TopAppBar(onClick = {
+                WorkoutTopAppBar(onClick = {
                     coroutineScope.launch {
                         if (drawerState.isOpen) {
                             drawerState.close()
