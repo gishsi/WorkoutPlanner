@@ -11,7 +11,7 @@ android {
     defaultConfig {
         applicationId = "uk.ac.aber.dcs.cs31620.jud28.workoutplanner"
         minSdk = 26
-        targetSdk =  34
+        targetSdk = 34
         versionCode = 1
         versionName = "0.1-dev"
 
@@ -49,7 +49,7 @@ android {
     }
     kotlinOptions {
         jvmTarget = "17"
-        freeCompilerArgs +="-opt-in=androidx.compose.material3.ExperimentalMaterial3Api"
+        freeCompilerArgs += "-opt-in=androidx.compose.material3.ExperimentalMaterial3Api"
     }
     buildFeatures {
         compose = true
@@ -88,6 +88,7 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-common:2.6.0")
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.6.0")
     implementation("androidx.compose.runtime:runtime-livedata:1.5.4")
+    implementation("com.google.code.gson:gson:2.10.1")
     ksp("androidx.room:room-compiler:2.5.1")
     implementation("androidx.room:room-runtime:2.6.1")
     implementation("androidx.room:room-ktx:2.6.1")

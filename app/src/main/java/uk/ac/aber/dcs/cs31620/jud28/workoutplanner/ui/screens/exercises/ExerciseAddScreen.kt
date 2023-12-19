@@ -28,7 +28,7 @@ import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.R
-import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.logic.models.Exercise
+import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.models.Exercise
 import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.ui.components.ApplicationScaffold
 import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.ui.navigation.Screen
 import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.ui.theme.WorkoutPlannerTheme
@@ -82,14 +82,14 @@ fun ExerciseAddContent(navController: NavHostController, onExerciseAdd: (Exercis
         )
         TextField(
             value = numOfSets.toString(),
-            onValueChange = { numOfSets = parseStringIntoInt(it)},
+            onValueChange = { numOfSets = parseStringIntoInt(it) },
             label = { Text("Number of sets") },
             keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number),
         )
 
         TextField(
             value = numOfRepetitions.toString(),
-            onValueChange = { numOfRepetitions = parseStringIntoInt(it)},
+            onValueChange = { numOfRepetitions = parseStringIntoInt(it) },
             label = { Text("Number of repetitions") },
             keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number),
         )

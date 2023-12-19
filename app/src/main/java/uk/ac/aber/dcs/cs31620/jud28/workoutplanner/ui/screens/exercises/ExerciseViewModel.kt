@@ -8,7 +8,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.datasource.exercises.ExercisesDatabase
 import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.datasource.exercises.ExercisesRepository
-import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.logic.models.Exercise
+import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.models.Exercise
 
 class ExerciseViewModel(application: Application) : AndroidViewModel(application) {
     val allData: LiveData<List<Exercise>>

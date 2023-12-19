@@ -3,9 +3,7 @@ package uk.ac.aber.dcs.cs31620.jud28.workoutplanner.ui.screens.exercises
 import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
@@ -15,7 +13,6 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
@@ -31,22 +28,18 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
-import kotlinx.coroutines.launch
 import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.R
-import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.logic.models.Exercise
+import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.models.Exercise
 import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.ui.components.ApplicationScaffold
 import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.ui.navigation.Screen
 import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.ui.theme.WorkoutPlannerTheme
-import java.lang.Exception
 
 /**
  * Screen used to edit exercises.
@@ -205,24 +198,24 @@ fun ExerciseEditContent(
 }
 
 
-fun parseStringIntoFloat(input: String) : Float {
-    var converted : Float = 0.0F;
+fun parseStringIntoFloat(input: String): Float {
+    var converted: Float = 0.0F;
 
     try {
         converted = input.toFloat();
-    } catch(e: Exception) {
+    } catch (e: Exception) {
         return 0.0F;
     }
 
     return converted;
 }
 
-fun parseStringIntoInt(input: String) : Int {
-    var converted : Int = 0;
+fun parseStringIntoInt(input: String): Int {
+    var converted: Int = 0;
 
     try {
         converted = input.toInt();
-    } catch(e: Exception) {
+    } catch (e: Exception) {
         return 0;
     }
 

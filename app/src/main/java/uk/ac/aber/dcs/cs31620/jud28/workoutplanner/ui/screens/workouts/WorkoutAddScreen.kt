@@ -33,6 +33,7 @@ import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.R
+import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.models.Workout
 import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.ui.components.ApplicationScaffold
 import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.ui.navigation.Screen
 import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.ui.theme.WorkoutPlannerTheme
@@ -45,7 +46,7 @@ import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.ui.theme.WorkoutPlannerTheme
 @Composable
 fun WorkoutAddScreen(
     navController: NavHostController,
-    workoutAddViewModel: WorkoutAddViewModel = viewModel()
+    workoutsViewModel: WorkoutViewModel = viewModel()
 ) {
     val coroutineScope = rememberCoroutineScope()
 
@@ -64,14 +65,19 @@ fun WorkoutAddScreen(
                     .padding(innerPadding)
                     .fillMaxHeight()
             ) {
-                WorkoutAddScreenContent(navController)
+                WorkoutAddScreenContent(navController) {
+                    workoutsViewModel.addWorkout(it)
+                }
             }
         }
     }
 }
 
 @Composable
-fun WorkoutAddScreenContent(navController: NavHostController) {
+fun WorkoutAddScreenContent(
+    navController: NavHostController,
+    onWorkoutAdd: (Workout) -> Unit = {}
+) {
     val workoutName by remember { mutableStateOf("Name") }
     val duration by remember { mutableIntStateOf(120) }
 
@@ -99,7 +105,9 @@ fun WorkoutAddScreenContent(navController: NavHostController) {
 
         OutlinedButton(
             modifier = Modifier.fillMaxWidth(),
-            onClick = { addingExercisesCancelRequired = true }) {
+            onClick = {
+                addingExercisesCancelRequired = true
+            }) {
             Text(text = "Add")
             Icon(imageVector = Icons.Default.Add, contentDescription = "Add")
         }
@@ -114,6 +122,8 @@ fun WorkoutAddScreenContent(navController: NavHostController) {
         Button(
             modifier = Modifier.fillMaxWidth(),
             onClick = {
+                onWorkoutAdd(Workout(0, workoutName, duration))
+
                 navController.navigate(Screen.Workouts.route) {
                     popUpTo(navController.graph.findStartDestination().id) {
                         saveState = true

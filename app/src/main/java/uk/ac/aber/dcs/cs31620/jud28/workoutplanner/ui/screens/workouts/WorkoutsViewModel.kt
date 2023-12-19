@@ -2,14 +2,48 @@ package uk.ac.aber.dcs.cs31620.jud28.workoutplanner.ui.screens.workouts
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
-import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.logic.TempData
-import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.logic.models.Workout
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.datasource.workouts.WorkoutDatabase
+import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.datasource.workouts.WorkoutRepository
+import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.models.Workout
 
 /**
  *  View model for the workouts list view.
  *
  *  @author Julia Drozdz
  */
-class WorkoutsViewModel(application: Application) : AndroidViewModel(application) {
-    val allWorkouts: List<Workout> = TempData.getAllWorkouts()
+class WorkoutViewModel(application: Application) : AndroidViewModel(application) {
+    val allData: LiveData<List<Workout>>
+    private val repository: WorkoutRepository
+
+    init {
+        val dao = WorkoutDatabase.getInstance(application).workoutDao()
+        repository = WorkoutRepository(dao)
+        allData = repository.readAllData
+    }
+
+    fun getWorkout(id: Int): LiveData<Workout> {
+        return repository.getWorkout(id)
+    }
+
+    fun addWorkout(workout: Workout) {
+        viewModelScope.launch(Dispatchers.IO) {
+            repository.addWorkout(workout)
+        }
+    }
+
+    fun deleteWorkout(workout: Workout) {
+        viewModelScope.launch(Dispatchers.IO) {
+            repository.deleteWorkout(workout)
+        }
+    }
+
+    fun updateWorkout(workout: Workout) {
+        viewModelScope.launch(Dispatchers.IO) {
+            repository.updateWorkout(workout)
+        }
+    }
 }

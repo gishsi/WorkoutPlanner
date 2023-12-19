@@ -4,7 +4,7 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.logic.models.Exercise
+import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.models.Exercise
 
 @Database(entities = [Exercise::class], version = 2, exportSchema = false)
 abstract class ExercisesDatabase : RoomDatabase() {

@@ -3,7 +3,7 @@ package uk.ac.aber.dcs.cs31620.jud28.workoutplanner.logic
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotNull
 import org.junit.Test
-import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.logic.models.Workout
+import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.models.Workout
 
 /**
  * Unit tests for the basic domain logic operations: adding, removing, editing workouts and exercises.

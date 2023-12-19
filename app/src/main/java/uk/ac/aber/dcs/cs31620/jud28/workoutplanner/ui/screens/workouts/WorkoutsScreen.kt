@@ -22,6 +22,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -35,7 +36,7 @@ import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.R
-import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.logic.models.Workout
+import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.models.Workout
 import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.ui.components.ApplicationScaffold
 import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.ui.navigation.Screen
 import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.ui.theme.WorkoutPlannerTheme
@@ -48,11 +49,10 @@ import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.ui.theme.WorkoutPlannerTheme
 @Composable
 fun WorkoutsScreen(
     navController: NavHostController,
-    workoutsViewModel: WorkoutsViewModel = viewModel(),
-    workoutDeleteViewModel: WorkoutDeleteViewModel = viewModel(),
+    workoutsViewModel: WorkoutViewModel = viewModel(),
 ) {
     val coroutineScope = rememberCoroutineScope()
-    val workouts = workoutsViewModel.allWorkouts
+    val workouts = workoutsViewModel.allData.observeAsState(listOf()).value
 
     ApplicationScaffold(
         navController = navController,
@@ -70,7 +70,7 @@ fun WorkoutsScreen(
                     .fillMaxHeight()
             ) {
                 WorkoutsScreenContent(navController, workouts, deleteAction = {
-                    workoutDeleteViewModel.removeWorkout(0)
+                    workoutsViewModel.deleteWorkout(it)
                 })
             }
         }
@@ -99,7 +99,7 @@ fun WorkoutsScreenContent(
                         navController.navigate(
                             Screen.WorkoutEdit.route.replace(
                                 "{workout_id}",
-                                workout.name
+                                workout.id.toString()
                             )
                         ) {
                             popUpTo(navController.graph.findStartDestination().id) {
@@ -112,7 +112,6 @@ fun WorkoutsScreenContent(
                     deleteAction = {
                         Log.d("_WORKOUTS", "Deleting a workout [${it.name}]")
 
-                        // exercisesDeleteViewModel.remove(it.name)
                         deleteAction(workout)
                     },
                     showAction = true,
@@ -219,7 +218,10 @@ fun WorkoutsScreenContentPreview() {
     WorkoutPlannerTheme(dynamicColor = false) {
         WorkoutsScreenContent(
             navController,
-            workouts = listOf(Workout("Chest", 120, listOf()), Workout("Upper body", 90, listOf()))
+            workouts = listOf(
+                Workout(0, "Chest", 120, listOf()),
+                Workout(0, "Upper body", 90, listOf())
+            )
         )
     }
 }
@@ -228,7 +230,7 @@ fun WorkoutsScreenContentPreview() {
 @Composable
 fun WorkoutCardPreview() {
     WorkoutPlannerTheme(dynamicColor = false) {
-        WorkoutCard(workout = Workout("Chest", 120, listOf()))
+        WorkoutCard(workout = Workout(0, "Chest", 120, listOf()))
     }
 }
 
