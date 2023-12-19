@@ -10,10 +10,10 @@ import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.logic.models.Workout
  */
 
 object TempData {
-    public var bicepCurl = Exercise("Bicep curl", 3, 10, 10F, "BC")
-    public var benchPress = Exercise("Bench press", 4, 8,  50F, "BP")
-    public var deadLift = Exercise("Dead lift", 3, 10, 70F, "DL")
-    public var squat = Exercise("Squat", 3, 10, 60F, "S")
+    public var bicepCurl = Exercise(0, "Bicep curl", 3, 10, 10F, "BC")
+    public var benchPress = Exercise(0, "Bench press", 4, 8, 50F, "BP")
+    public var deadLift = Exercise(0, "Dead lift", 3, 10, 70F, "DL")
+    public var squat = Exercise(0, "Squat", 3, 10, 60F, "S")
 
     public var exercises = mutableMapOf<String, Exercise>(
         "Bicep curl" to bicepCurl,
@@ -52,10 +52,12 @@ object TempData {
 
 // ************************** workouts ***********************
 
-    public val upperBody = Workout("Upper body", 60,
+    public val upperBody = Workout(
+        "Upper body", 60,
         listOf(exercises["Bicep curl"], exercises["Bench press"]) as List<Exercise>
     )
-    public val legsDay = Workout("Legs day", 50,
+    public val legsDay = Workout(
+        "Legs day", 50,
         listOf(exercises["Dead lift"], exercises["Squat"]) as List<Exercise>
     )
 
@@ -81,6 +83,7 @@ object TempData {
             remove(name)
         }.toMap()
     }
+
     /**
      *  Get all workouts - immutable
      */

@@ -63,7 +63,7 @@ fun WorkoutEditScreen(
                     .padding(innerPadding)
                     .fillMaxHeight()
             ) {
-               WorkoutEditScreenContent(navController)
+                WorkoutEditScreenContent(navController)
             }
         }
     }

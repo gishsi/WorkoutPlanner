@@ -85,7 +85,7 @@ fun WorkoutsScreenContent(
 ) {
     Column(
         modifier = Modifier.fillMaxSize()
-    )  {
+    ) {
         LazyColumn(
             modifier = Modifier.fillMaxWidth()
         ) {

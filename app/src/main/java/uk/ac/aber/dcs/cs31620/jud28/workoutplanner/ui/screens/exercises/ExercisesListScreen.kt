@@ -24,11 +24,13 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -51,11 +53,11 @@ import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.ui.theme.WorkoutPlannerTheme
 @Composable
 fun ExercisesListScreen(
     navController: NavHostController,
-    exercisesListViewModel: ExercisesListViewModel = viewModel(),
-    exercisesDeleteViewModel: ExercisesDeleteViewModel = viewModel()
+    exerciseViewModel: ExerciseViewModel = viewModel(),
 ) {
     val coroutineScope = rememberCoroutineScope()
-    val exercisesList = exercisesListViewModel.allExercises
+    val exercisesList = exerciseViewModel.allData.observeAsState(listOf()).value
+
 
     ApplicationScaffold(
         navController = navController,
@@ -78,13 +80,13 @@ fun ExercisesListScreen(
                             modifier = Modifier.padding(4.dp),
                             exercise = exercise,
                             editAction = {
-                                Log.d("EXE_LIST", "Editing an exercise [${it.name}]")
+                                Log.d("EXE_LIST", "Editing an exercise [${it.id}]")
 
                                 // todo: needs to be the id, not the name
                                 navController.navigate(
                                     Screen.ExerciseEdit.route.replace(
                                         "{exercise_id}",
-                                        exercise.name
+                                        exercise.id.toString()
                                     )
                                 ) {
                                     popUpTo(navController.graph.findStartDestination().id) {
@@ -97,8 +99,8 @@ fun ExercisesListScreen(
                             deleteAction = {
                                 Log.d("EXE_LIST", "Deleting an exercise [${it.name}]")
 
-                                // exercisesDeleteViewModel.remove(it.name)
-                                exercisesDeleteViewModel.removeExercise(0)
+                                exerciseViewModel.deleteExercise(it)
+
                             },
                             showAction = true,
                         )
@@ -219,7 +221,7 @@ fun ExerciseListScreenPreview() {
 @Composable
 fun ExerciseCardPreview() {
     WorkoutPlannerTheme(dynamicColor = false) {
-        ExerciseCard(exercise = Exercise("Bicep curl", 3, 10, 10F, "BC"))
+        ExerciseCard(exercise = Exercise(0, "Bicep curl", 3, 10, 10F, "BC"))
     }
 }
 

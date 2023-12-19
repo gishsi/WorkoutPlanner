@@ -218,9 +218,9 @@ fun WorkoutDetailDialog(onClose: () -> Unit, modifier: Modifier = Modifier) {
         text = {
             Column {
                 Text("1 hour 30 minutes")
-                ExerciseCard(exercise = Exercise("Squat", 3, 10, 60F, "S"))
-                ExerciseCard(exercise = Exercise("Squat", 3, 10, 60F, "S"))
-                ExerciseCard(exercise = Exercise("Squat", 3, 10, 60F, "S"))
+                ExerciseCard(exercise = Exercise(0, "Squat", 3, 10, 60F, "S"))
+                ExerciseCard(exercise = Exercise(0, "Squat", 3, 10, 60F, "S"))
+                ExerciseCard(exercise = Exercise(0, "Squat", 3, 10, 60F, "S"))
             }
         },
         modifier = modifier,

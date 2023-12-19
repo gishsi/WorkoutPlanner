@@ -45,7 +45,7 @@ fun NavigationDrawer(
 ) {
     val items = listOf(
         NavigationDrawerItem(
-            Icons.Default.Home ,
+            Icons.Default.Home,
             stringResource(id = R.string.nav_home),
             Screen.Home.route
         ),
@@ -81,7 +81,7 @@ fun NavigationDrawer(
         drawerContent = {
             val selectedItem = rememberSaveable { mutableStateOf(0) }
 
-            ModalDrawerSheet  {
+            ModalDrawerSheet {
                 Column(
                     horizontalAlignment = Alignment.CenterHorizontally,
                     modifier = Modifier.fillMaxSize(),

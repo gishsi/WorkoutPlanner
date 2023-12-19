@@ -1,19 +1,18 @@
 package uk.ac.aber.dcs.cs31620.jud28.workoutplanner.ui.navigation
 
+import android.app.Application
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.ui.screens.exercises.ExerciseAddScreen
-import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.ui.screens.exercises.ExerciseAddViewModel
 import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.ui.screens.exercises.ExerciseEditScreen
-import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.ui.screens.exercises.ExerciseEditViewModel
-import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.ui.screens.exercises.ExercisesDeleteViewModel
+import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.ui.screens.exercises.ExerciseViewModel
+import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.ui.screens.exercises.ExerciseViewModelFactory
 import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.ui.screens.exercises.ExercisesListScreen
-import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.ui.screens.exercises.ExercisesListViewModel
 import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.ui.screens.home.HomeScreen
-import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.ui.screens.home.HomeViewModel
 import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.ui.screens.weekly.WeeklyScreen
 import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.ui.screens.workouts.WorkoutAddScreen
 import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.ui.screens.workouts.WorkoutAddViewModel
@@ -32,11 +31,6 @@ import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.ui.screens.workouts.WorkoutsV
  */
 @Composable
 fun NavigationGraph(
-    homeViewModel: HomeViewModel = viewModel(),
-    exercisesListViewModel: ExercisesListViewModel = viewModel(),
-    exercisesDeleteViewModel: ExercisesDeleteViewModel = viewModel(),
-    exerciseAddViewModel: ExerciseAddViewModel = viewModel(),
-    exerciseEditViewModel: ExerciseEditViewModel = viewModel(),
     workoutsViewModel: WorkoutsViewModel = viewModel(),
     workoutAddViewModel: WorkoutAddViewModel = viewModel(),
     workoutEditViewModel: WorkoutEditViewModel = viewModel(),
@@ -44,28 +38,32 @@ fun NavigationGraph(
 ) {
     val navController = rememberNavController()
 
+    val context = LocalContext.current
+    val exerciseViewModel: ExerciseViewModel = viewModel(
+        factory = ExerciseViewModelFactory(context.applicationContext as Application)
+    )
+
+
     NavHost(
-        navController = navController,
-        startDestination = Screen.Home.route
+        navController = navController, startDestination = Screen.Home.route
     ) {
-        composable(Screen.Home.route) { HomeScreen(navController, homeViewModel) }
+        composable(Screen.Home.route) { HomeScreen(navController, exerciseViewModel) }
         composable(Screen.Weekly.route) { WeeklyScreen(navController) }
         composable(Screen.ExercisesList.route) {
             ExercisesListScreen(
                 navController,
-                exercisesListViewModel,
-                exercisesDeleteViewModel
+                exerciseViewModel,
             )
         }
         composable(Screen.ExerciseAdd.route) {
             ExerciseAddScreen(
                 navController,
-                exerciseAddViewModel
+                exerciseViewModel,
             )
         }
         composable(Screen.ExerciseEdit.route) { backStackEntry ->
             backStackEntry.arguments?.getString("exercise_id")
-                ?.let { ExerciseEditScreen(navController, exerciseEditViewModel, it) }
+                ?.let { ExerciseEditScreen(navController, exerciseViewModel, it.toInt()) }
         }
         composable(Screen.Workouts.route) {
             WorkoutsScreen(navController = navController, workoutsViewModel, workoutDeleteViewModel)

@@ -6,7 +6,7 @@ package uk.ac.aber.dcs.cs31620.jud28.workoutplanner.ui.navigation
  *  @author Julia Drozdz
  */
 sealed class Screen(val route: String) {
-    object Home: Screen("home")
+    object Home : Screen("home")
     object Weekly : Screen("weekly")
     object ExercisesList : Screen("exercises")
     object ExerciseAdd : Screen("exercises/add")

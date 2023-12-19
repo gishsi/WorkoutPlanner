@@ -21,7 +21,7 @@ import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.ui.theme.WorkoutPlannerTheme
 fun TopAppBar(
     onClick: () -> Unit = {},
     label: String = stringResource(id = R.string.app_name),
-    ) {
+) {
     CenterAlignedTopAppBar(
         title = {
             Text(label)

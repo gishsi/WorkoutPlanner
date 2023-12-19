@@ -4,6 +4,8 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Add
 import androidx.compose.material.icons.outlined.WatchLater
@@ -12,6 +14,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -24,6 +27,7 @@ import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.R
 import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.logic.models.Exercise
 import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.ui.components.ApplicationScaffold
 import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.ui.screens.exercises.ExerciseCard
+import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.ui.screens.exercises.ExerciseViewModel
 import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.ui.theme.WorkoutPlannerTheme
 
 /**
@@ -34,11 +38,12 @@ import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.ui.theme.WorkoutPlannerTheme
 @Composable
 fun HomeScreen(
     navController: NavHostController,
-    homeViewModel: HomeViewModel = viewModel()
+    exercisesViewModel: ExerciseViewModel = viewModel()
 ) {
     val coroutineScope = rememberCoroutineScope()
-    val workoutOfTheDay = homeViewModel.workoutForTheDay
-    
+
+    val exercises = exercisesViewModel.allData.observeAsState(listOf()).value
+
     ApplicationScaffold(
         navController = navController,
         coroutineScope = coroutineScope,
@@ -90,15 +95,15 @@ fun WorkoutHomeScreenContentVariant() {
         }
         ExerciseCard(
             modifier = Modifier.padding(4.dp),
-            exercise = Exercise("Bicep curl", 3, 10, 10F, "BC"),
+            exercise = Exercise(0, "Bicep curl", 3, 10, 10F, "BC"),
         )
         ExerciseCard(
             modifier = Modifier.padding(4.dp),
-            exercise = Exercise("Bench press", 4, 8,  50F, "BP"),
+            exercise = Exercise(0, "Bench press", 4, 8, 50F, "BP"),
         )
         ExerciseCard(
             modifier = Modifier.padding(4.dp),
-            exercise = Exercise("Bench press", 4, 8,  50F, "BP"),
+            exercise = Exercise(0, "Bench press", 4, 8, 50F, "BP"),
         )
     }
 }

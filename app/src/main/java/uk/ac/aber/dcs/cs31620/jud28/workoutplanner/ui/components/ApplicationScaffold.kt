@@ -36,16 +36,17 @@ fun ApplicationScaffold(
     ) {
         Scaffold(
             topBar = {
-                TopAppBar(onClick = {
-                    coroutineScope.launch {
-                        if (drawerState.isOpen) {
-                            drawerState.close()
-                        } else {
-                            drawerState.open()
+                TopAppBar(
+                    onClick = {
+                        coroutineScope.launch {
+                            if (drawerState.isOpen) {
+                                drawerState.close()
+                            } else {
+                                drawerState.open()
+                            }
                         }
-                    }
-                },
-                label = topBarLabel
+                    },
+                    label = topBarLabel
                 )
             },
             bottomBar = {

@@ -3,6 +3,7 @@ package uk.ac.aber.dcs.cs31620.jud28.workoutplanner.ui.screens.exercises
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.Button
@@ -13,18 +14,21 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.R
+import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.logic.models.Exercise
 import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.ui.components.ApplicationScaffold
 import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.ui.navigation.Screen
 import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.ui.theme.WorkoutPlannerTheme
@@ -37,7 +41,7 @@ import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.ui.theme.WorkoutPlannerTheme
 @Composable
 fun ExerciseAddScreen(
     navController: NavHostController,
-    exerciseAddViewModel: ExerciseAddViewModel = viewModel()
+    exerciseViewModel: ExerciseViewModel = viewModel()
 ) {
     val coroutineScope = rememberCoroutineScope()
 
@@ -51,7 +55,9 @@ fun ExerciseAddScreen(
                 .padding(innerPadding)
                 .fillMaxSize()
         ) {
-            ExerciseAddContent(navController)
+            ExerciseAddContent(navController) { exercise: Exercise ->
+                exerciseViewModel.addExercise(exercise)
+            }
         }
     }
 }
@@ -60,59 +66,75 @@ fun ExerciseAddScreen(
  * Add an exercise form. Drop set option enables three additional input fields that represent weight in kilograms for consequent sets of an exercise.
  */
 @Composable
-fun ExerciseAddContent(navController: NavHostController) {
+fun ExerciseAddContent(navController: NavHostController, onExerciseAdd: (Exercise) -> Unit) {
     Column(
         modifier = Modifier.fillMaxSize()
     ) {
-        val exerciseName by remember { mutableStateOf("Bicep curl") }
-        val numOfSets by remember { mutableStateOf(1) }
-        val numOfRepetitions by remember { mutableStateOf(1) }
+        var exerciseName by remember { mutableStateOf("") }
+        var numOfSets by remember { mutableStateOf(0) }
+        var numOfRepetitions by remember { mutableStateOf(0) }
         var isDropset by remember { mutableStateOf(false) }
 
         TextField(
             value = exerciseName,
-            onValueChange = { /* todo */ },
-            label = { Text("Exercise name") })
+            onValueChange = { exerciseName = it },
+            label = { Text("Exercise name") },
+        )
         TextField(
             value = numOfSets.toString(),
-            onValueChange = { /* todo */ },
-            label = { Text("Number of sets") })
+            onValueChange = { numOfSets = parseStringIntoInt(it)},
+            label = { Text("Number of sets") },
+            keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number),
+        )
+
         TextField(
             value = numOfRepetitions.toString(),
-            onValueChange = { /* todo */ },
-            label = { Text("Number of repetitions") })
+            onValueChange = { numOfRepetitions = parseStringIntoInt(it)},
+            label = { Text("Number of repetitions") },
+            keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number),
+        )
+
+        // todo: fix
+        var weight by remember { mutableStateOf(0F) }
 
         if (!isDropset) {
-            val weight by remember { mutableStateOf(1) }
-
             TextField(
                 value = weight.toString(),
-                onValueChange = { /* todo */ },
-                label = { Text("Weight") })
+                onValueChange = { weight = parseStringIntoFloat(it) },
+                label = { Text("Weight (in kg)") },
+                keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number),
+            )
         }
 
         Checkbox(checked = isDropset, onCheckedChange = { isDropset = !isDropset })
 
         if (isDropset) {
-            val weightFirst by remember { mutableStateOf(1) }
-            val weightSecond by remember { mutableStateOf(1) }
-            val weightThird by remember { mutableStateOf(1) }
+            var weightFirst by remember { mutableFloatStateOf(0.0F) }
+            var weightSecond by remember { mutableFloatStateOf(0.0F) }
+            var weightThird by remember { mutableFloatStateOf(0.0F) }
 
             TextField(
                 value = weightFirst.toString(),
-                onValueChange = { /* todo */ },
-                label = { Text("Weight (First)") })
+                onValueChange = { weightFirst = parseStringIntoFloat(it) },
+                label = { Text("Weight (First)") },
+                keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number),
+            )
             TextField(
                 value = weightSecond.toString(),
-                onValueChange = { /* todo */ },
-                label = { Text("Weight (Second)") })
+                onValueChange = { weightSecond = parseStringIntoFloat(it) },
+                label = { Text("Weight (Second)") },
+                keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number),
+            )
             TextField(
                 value = weightThird.toString(),
-                onValueChange = { /* todo */ },
-                label = { Text("Weight (Third)") })
+                onValueChange = { weightThird = parseStringIntoFloat(it) },
+                label = { Text("Weight (Third)") },
+                keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number),
+            )
         }
 
         Button(onClick = {
+            onExerciseAdd(Exercise(0, exerciseName, numOfSets, numOfRepetitions, weight))
             navController.navigate(Screen.ExercisesList.route) {
                 popUpTo(navController.graph.findStartDestination().id) {
                     saveState = true
