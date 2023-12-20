@@ -18,6 +18,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.models.Exercise
 import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.ui.screens.exercises.ExerciseCard
+import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.ui.screens.exercises.components.photos
 import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.ui.theme.WorkoutPlannerTheme
 
 @Composable
@@ -49,21 +50,21 @@ fun WorkoutHomeScreenContentVariant() {
         }
         ExerciseCard(
             modifier = Modifier.padding(4.dp),
-            exercise = Exercise(0, "Bicep curl", 3, 10, 10F, "BC"),
+            exercise = Exercise(0, "Bicep curl", 3, 10, 10F, photos[0].toString()),
             imageWidth = 96.dp,
             imageHeight = 96.dp,
         )
 
         ExerciseCard(
             modifier = Modifier.padding(4.dp),
-            exercise = Exercise(0, "Bicep curl", 3, 10, 10F, "BC"),
+            exercise = Exercise(0, "Bicep curl", 3, 10, 10F, photos[0].toString()),
             imageWidth = 96.dp,
             imageHeight = 96.dp,
         )
 
         ExerciseCard(
             modifier = Modifier.padding(4.dp),
-            exercise = Exercise(0, "Bicep curl", 3, 10, 10F, "BC"),
+            exercise = Exercise(0, "Bicep curl", 3, 10, 10F, photos[0].toString()),
             imageWidth = 96.dp,
             imageHeight = 96.dp,
         )

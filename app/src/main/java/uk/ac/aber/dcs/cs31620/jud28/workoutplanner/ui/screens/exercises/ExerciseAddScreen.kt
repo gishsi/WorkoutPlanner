@@ -45,6 +45,7 @@ import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.models.Exercise
 import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.ui.components.ApplicationScaffold
 import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.ui.navigation.Screen
 import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.ui.screens.exercises.components.ImageChoices
+import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.ui.screens.exercises.components.photos
 import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.ui.theme.WorkoutPlannerTheme
 
 /**
@@ -87,6 +88,7 @@ fun ExerciseAddContent(navController: NavHostController, onExerciseAdd: (Exercis
     var numOfRepetitions by remember { mutableStateOf("0") }
     var isDropset by remember { mutableStateOf(false) }
     var weight by remember { mutableFloatStateOf(0F) }
+    var imageResource by remember { mutableStateOf(photos[0]) }
 
     // todo: dropset
     var weightFirst by remember { mutableFloatStateOf(0.0F) }
@@ -203,7 +205,9 @@ fun ExerciseAddContent(navController: NavHostController, onExerciseAdd: (Exercis
 
                 // todo: functionality
                 Text(text = "Choose an image")
-                ImageChoices()
+                ImageChoices() {
+                    imageResource = it
+                }
 
                 Spacer(
                     modifier = Modifier
@@ -222,7 +226,7 @@ fun ExerciseAddContent(navController: NavHostController, onExerciseAdd: (Exercis
                     .padding(16.dp),
                 onClick = {
                     //todo: validate data
-                    onExerciseAdd(Exercise(0, exerciseName, numOfSets.toInt(), numOfRepetitions.toInt(), weight))
+                    onExerciseAdd(Exercise(0, exerciseName, numOfSets.toInt(), numOfRepetitions.toInt(), weight, imageResource.toString()))
                     navController.navigate(Screen.ExercisesList.route) {
                         popUpTo(navController.graph.findStartDestination().id) {
                             saveState = true

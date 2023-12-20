@@ -46,6 +46,7 @@ import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.models.Exercise
 import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.ui.components.ApplicationScaffold
 import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.ui.navigation.Screen
 import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.ui.screens.exercises.components.ImageChoices
+import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.ui.screens.exercises.components.photos
 import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.ui.theme.WorkoutPlannerTheme
 
 /**
@@ -96,6 +97,7 @@ fun ExerciseEditContent(
     var numOfRepetitions by remember { mutableStateOf(exercise.numberOfRepetitions.toString()) }
     var isDropset by remember { mutableStateOf(false) }
     var weight by remember { mutableFloatStateOf(exercise.weightInKilos) }
+    var imageResource by remember { mutableStateOf(exercise.image) }
 
     // todo: dropset
     var weightFirst by remember { mutableFloatStateOf(0.0F) }
@@ -208,7 +210,9 @@ fun ExerciseEditContent(
 
                 // todo: functionality
                 Text(text = "Choose an image")
-                ImageChoices()
+                ImageChoices {
+                    imageResource = it.toString()
+                }
 
                 Spacer(
                     modifier = Modifier
@@ -234,7 +238,7 @@ fun ExerciseEditContent(
                             numOfSets.toInt(),
                             numOfRepetitions.toInt(),
                             exercise.weightInKilos,
-                            exercise.image
+                            imageResource,
                         )
                     )
                     navController.navigate(Screen.ExercisesList.route)
@@ -284,7 +288,7 @@ fun ExerciseEditScreenPreview() {
 
     WorkoutPlannerTheme {
         Surface {
-            ExerciseEditContent(navController, Exercise(0, "Bicep curl", 3, 8, 12.5F))
+            ExerciseEditContent(navController, Exercise(0, "Bicep curl", 3, 8, 12.5F, photos[0].toString()))
         }
     }
 }

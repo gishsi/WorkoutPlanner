@@ -10,9 +10,12 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.selection.selectable
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Create
@@ -36,7 +39,12 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.BlendMode
+import androidx.compose.ui.graphics.BlendModeColorFilter
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.buildAnnotatedString
@@ -55,6 +63,7 @@ import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.R
 import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.models.Exercise
 import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.ui.components.ApplicationScaffold
 import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.ui.navigation.Screen
+import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.ui.screens.exercises.components.photos
 import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.ui.theme.WorkoutPlannerTheme
 
 /**
@@ -185,14 +194,17 @@ fun ExerciseCard(
         ) {
             Column {
                 Image(
-                    painter = painterResource(id = R.drawable.picture),
+                    painter = painterResource(id = exercise.image.toInt()),
                     contentDescription = "Image of the [${exercise.name}] exercise",
                     modifier = Modifier
                         .width(imageWidth)
                         .height(imageHeight)
                         .padding(8.dp)
+                        .clip(RoundedCornerShape(8.dp)),
+                    contentScale = ContentScale.FillHeight,
                 )
             }
+
             Column(
                 modifier = Modifier.weight(2F)
             ) {
@@ -303,7 +315,7 @@ private fun RemoveExerciseFromListDialog(
 fun ExerciseListScreenPreview() {
     val navHostController = rememberNavController()
     WorkoutPlannerTheme(dynamicColor = false) {
-        ExercisesListContent(navHostController, listOf(Exercise(0, "Bicep curl", 3, 10, 10F, "BC")))
+        ExercisesListContent(navHostController, listOf(Exercise(0, "Bicep curl", 3, 10, 10F, photos[0].toString())))
     }
 }
 
@@ -312,7 +324,7 @@ fun ExerciseListScreenPreview() {
 fun ExerciseCardPreview() {
     WorkoutPlannerTheme(dynamicColor = false) {
         Surface {
-            ExerciseCard(exercise = Exercise(0, "Bicep curl", 3, 10, 10F, "BC"))
+            ExerciseCard(exercise = Exercise(0, "Bicep curl", 3, 10, 10F, photos[0].toString()))
         }
     }
 }
@@ -322,7 +334,7 @@ fun ExerciseCardPreview() {
 fun ExerciseCardWithActionsPreview() {
     WorkoutPlannerTheme(dynamicColor = false) {
         Surface {
-            ExerciseCard(showAction = true, exercise = Exercise(0, "Bicep curl", 3, 10, 10F, "BC"))
+            ExerciseCard(showAction = true, exercise = Exercise(0, "Bicep curl", 3, 10, 10F, photos[2].toString()))
         }
     }
 }
