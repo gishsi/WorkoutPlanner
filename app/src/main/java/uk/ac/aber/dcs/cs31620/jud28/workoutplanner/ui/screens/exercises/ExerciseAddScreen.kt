@@ -32,8 +32,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.text.input.TransformedText
-import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -115,9 +113,8 @@ fun ExerciseAddContent(navController: NavHostController, onExerciseAdd: (Exercis
                 OutlinedTextField(
                     value = exerciseName,
                     onValueChange = {
-                        val filteredText = it.replace(Regex("[\n ]"), "")
-
-                        exerciseName = filteredText
+                        val removedNewLines = it.replace(Regex("\n"), "")
+                        exerciseName = removedNewLines.trim()
                     },
                     label = { Text("Name") },
                     modifier = Modifier
@@ -226,7 +223,16 @@ fun ExerciseAddContent(navController: NavHostController, onExerciseAdd: (Exercis
                     .padding(16.dp),
                 onClick = {
                     //todo: validate data
-                    onExerciseAdd(Exercise(0, exerciseName, numOfSets.toInt(), numOfRepetitions.toInt(), weight, imageResource.toString()))
+                    onExerciseAdd(
+                        Exercise(
+                            0,
+                            exerciseName,
+                            numOfSets.toInt(),
+                            numOfRepetitions.toInt(),
+                            weight,
+                            imageResource.toString()
+                        )
+                    )
                     navController.navigate(Screen.ExercisesList.route) {
                         popUpTo(navController.graph.findStartDestination().id) {
                             saveState = true

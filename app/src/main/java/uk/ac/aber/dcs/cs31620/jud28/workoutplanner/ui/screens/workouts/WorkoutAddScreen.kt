@@ -4,10 +4,11 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
@@ -24,7 +25,8 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -40,10 +42,12 @@ import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.R
+import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.models.Exercise
 import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.models.Workout
 import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.ui.components.ApplicationScaffold
 import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.ui.navigation.Screen
-import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.ui.screens.exercises.parseStringIntoInt
+import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.ui.screens.exercises.ExerciseViewModel
+import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.ui.screens.workouts.components.ExerciseInWorkoutFormCard
 import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.ui.theme.WorkoutPlannerTheme
 
 /**
@@ -54,9 +58,13 @@ import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.ui.theme.WorkoutPlannerTheme
 @Composable
 fun WorkoutAddScreen(
     navController: NavHostController,
-    workoutsViewModel: WorkoutViewModel = viewModel()
+    workoutsViewModel: WorkoutViewModel = viewModel(),
+    exerciseViewModel: ExerciseViewModel = viewModel(),
 ) {
     val coroutineScope = rememberCoroutineScope()
+
+    val exercisesList = exerciseViewModel.allData.observeAsState(listOf()).value
+
 
     ApplicationScaffold(
         navController = navController,
@@ -68,15 +76,9 @@ fun WorkoutAddScreen(
                 .padding(innerPadding)
                 .fillMaxSize()
         ) {
-            Column(
-                modifier = Modifier
-                    .padding(innerPadding)
-                    .fillMaxHeight()
-            ) {
-                WorkoutAddScreenContent(navController) {
-                    workoutsViewModel.addWorkout(it)
-                }
-            }
+            WorkoutAddScreenContent(navController, {
+                workoutsViewModel.addWorkout(it)
+            }, exercisesList)
         }
     }
 }
@@ -84,11 +86,15 @@ fun WorkoutAddScreen(
 @Composable
 fun WorkoutAddScreenContent(
     navController: NavHostController,
-    onWorkoutAdd: (Workout) -> Unit = {}
+    onWorkoutAdd: (Workout) -> Unit = {},
+    allExercises: List<Exercise>
 ) {
     var workoutName by remember { mutableStateOf("") }
     var duration by remember { mutableStateOf("0") }
 
+    val exercises = remember {
+        mutableStateListOf<Exercise>()
+    }
 
     Column(
         modifier = Modifier
@@ -125,14 +131,22 @@ fun WorkoutAddScreenContent(
                         .fillMaxSize(),
                 )
 
-
+                // Exercises
                 Text(text = "Exercises added:")
 
-                Text(
-                    text = "Nothing yet.\nPress “Add” to add more exercises",
-                    fontStyle = FontStyle.Italic,
-                    color = MaterialTheme.colorScheme.secondary,
-                )
+                if (exercises.isEmpty()) {
+                    Text(
+                        text = "Nothing yet.\nPress “Add” to add more exercises",
+                        fontStyle = FontStyle.Italic,
+                        color = MaterialTheme.colorScheme.secondary,
+                    )
+                } else {
+                    for (exercise in exercises) {
+                        ExerciseInWorkoutFormCard(exercise) {
+                            exercises.remove(exercise)
+                        }
+                    }
+                }
 
                 var addingExercisesCancelRequired by rememberSaveable { mutableStateOf(false) }
 
@@ -147,7 +161,11 @@ fun WorkoutAddScreenContent(
 
                 if (addingExercisesCancelRequired) {
                     AddExercisesDialog(
+                        exercises = allExercises,
                         onClose = { addingExercisesCancelRequired = false },
+                        onExerciseAdd = {
+                            exercises.add(it)
+                        }
                     )
                 }
             }
@@ -158,7 +176,7 @@ fun WorkoutAddScreenContent(
             Button(
                 modifier = Modifier.fillMaxWidth(),
                 onClick = {
-                    onWorkoutAdd(Workout(0, workoutName, duration.toInt()))
+                    onWorkoutAdd(Workout(0, workoutName, duration.toInt(), exercises))
 
                     navController.navigate(Screen.Workouts.route) {
                         popUpTo(navController.graph.findStartDestination().id) {
@@ -177,15 +195,24 @@ fun WorkoutAddScreenContent(
 
 @Composable
 fun AddExercisesDialog(
-    onClose: () -> Unit, modifier: Modifier = Modifier
+    onExerciseAdd: (Exercise) -> Unit,
+    exercises: List<Exercise>,
+    onClose: () -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     AlertDialog(onDismissRequest = { /* Do nothing */ },
         title = { Text("Add an exercise") },
         text = {
-            Row {
-                Text("Bicep curl")
-                IconButton(onClick = { /*TODO*/ }) {
-                    Icon(imageVector = Icons.Default.Add, contentDescription = "Add")
+            LazyColumn() {
+                items(exercises) {
+                    Button(
+                        onClick = { onExerciseAdd(it) },
+                        modifier = Modifier
+                            .fillMaxWidth(),
+                    ) {
+                        Text(it.name)
+                        Icon(imageVector = Icons.Default.Add, contentDescription = "Add")
+                    }
                 }
             }
         },
@@ -201,11 +228,11 @@ fun AddExercisesDialog(
 
 @Preview
 @Composable
-fun WorkoutAddContentPreview() {
+fun WorkoutAddContentNoExercisesPreview() {
     val navController = rememberNavController()
     WorkoutPlannerTheme(dynamicColor = false) {
         Surface {
-            WorkoutAddScreenContent(navController)
+            WorkoutAddScreenContent(navController, allExercises = listOf())
         }
     }
 }
@@ -215,7 +242,17 @@ fun WorkoutAddContentPreview() {
 fun AddExercisesDialogPreview() {
     WorkoutPlannerTheme(dynamicColor = false) {
         Surface {
-            AddExercisesDialog(onClose = {})
+            AddExercisesDialog(
+                exercises = listOf(
+                    Exercise(
+                        0,
+                        "Dips",
+                        3,
+                        8,
+                        0.0F,
+                        R.drawable.dips.toString()
+                    )
+                ), onClose = {}, onExerciseAdd = {})
         }
     }
 }

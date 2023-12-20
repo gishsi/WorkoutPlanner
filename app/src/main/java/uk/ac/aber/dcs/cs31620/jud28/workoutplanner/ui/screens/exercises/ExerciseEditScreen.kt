@@ -38,7 +38,6 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.R
@@ -46,7 +45,6 @@ import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.models.Exercise
 import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.ui.components.ApplicationScaffold
 import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.ui.navigation.Screen
 import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.ui.screens.exercises.components.ImageChoices
-import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.ui.screens.exercises.components.photos
 import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.ui.theme.WorkoutPlannerTheme
 
 /**
@@ -124,9 +122,8 @@ fun ExerciseEditContent(
                 OutlinedTextField(
                     value = exerciseName,
                     onValueChange = {
-                        val filteredText = it.replace(Regex("[\n ]"), "")
-
-                        exerciseName = filteredText
+                        val removedNewLines = it.replace(Regex("\n"), "")
+                        exerciseName = removedNewLines.trim()
                     },
                     label = { Text("Name") },
                     modifier = Modifier
@@ -269,18 +266,6 @@ fun parseStringIntoFloat(input: String): Float {
     return converted;
 }
 
-fun parseStringIntoInt(input: String): Int {
-    var converted: Int = 0;
-
-    try {
-        converted = input.toInt();
-    } catch (e: Exception) {
-        return 0;
-    }
-
-    return converted;
-}
-
 @Preview
 @Composable
 fun ExerciseEditScreenPreview() {
@@ -288,7 +273,10 @@ fun ExerciseEditScreenPreview() {
 
     WorkoutPlannerTheme {
         Surface {
-            ExerciseEditContent(navController, Exercise(0, "Bicep curl", 3, 8, 12.5F, photos[0].toString()))
+            ExerciseEditContent(
+                navController,
+                Exercise(0, "Bicep curl", 3, 8, 12.5F, R.drawable.bicep_curl.toString())
+            )
         }
     }
 }

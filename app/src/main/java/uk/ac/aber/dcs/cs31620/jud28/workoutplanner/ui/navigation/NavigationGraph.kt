@@ -74,14 +74,16 @@ fun NavigationGraph() {
             WorkoutsScreen(navController = navController, workoutsViewModel)
         }
         composable(Screen.WorkoutAdd.route) {
-            WorkoutAddScreen(navController = navController, workoutsViewModel)
+            WorkoutAddScreen(navController = navController, workoutsViewModel, exerciseViewModel)
         }
-        composable(Screen.WorkoutEdit.route,
-            arguments = listOf(navArgument("workout") { type = NavType.StringType })) { backStackEntry ->
+        composable(
+            Screen.WorkoutEdit.route,
+            arguments = listOf(navArgument("workout") { type = NavType.StringType })
+        ) { backStackEntry ->
             backStackEntry.arguments?.getString("workout")
                 ?.let {
                     val workout = Gson().fromJson(it, Workout::class.java)
-                    WorkoutEditScreen(navController, workoutsViewModel, workout)
+                    WorkoutEditScreen(navController, workoutsViewModel, exerciseViewModel, workout)
                 }
         }
         composable(Screen.Weekly.route) { WeeklyScreen(navController) }

@@ -136,6 +136,7 @@ fun WorkoutCard(
 
                     if (deleteConfirmationRequired) {
                         DeleteWorkoutConfirmationDialog(
+                            name = workout.name,
                             onDeleteConfirm = {
                                 deleteAction(workout)
                                 deleteConfirmationRequired = false
@@ -155,11 +156,15 @@ fun WorkoutCard(
 fun WorkoutCardPreview() {
     WorkoutPlannerTheme(dynamicColor = false) {
         Surface {
-            WorkoutCard(workout = Workout(0, "Chest", 120, listOf(
-                Exercise(0, "Bicep curl", 0, 0, 0F),
-                Exercise(0, "Bicep curl", 0, 0, 0F),
-                Exercise(0, "Bicep curl", 0, 0, 0F)
-            )))
+            WorkoutCard(
+                workout = Workout(
+                    0, "Chest", 120, listOf(
+                        Exercise(0, "Bicep curl", 0, 0, 0F),
+                        Exercise(0, "Bicep curl", 0, 0, 0F),
+                        Exercise(0, "Bicep curl", 0, 0, 0F)
+                    )
+                )
+            )
         }
     }
 }
@@ -169,11 +174,15 @@ fun WorkoutCardPreview() {
 fun WorkoutCardaPreview() {
     WorkoutPlannerTheme(dynamicColor = false) {
         Surface {
-            WorkoutCard(temp = true, workout = Workout(0, "Chest", 120, listOf(
-                Exercise(0, "Bicep curl", 0, 0, 0F),
-                Exercise(0, "Bicep curl", 0, 0, 0F),
-                Exercise(0, "Bicep curl", 0, 0, 0F)
-            )))
+            WorkoutCard(
+                temp = true, workout = Workout(
+                    0, "Chest", 120, listOf(
+                        Exercise(0, "Bicep curl", 0, 0, 0F),
+                        Exercise(0, "Bicep curl", 0, 0, 0F),
+                        Exercise(0, "Bicep curl", 0, 0, 0F)
+                    )
+                )
+            )
         }
     }
 }

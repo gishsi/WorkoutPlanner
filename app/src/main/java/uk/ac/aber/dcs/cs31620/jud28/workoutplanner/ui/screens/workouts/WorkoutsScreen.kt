@@ -3,8 +3,6 @@ package uk.ac.aber.dcs.cs31620.jud28.workoutplanner.ui.screens.workouts
 import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -108,7 +106,9 @@ fun WorkoutsScreenContent(
             }
         }
         Button(
-            modifier = Modifier.fillMaxWidth().align(Alignment.BottomCenter),
+            modifier = Modifier
+                .fillMaxWidth()
+                .align(Alignment.BottomCenter),
             onClick = {
                 navController.navigate(Screen.WorkoutAdd.route) {
                     popUpTo(navController.graph.findStartDestination().id) {

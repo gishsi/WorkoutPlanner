@@ -12,7 +12,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -69,7 +68,7 @@ fun getCurrentDayOfWeek(): String {
 @Composable
 fun HomeScreenContent() {
     // todo: remove later
-    var switchBetweenVariants  by remember { mutableStateOf(false) }
+    var switchBetweenVariants by remember { mutableStateOf(false) }
 
     Column(
         modifier = Modifier.fillMaxSize(),
@@ -85,7 +84,7 @@ fun HomeScreenContent() {
             onCheckedChange = { switchBetweenVariants = !switchBetweenVariants },
         )
 
-        if(switchBetweenVariants) {
+        if (switchBetweenVariants) {
             NoWorkoutHomeScreenContentVariant()
         } else {
             WorkoutHomeScreenContentVariant()

@@ -10,11 +10,9 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
@@ -40,10 +38,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.BlendMode
-import androidx.compose.ui.graphics.BlendModeColorFilter
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -63,7 +58,6 @@ import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.R
 import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.models.Exercise
 import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.ui.components.ApplicationScaffold
 import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.ui.navigation.Screen
-import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.ui.screens.exercises.components.photos
 import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.ui.theme.WorkoutPlannerTheme
 
 /**
@@ -108,7 +102,9 @@ fun ExercisesListContent(
             .padding(32.dp)
             .fillMaxHeight()
     ) {
-        LazyColumn {
+        LazyColumn(
+            modifier = Modifier.padding(bottom = 32.dp)
+        ) {
             items(exercisesList) { exercise ->
                 ExerciseCard(
                     modifier = Modifier.padding(4.dp),
@@ -124,13 +120,7 @@ fun ExercisesListContent(
                                 "{exercise}",
                                 serializedExercise
                             )
-                        ) {
-//                            popUpTo(navController.graph.findStartDestination().id) {
-//                                saveState = true
-//                            }
-//                            launchSingleTop = true
-//                            restoreState = true
-                        }
+                        )
                     },
                     deleteAction = {
                         Log.d("EXE_LIST", "Deleting an exercise [${it.name}]")
@@ -291,12 +281,14 @@ private fun RemoveExerciseFromListDialog(
     }
 
     AlertDialog(onDismissRequest = { /* Do nothing */ },
-        text = { Text(
-            buildAnnotatedString {
-                append("You are about to remove an exercise called ")
-                append(styledText)
-                append(". Are you sure you want to proceed?")
-            }) },
+        text = {
+            Text(
+                buildAnnotatedString {
+                    append("You are about to remove an exercise called ")
+                    append(styledText)
+                    append(". Are you sure you want to proceed?")
+                })
+        },
         modifier = modifier,
         dismissButton = {
             TextButton(onClick = onDeleteCancel) {
@@ -315,7 +307,25 @@ private fun RemoveExerciseFromListDialog(
 fun ExerciseListScreenPreview() {
     val navHostController = rememberNavController()
     WorkoutPlannerTheme(dynamicColor = false) {
-        ExercisesListContent(navHostController, listOf(Exercise(0, "Bicep curl", 3, 10, 10F, photos[0].toString())))
+        ExercisesListContent(
+            navHostController, listOf(
+                Exercise(0, "Dips", 3, 10, 10F, R.drawable.dips.toString()),
+                Exercise(0, "Dips", 3, 10, 10F, R.drawable.dips.toString()),
+                Exercise(0, "Dips", 3, 10, 10F, R.drawable.dips.toString()),
+                Exercise(0, "Dips", 3, 10, 10F, R.drawable.dips.toString()),
+                Exercise(0, "Dips", 3, 10, 10F, R.drawable.dips.toString()),
+                Exercise(0, "Dips", 3, 10, 10F, R.drawable.dips.toString()),
+                Exercise(0, "Dips", 3, 10, 10F, R.drawable.dips.toString()),
+                Exercise(0, "Dips", 3, 10, 10F, R.drawable.dips.toString()),
+                Exercise(0, "Dips", 3, 10, 10F, R.drawable.dips.toString()),
+                Exercise(0, "Dips", 3, 10, 10F, R.drawable.dips.toString()),
+                Exercise(0, "Dips", 3, 10, 10F, R.drawable.dips.toString()),
+                Exercise(0, "Dips", 3, 10, 10F, R.drawable.dips.toString()),
+                Exercise(0, "Dips", 3, 10, 10F, R.drawable.dips.toString()),
+                Exercise(0, "Dips", 3, 10, 10F, R.drawable.dips.toString()),
+                Exercise(0, "Dips", 3, 10, 10F, R.drawable.dips.toString())
+            )
+        )
     }
 }
 
@@ -324,7 +334,7 @@ fun ExerciseListScreenPreview() {
 fun ExerciseCardPreview() {
     WorkoutPlannerTheme(dynamicColor = false) {
         Surface {
-            ExerciseCard(exercise = Exercise(0, "Bicep curl", 3, 10, 10F, photos[0].toString()))
+            ExerciseCard(exercise = Exercise(0, "Dips", 3, 10, 10F, R.drawable.dips.toString()))
         }
     }
 }
@@ -334,7 +344,10 @@ fun ExerciseCardPreview() {
 fun ExerciseCardWithActionsPreview() {
     WorkoutPlannerTheme(dynamicColor = false) {
         Surface {
-            ExerciseCard(showAction = true, exercise = Exercise(0, "Bicep curl", 3, 10, 10F, photos[2].toString()))
+            ExerciseCard(
+                showAction = true,
+                exercise = Exercise(0, "Bicep curl", 3, 10, 10F, R.drawable.dips.toString())
+            )
         }
     }
 }
