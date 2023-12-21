@@ -40,6 +40,8 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.R
+import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.models.Exercise
+import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.models.Workout
 import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.ui.components.ApplicationScaffold
 import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.ui.screens.weekly.components.AssignWorkoutDialog
 import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.ui.screens.weekly.components.WorkoutDetailDialog
@@ -198,6 +200,9 @@ fun NoWorkoutEntryVariant() {
 
         if (showAssignWorkoutDialog) {
             AssignWorkoutDialog(
+                workouts = listOf(
+                    Workout(0, "Chest", 120, listOf(Exercise(0, "Crunches", 3, 20, 0.0F, R.drawable.crunches.toString()))),
+                ),
                 onClose = { showAssignWorkoutDialog = false },
             )
         }
