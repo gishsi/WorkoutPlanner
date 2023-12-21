@@ -14,7 +14,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material.icons.outlined.Info
 import androidx.compose.material3.AlertDialog
@@ -41,9 +40,9 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.R
-import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.models.Exercise
 import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.ui.components.ApplicationScaffold
-import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.ui.screens.exercises.ExerciseCard
+import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.ui.screens.weekly.components.AssignWorkoutDialog
+import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.ui.screens.weekly.components.WorkoutDetailDialog
 import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.ui.theme.WorkoutPlannerTheme
 
 /**
@@ -83,8 +82,6 @@ fun WeeklyScreen(navController: NavHostController) {
     }
 }
 
-data class WorkoutInWeekly(val name: String)
-
 @Composable
 fun WorkoutEntry(
     name: String,
@@ -92,10 +89,8 @@ fun WorkoutEntry(
     var workoutInfoCancelRequired by rememberSaveable { mutableStateOf(false) }
     var deleteWorkoutCancelRequired by rememberSaveable { mutableStateOf(false) }
 
-
     Row(
         modifier = Modifier
-//            .shadow(elevation = 5.dp, spotColor = Color.Transparent) // todo: figure out a way to make a shadow bottom and right https://developer.android.com/reference/kotlin/androidx/compose/ui/Modifier#(androidx.compose.ui.Modifier).shadow(androidx.compose.ui.unit.Dp,androidx.compose.ui.graphics.Shape,kotlin.Boolean,androidx.compose.ui.graphics.Color,androidx.compose.ui.graphics.Color)
             .clip(RoundedCornerShape(8.dp))
             .background(MaterialTheme.colorScheme.primaryContainer)
             .padding(vertical = 4.dp, horizontal = 16.dp)
@@ -128,7 +123,9 @@ fun WorkoutEntry(
         }
 
         if (workoutInfoCancelRequired) {
-            WorkoutDetailDialog(onClose = { workoutInfoCancelRequired = false })
+            WorkoutDetailDialog(
+                onClose = { workoutInfoCancelRequired = false }
+            )
         }
 
         if (deleteWorkoutCancelRequired) {
@@ -184,7 +181,6 @@ fun NoWorkoutEntryVariant() {
     var showAssignWorkoutDialog by rememberSaveable { mutableStateOf(false) }
     Column(
         modifier = Modifier
-//            .shadow(elevation = 5.dp, spotColor = Color.Transparent) // todo: figure out a way to make a shadow bottom and right https://developer.android.com/reference/kotlin/androidx/compose/ui/Modifier#(androidx.compose.ui.Modifier).shadow(androidx.compose.ui.unit.Dp,androidx.compose.ui.graphics.Shape,kotlin.Boolean,androidx.compose.ui.graphics.Color,androidx.compose.ui.graphics.Color)
             .clip(RoundedCornerShape(8.dp))
             .background(MaterialTheme.colorScheme.primaryContainer)
             .padding(vertical = 4.dp, horizontal = 16.dp)
@@ -218,27 +214,6 @@ fun NoWorkoutEntryVariantPreview() {
 }
 
 @Composable
-fun WorkoutDetailDialog(onClose: () -> Unit, modifier: Modifier = Modifier) {
-    AlertDialog(onDismissRequest = { /* Do nothing */ },
-        title = { Text("Chest") },
-        text = {
-            Column {
-                Text("1 hour 30 minutes")
-                ExerciseCard(exercise = Exercise(0, "Squat", 3, 10, 60F, "S"))
-                ExerciseCard(exercise = Exercise(0, "Squat", 3, 10, 60F, "S"))
-                ExerciseCard(exercise = Exercise(0, "Squat", 3, 10, 60F, "S"))
-            }
-        },
-        modifier = modifier,
-        dismissButton = {
-            TextButton(onClick = onClose) {
-                Text(text = stringResource(R.string.close))
-            }
-        },
-        confirmButton = {})
-}
-
-@Composable
 private fun DeleteConfirmationDialog(
     onDeleteConfirm: () -> Unit, onDeleteCancel: () -> Unit, modifier: Modifier = Modifier
 ) {
@@ -257,35 +232,7 @@ private fun DeleteConfirmationDialog(
         })
 }
 
-@Composable
-fun AssignWorkoutDialog(
-    onClose: () -> Unit, modifier: Modifier = Modifier
-) {
-    AlertDialog(onDismissRequest = { /* Do nothing */ },
-        title = { Text("Assign a workout") },
-        text = {
-            Row {
-                Text("Chest")
-                IconButton(onClick = { /*TODO*/ }) {
-                    Icon(imageVector = Icons.Default.Add, contentDescription = "Add")
-                }
-            }
-        },
-        modifier = modifier,
-        dismissButton = {
-            IconButton(onClick = onClose) {
-                Icon(imageVector = Icons.Default.Close, contentDescription = "Close")
-            }
-        },
-        confirmButton = {
-        })
-}
 
-@Preview
-@Composable
-private fun WorkoutDetailDialogPreview() {
-    WorkoutDetailDialog(onClose = { /*TODO*/ })
-}
 
 
 @Preview

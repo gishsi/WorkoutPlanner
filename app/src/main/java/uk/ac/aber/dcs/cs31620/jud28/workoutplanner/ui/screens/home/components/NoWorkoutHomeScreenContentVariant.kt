@@ -26,7 +26,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.R
-import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.ui.screens.weekly.AssignWorkoutDialog
+import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.ui.screens.weekly.components.AssignWorkoutDialog
 import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.ui.theme.WorkoutPlannerTheme
 
 // Variants
