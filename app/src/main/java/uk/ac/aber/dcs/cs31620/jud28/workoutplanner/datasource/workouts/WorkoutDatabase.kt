@@ -5,11 +5,12 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
+import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.datasource.workouts.converters.DaysInWeekConverter
 import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.datasource.workouts.converters.ExerciseListConverter
 import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.models.Workout
 
 @Database(entities = [Workout::class], version = 1, exportSchema = false)
-@TypeConverters(ExerciseListConverter::class)
+@TypeConverters(ExerciseListConverter::class, DaysInWeekConverter::class)
 abstract class WorkoutDatabase : RoomDatabase() {
     abstract fun workoutDao(): WorkoutDao
 

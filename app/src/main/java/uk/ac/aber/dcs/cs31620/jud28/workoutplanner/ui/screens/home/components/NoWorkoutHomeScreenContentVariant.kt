@@ -77,6 +77,7 @@ fun NoWorkoutHomeScreenContentVariant() {
 
         if (showAssignWorkoutDialog) {
             AssignWorkoutDialog(
+                "tuesday",
                 workouts = listOf(Workout(0, "Chest", 120, listOf(Exercise(0, "Crunches", 3, 20, 0.0F, R.drawable.crunches.toString())))),
                 onClose = { showAssignWorkoutDialog = false },
             )

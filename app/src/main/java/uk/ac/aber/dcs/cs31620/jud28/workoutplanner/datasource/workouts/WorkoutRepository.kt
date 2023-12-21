@@ -1,6 +1,7 @@
 package uk.ac.aber.dcs.cs31620.jud28.workoutplanner.datasource.workouts
 
 import androidx.lifecycle.LiveData
+import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.models.DaysInWeek
 import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.models.Workout
 
 class WorkoutRepository(private val workoutDao: WorkoutDao) {
@@ -20,5 +21,13 @@ class WorkoutRepository(private val workoutDao: WorkoutDao) {
 
     fun getWorkout(id: Int): LiveData<Workout> {
         return workoutDao.getWorkout(id)
+    }
+
+    fun getWorkoutForDay(day: DaysInWeek) : LiveData<Workout> {
+        return workoutDao.getWorkoutForDay(day)
+    }
+
+    suspend fun clearTable() {
+        workoutDao.clearTable()
     }
 }

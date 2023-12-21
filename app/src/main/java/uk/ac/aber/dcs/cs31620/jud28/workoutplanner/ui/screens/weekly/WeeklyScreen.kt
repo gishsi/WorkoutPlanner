@@ -26,6 +26,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -37,14 +38,16 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.R
-import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.models.Exercise
+import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.models.DaysInWeek
 import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.models.Workout
 import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.ui.components.ApplicationScaffold
 import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.ui.screens.weekly.components.AssignWorkoutDialog
 import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.ui.screens.weekly.components.WorkoutDetailDialog
+import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.ui.screens.workouts.WorkoutViewModel
 import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.ui.theme.WorkoutPlannerTheme
 
 /**
@@ -53,8 +56,18 @@ import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.ui.theme.WorkoutPlannerTheme
  * @author Julia Drozdz
  */
 @Composable
-fun WeeklyScreen(navController: NavHostController) {
+fun WeeklyScreen(
+    navController: NavHostController,
+    workoutViewModel: WorkoutViewModel = viewModel(),
+) {
     val coroutineScope = rememberCoroutineScope()
+
+    val allWorkouts = workoutViewModel.allData.observeAsState(listOf()).value
+
+    val workoutForTuesday =
+        workoutViewModel.getWorkoutForDay(DaysInWeek.Tuesday).observeAsState().value
+
+
 
     ApplicationScaffold(
         navController = navController,
@@ -71,22 +84,32 @@ fun WeeklyScreen(navController: NavHostController) {
                     .fillMaxWidth()
                     .verticalScroll(rememberScrollState()),
             ) {
-                WeekEntry("Monday", "Chest")
-                WeekEntry("Tuesday")
-                WeekEntry("Wednesday")
-                WeekEntry("Thursday")
-                WeekEntry("Friday")
-                WeekEntry("Saturday")
-                WeekEntry("Sunday")
-            }
+                if (workoutForTuesday != null) {
+                    WeekEntry(
+                        workoutForTuesday.assignedToWeek.toString(),
+                        workoutForTuesday,
+                        allWorkouts, onWorkoutAssign = {}, onWorkoutEntryDelete = {
+                            workoutViewModel.updateWorkout(it)
+                        })
+                }
+                WeekEntry(
+                    weekDay = "Wednesday",
+                    workout = null,
+                    allWorkouts,
+                    onWorkoutAssign = {
+                        workoutViewModel.updateWorkout(it)
 
+                    }, onWorkoutEntryDelete = {})
+            }
         }
+
     }
 }
 
 @Composable
 fun WorkoutEntry(
-    name: String,
+    workout: Workout,
+    onWorkoutEntryDelete: (Workout) -> Unit,
 ) {
     var workoutInfoCancelRequired by rememberSaveable { mutableStateOf(false) }
     var deleteWorkoutCancelRequired by rememberSaveable { mutableStateOf(false) }
@@ -101,7 +124,7 @@ fun WorkoutEntry(
         verticalAlignment = Alignment.CenterVertically,
     ) {
         Text(
-            text = name,
+            text = workout.name,
             color = MaterialTheme.colorScheme.onPrimaryContainer,
             fontWeight = FontWeight.Bold,
         )
@@ -133,7 +156,15 @@ fun WorkoutEntry(
         if (deleteWorkoutCancelRequired) {
             DeleteConfirmationDialog(
                 onDeleteConfirm = {
-                    // todo: call into workouts database, get the workout by name and reassign the "AssignedToDay" to "NotAssigned"
+                    val unassignedWorkout = Workout(
+                        id = workout.id,
+                        name = workout.name,
+                        durationInMinutes = workout.durationInMinutes,
+                        assignedToWeek = DaysInWeek.NotAssigned
+                    )
+
+                    onWorkoutEntryDelete(unassignedWorkout)
+
                     deleteWorkoutCancelRequired = false
                 },
                 onDeleteCancel = { deleteWorkoutCancelRequired = false },
@@ -145,7 +176,10 @@ fun WorkoutEntry(
 @Composable
 fun WeekEntry(
     weekDay: String,
-    workoutName: String = "",
+    workout: Workout?,
+    allWorkouts: List<Workout>,
+    onWorkoutAssign: (Workout) -> Unit,
+    onWorkoutEntryDelete: (Workout) -> Unit,
 ) {
     Column(
         modifier = Modifier
@@ -161,10 +195,13 @@ fun WeekEntry(
 
         Spacer(modifier = Modifier.height(8.dp))
 
-        if (workoutName.isEmpty()) {
-            NoWorkoutEntryVariant()
+        if (workout == null) {
+            NoWorkoutEntryVariant(allWorkouts, onWorkoutAssign)
         } else {
-            WorkoutEntry(name = workoutName)
+            WorkoutEntry(
+                workout = workout,
+                onWorkoutEntryDelete
+            )
         }
     }
 
@@ -174,12 +211,21 @@ fun WeekEntry(
 @Composable
 fun WeekEntryPreview() {
     WorkoutPlannerTheme {
-        WeekEntry(weekDay = "Tuesday")
+        WeekEntry(
+            weekDay = "Tuesday",
+            workout = Workout(0, "Chest", 90, listOf(), DaysInWeek.NotAssigned),
+            onWorkoutAssign = {},
+            allWorkouts = listOf(),
+            onWorkoutEntryDelete = {},
+        )
     }
 }
 
 @Composable
-fun NoWorkoutEntryVariant() {
+fun NoWorkoutEntryVariant(
+    allWorkouts: List<Workout>,
+    onWorkoutAssign: (Workout) -> Unit
+) {
     var showAssignWorkoutDialog by rememberSaveable { mutableStateOf(false) }
     Column(
         modifier = Modifier
@@ -200,10 +246,10 @@ fun NoWorkoutEntryVariant() {
 
         if (showAssignWorkoutDialog) {
             AssignWorkoutDialog(
-                workouts = listOf(
-                    Workout(0, "Chest", 120, listOf(Exercise(0, "Crunches", 3, 20, 0.0F, R.drawable.crunches.toString()))),
-                ),
+                DaysInWeek.Wednesday.toString(),
+                workouts = allWorkouts,
                 onClose = { showAssignWorkoutDialog = false },
+                onAddAction = onWorkoutAssign,
             )
         }
 
@@ -214,7 +260,7 @@ fun NoWorkoutEntryVariant() {
 @Composable
 fun NoWorkoutEntryVariantPreview() {
     WorkoutPlannerTheme {
-        NoWorkoutEntryVariant()
+        NoWorkoutEntryVariant(listOf(), onWorkoutAssign = {})
     }
 }
 
@@ -236,8 +282,6 @@ private fun DeleteConfirmationDialog(
             }
         })
 }
-
-
 
 
 @Preview

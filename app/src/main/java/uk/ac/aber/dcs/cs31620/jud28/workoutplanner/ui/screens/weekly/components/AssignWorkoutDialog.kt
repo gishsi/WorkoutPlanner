@@ -37,6 +37,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.R
+import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.models.DaysInWeek
 import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.models.Exercise
 import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.models.Workout
 import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.ui.screens.exercises.ExerciseCard
@@ -44,7 +45,7 @@ import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.ui.theme.WorkoutPlannerTheme
 
 @Composable
 fun AssignWorkoutDialog(
-    weekName: String = "Temp",
+    weekName: String,
     workouts: List<Workout>,
     onClose: () -> Unit, modifier: Modifier = Modifier,
     onAddAction: (Workout) -> Unit = {},
@@ -133,8 +134,19 @@ fun AssignWorkoutDialog(
                                 }
                             }
 
+                            // Add button
                             IconButton(
-                                onClick = { /*TODO*/ },
+                                onClick = {
+                                    val assignedWorkout = Workout(
+                                        id = workout.id,
+                                        name = workout.name,
+                                        durationInMinutes = workout.durationInMinutes,
+                                        assignedToWeek = enumValueOf(weekName)
+                                    )
+
+                                    onAddAction(assignedWorkout)
+                                    onClose()
+                                },
                                 modifier = Modifier
                                     .clip(RoundedCornerShape(8.dp))
                                     .background(MaterialTheme.colorScheme.primary),
@@ -151,30 +163,6 @@ fun AssignWorkoutDialog(
                         if (isVerbose) {
                             Column {
                                 workout.exercises.forEach {
-                                    ExerciseCard(
-                                        showAction = false,
-                                        exercise = it,
-                                        containerColor = Color.White,
-                                        contentColor = Color.Black,
-                                    )
-                                    ExerciseCard(
-                                        showAction = false,
-                                        exercise = it,
-                                        containerColor = Color.White,
-                                        contentColor = Color.Black,
-                                    )
-                                    ExerciseCard(
-                                        showAction = false,
-                                        exercise = it,
-                                        containerColor = Color.White,
-                                        contentColor = Color.Black,
-                                    )
-                                    ExerciseCard(
-                                        showAction = false,
-                                        exercise = it,
-                                        containerColor = Color.White,
-                                        contentColor = Color.Black,
-                                    )
                                     ExerciseCard(
                                         showAction = false,
                                         exercise = it,
@@ -209,6 +197,7 @@ fun AssignWorkoutDialogPreview() {
     WorkoutPlannerTheme {
         Surface {
             AssignWorkoutDialog(
+                "Monday",
                 workouts = listOf(
                     Workout(
                         0,

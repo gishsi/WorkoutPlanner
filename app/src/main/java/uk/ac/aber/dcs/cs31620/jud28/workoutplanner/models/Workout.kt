@@ -10,7 +10,7 @@ import androidx.room.PrimaryKey
  */
 
 @Entity(tableName = "workouts")
-class Workout(
+data class Workout(
     @PrimaryKey(autoGenerate = true)
     var id: Int = 0,
     val name: String = "",
