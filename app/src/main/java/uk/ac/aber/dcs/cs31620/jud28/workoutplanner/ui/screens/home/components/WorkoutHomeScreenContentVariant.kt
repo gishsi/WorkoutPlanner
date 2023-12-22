@@ -49,21 +49,18 @@ fun WorkoutHomeScreenContentVariant() {
             }
         }
         ExerciseCard(
-            modifier = Modifier.padding(4.dp),
             exercise = Exercise(0, "Bicep curl", 3, 10, 10F, photos[0].toString()),
             imageWidth = 96.dp,
             imageHeight = 96.dp,
         )
 
         ExerciseCard(
-            modifier = Modifier.padding(4.dp),
             exercise = Exercise(0, "Bicep curl", 3, 10, 10F, photos[0].toString()),
             imageWidth = 96.dp,
             imageHeight = 96.dp,
         )
 
         ExerciseCard(
-            modifier = Modifier.padding(4.dp),
             exercise = Exercise(0, "Bicep curl", 3, 10, 10F, photos[0].toString()),
             imageWidth = 96.dp,
             imageHeight = 96.dp,

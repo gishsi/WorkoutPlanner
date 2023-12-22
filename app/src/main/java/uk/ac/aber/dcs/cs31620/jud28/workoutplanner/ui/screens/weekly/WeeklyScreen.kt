@@ -14,7 +14,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material.icons.outlined.Info
 import androidx.compose.material3.AlertDialog
@@ -27,6 +26,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -38,12 +38,16 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.R
-import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.models.Exercise
+import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.models.DaysInWeek
+import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.models.Workout
 import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.ui.components.ApplicationScaffold
-import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.ui.screens.exercises.ExerciseCard
+import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.ui.screens.weekly.components.AssignWorkoutDialog
+import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.ui.screens.weekly.components.WorkoutDetailDialog
+import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.ui.screens.workouts.WorkoutViewModel
 import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.ui.theme.WorkoutPlannerTheme
 
 /**
@@ -52,8 +56,24 @@ import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.ui.theme.WorkoutPlannerTheme
  * @author Julia Drozdz
  */
 @Composable
-fun WeeklyScreen(navController: NavHostController) {
+fun WeeklyScreen(
+    navController: NavHostController,
+    workoutViewModel: WorkoutViewModel = viewModel(),
+) {
     val coroutineScope = rememberCoroutineScope()
+
+    val allWorkouts = workoutViewModel.allData.observeAsState(listOf()).value
+    val  assignedWorkouts = workoutViewModel.getWorkoutsForEachDay().observeAsState(listOf()).value
+
+    val workoutsMap = mapOf(
+        DaysInWeek.Monday to assignedWorkouts.find { workout -> workout.assignedToWeek == DaysInWeek.Monday },
+        DaysInWeek.Tuesday to assignedWorkouts.find { workout -> workout.assignedToWeek == DaysInWeek.Tuesday },
+        DaysInWeek.Wednesday to assignedWorkouts.find { workout -> workout.assignedToWeek == DaysInWeek.Wednesday },
+        DaysInWeek.Thursday to assignedWorkouts.find { workout -> workout.assignedToWeek == DaysInWeek.Thursday },
+        DaysInWeek.Friday to assignedWorkouts.find { workout -> workout.assignedToWeek == DaysInWeek.Friday },
+        DaysInWeek.Saturday to assignedWorkouts.find { workout -> workout.assignedToWeek == DaysInWeek.Saturday },
+        DaysInWeek.Sunday to assignedWorkouts.find { workout -> workout.assignedToWeek == DaysInWeek.Sunday },
+    )
 
     ApplicationScaffold(
         navController = navController,
@@ -70,32 +90,34 @@ fun WeeklyScreen(navController: NavHostController) {
                     .fillMaxWidth()
                     .verticalScroll(rememberScrollState()),
             ) {
-                WeekEntry("Monday", "Chest")
-                WeekEntry("Tuesday")
-                WeekEntry("Wednesday")
-                WeekEntry("Thursday")
-                WeekEntry("Friday")
-                WeekEntry("Saturday")
-                WeekEntry("Sunday")
+                workoutsMap.forEach {entry ->
+                    WeekEntry(
+                        weekDay = entry.key,
+                        workout = entry.value,
+                        allWorkouts,
+                        onWorkoutAssign = {
+                            workoutViewModel.updateWorkout(it)
+                        },
+                        onWorkoutEntryDelete = {
+                            workoutViewModel.updateWorkout(it)
+                        })
+                }
             }
-
         }
+
     }
 }
 
-data class WorkoutInWeekly(val name: String)
-
 @Composable
 fun WorkoutEntry(
-    name: String,
+    workout: Workout,
+    onWorkoutEntryDelete: (Workout) -> Unit,
 ) {
     var workoutInfoCancelRequired by rememberSaveable { mutableStateOf(false) }
     var deleteWorkoutCancelRequired by rememberSaveable { mutableStateOf(false) }
 
-
     Row(
         modifier = Modifier
-//            .shadow(elevation = 5.dp, spotColor = Color.Transparent) // todo: figure out a way to make a shadow bottom and right https://developer.android.com/reference/kotlin/androidx/compose/ui/Modifier#(androidx.compose.ui.Modifier).shadow(androidx.compose.ui.unit.Dp,androidx.compose.ui.graphics.Shape,kotlin.Boolean,androidx.compose.ui.graphics.Color,androidx.compose.ui.graphics.Color)
             .clip(RoundedCornerShape(8.dp))
             .background(MaterialTheme.colorScheme.primaryContainer)
             .padding(vertical = 4.dp, horizontal = 16.dp)
@@ -104,7 +126,7 @@ fun WorkoutEntry(
         verticalAlignment = Alignment.CenterVertically,
     ) {
         Text(
-            text = name,
+            text = workout.name,
             color = MaterialTheme.colorScheme.onPrimaryContainer,
             fontWeight = FontWeight.Bold,
         )
@@ -128,13 +150,23 @@ fun WorkoutEntry(
         }
 
         if (workoutInfoCancelRequired) {
-            WorkoutDetailDialog(onClose = { workoutInfoCancelRequired = false })
+            WorkoutDetailDialog(
+                onClose = { workoutInfoCancelRequired = false }
+            )
         }
 
         if (deleteWorkoutCancelRequired) {
             DeleteConfirmationDialog(
                 onDeleteConfirm = {
-                    // todo: call into workouts database, get the workout by name and reassign the "AssignedToDay" to "NotAssigned"
+                    val unassignedWorkout = Workout(
+                        id = workout.id,
+                        name = workout.name,
+                        durationInMinutes = workout.durationInMinutes,
+                        assignedToWeek = DaysInWeek.NotAssigned
+                    )
+
+                    onWorkoutEntryDelete(unassignedWorkout)
+
                     deleteWorkoutCancelRequired = false
                 },
                 onDeleteCancel = { deleteWorkoutCancelRequired = false },
@@ -145,8 +177,11 @@ fun WorkoutEntry(
 
 @Composable
 fun WeekEntry(
-    weekDay: String,
-    workoutName: String = "",
+    weekDay: DaysInWeek,
+    workout: Workout?,
+    allWorkouts: List<Workout>,
+    onWorkoutAssign: (Workout) -> Unit,
+    onWorkoutEntryDelete: (Workout) -> Unit,
 ) {
     Column(
         modifier = Modifier
@@ -154,7 +189,7 @@ fun WeekEntry(
             .padding(horizontal = 16.dp, vertical = 8.dp)
     ) {
         Text(
-            text = weekDay,
+            text = weekDay.toString(),
             color = MaterialTheme.colorScheme.onPrimaryContainer,
             style = MaterialTheme.typography.titleLarge,
             fontWeight = FontWeight.Bold,
@@ -162,10 +197,13 @@ fun WeekEntry(
 
         Spacer(modifier = Modifier.height(8.dp))
 
-        if (workoutName.isEmpty()) {
-            NoWorkoutEntryVariant()
+        if (workout == null) {
+            NoWorkoutEntryVariant(allWorkouts, weekDay, onWorkoutAssign)
         } else {
-            WorkoutEntry(name = workoutName)
+            WorkoutEntry(
+                workout = workout,
+                onWorkoutEntryDelete
+            )
         }
     }
 
@@ -175,19 +213,26 @@ fun WeekEntry(
 @Composable
 fun WeekEntryPreview() {
     WorkoutPlannerTheme {
-        WeekEntry(weekDay = "Tuesday")
+        WeekEntry(
+            weekDay = DaysInWeek.Sunday,
+            workout = Workout(0, "Chest", 90, listOf(), DaysInWeek.NotAssigned),
+            onWorkoutAssign = {},
+            allWorkouts = listOf(),
+            onWorkoutEntryDelete = {},
+        )
     }
 }
 
 @Composable
-fun NoWorkoutEntryVariant() {
+fun NoWorkoutEntryVariant(
+    allWorkouts: List<Workout>,
+    weekDay: DaysInWeek,
+    onWorkoutAssign: (Workout) -> Unit
+) {
     var showAssignWorkoutDialog by rememberSaveable { mutableStateOf(false) }
     Column(
         modifier = Modifier
-//            .shadow(elevation = 5.dp, spotColor = Color.Transparent) // todo: figure out a way to make a shadow bottom and right https://developer.android.com/reference/kotlin/androidx/compose/ui/Modifier#(androidx.compose.ui.Modifier).shadow(androidx.compose.ui.unit.Dp,androidx.compose.ui.graphics.Shape,kotlin.Boolean,androidx.compose.ui.graphics.Color,androidx.compose.ui.graphics.Color)
             .clip(RoundedCornerShape(8.dp))
-            .background(MaterialTheme.colorScheme.primaryContainer)
-            .padding(vertical = 4.dp, horizontal = 16.dp)
             .fillMaxWidth(),
     ) {
         Text(
@@ -195,14 +240,19 @@ fun NoWorkoutEntryVariant() {
             color = MaterialTheme.colorScheme.onPrimaryContainer,
         )
 
-        Button(onClick = { showAssignWorkoutDialog = true }) {
+        Button(
+            modifier = Modifier.fillMaxWidth(),
+            onClick = { showAssignWorkoutDialog = true }) {
             Text(text = "Add a workout")
             Icon(imageVector = Icons.Default.Add, contentDescription = "Add to weekly")
         }
 
         if (showAssignWorkoutDialog) {
             AssignWorkoutDialog(
+                weekDay,
+                workouts = allWorkouts,
                 onClose = { showAssignWorkoutDialog = false },
+                onAddAction = onWorkoutAssign,
             )
         }
 
@@ -213,29 +263,8 @@ fun NoWorkoutEntryVariant() {
 @Composable
 fun NoWorkoutEntryVariantPreview() {
     WorkoutPlannerTheme {
-        NoWorkoutEntryVariant()
+        NoWorkoutEntryVariant(listOf(), DaysInWeek.Monday, onWorkoutAssign = {})
     }
-}
-
-@Composable
-fun WorkoutDetailDialog(onClose: () -> Unit, modifier: Modifier = Modifier) {
-    AlertDialog(onDismissRequest = { /* Do nothing */ },
-        title = { Text("Chest") },
-        text = {
-            Column {
-                Text("1 hour 30 minutes")
-                ExerciseCard(exercise = Exercise(0, "Squat", 3, 10, 60F, "S"))
-                ExerciseCard(exercise = Exercise(0, "Squat", 3, 10, 60F, "S"))
-                ExerciseCard(exercise = Exercise(0, "Squat", 3, 10, 60F, "S"))
-            }
-        },
-        modifier = modifier,
-        dismissButton = {
-            TextButton(onClick = onClose) {
-                Text(text = stringResource(R.string.close))
-            }
-        },
-        confirmButton = {})
 }
 
 @Composable
@@ -255,44 +284,4 @@ private fun DeleteConfirmationDialog(
                 Text(text = stringResource(R.string.remove))
             }
         })
-}
-
-@Composable
-fun AssignWorkoutDialog(
-    onClose: () -> Unit, modifier: Modifier = Modifier
-) {
-    AlertDialog(onDismissRequest = { /* Do nothing */ },
-        title = { Text("Assign a workout") },
-        text = {
-            Row {
-                Text("Chest")
-                IconButton(onClick = { /*TODO*/ }) {
-                    Icon(imageVector = Icons.Default.Add, contentDescription = "Add")
-                }
-            }
-        },
-        modifier = modifier,
-        dismissButton = {
-            IconButton(onClick = onClose) {
-                Icon(imageVector = Icons.Default.Close, contentDescription = "Close")
-            }
-        },
-        confirmButton = {
-        })
-}
-
-@Preview
-@Composable
-private fun WorkoutDetailDialogPreview() {
-    WorkoutDetailDialog(onClose = { /*TODO*/ })
-}
-
-
-@Preview
-@Composable
-private fun WeeklyScreenPreview() {
-    WorkoutPlannerTheme {
-        val navController = rememberNavController()
-        WeeklyScreen(navController)
-    }
 }

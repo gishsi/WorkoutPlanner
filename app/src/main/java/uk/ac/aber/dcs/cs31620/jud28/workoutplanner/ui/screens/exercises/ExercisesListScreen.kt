@@ -107,7 +107,6 @@ fun ExercisesListContent(
         ) {
             items(exercisesList) { exercise ->
                 ExerciseCard(
-                    modifier = Modifier.padding(4.dp),
                     exercise = exercise,
                     editAction = {
                         Log.d("EXE_LIST", "Editing an exercise [${it.id}]")
@@ -175,12 +174,14 @@ fun ExerciseCard(
             contentColor = contentColor,
         ),
         elevation = CardDefaults.cardElevation(defaultElevation = 6.dp),
-        modifier = modifier
+        modifier = Modifier
+            .padding(4.dp)
             .fillMaxWidth()
     ) {
         // todo: use constraint layout
         Row(
             verticalAlignment = Alignment.CenterVertically,
+            modifier = modifier.padding(8.dp)
         ) {
             Column {
                 Image(

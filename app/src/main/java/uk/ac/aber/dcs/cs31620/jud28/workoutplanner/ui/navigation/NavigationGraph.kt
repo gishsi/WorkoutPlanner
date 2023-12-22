@@ -50,8 +50,13 @@ fun NavigationGraph() {
         navController = navController,
         startDestination = Screen.Home.route,
     ) {
+        // Home
         composable(Screen.Home.route) { HomeScreen(navController, exerciseViewModel) }
+
+        // Weekly
         composable(Screen.Weekly.route) { WeeklyScreen(navController) }
+
+        // Exercises
         composable(Screen.ExercisesList.route) {
             ExercisesListScreen(navController, exerciseViewModel)
         }
@@ -70,6 +75,8 @@ fun NavigationGraph() {
                     ExerciseEditScreen(navController, exerciseViewModel, exercise)
                 }
         }
+
+        // Workouts
         composable(Screen.Workouts.route) {
             WorkoutsScreen(navController = navController, workoutsViewModel)
         }
@@ -86,6 +93,5 @@ fun NavigationGraph() {
                     WorkoutEditScreen(navController, workoutsViewModel, exerciseViewModel, workout)
                 }
         }
-        composable(Screen.Weekly.route) { WeeklyScreen(navController) }
     }
 }

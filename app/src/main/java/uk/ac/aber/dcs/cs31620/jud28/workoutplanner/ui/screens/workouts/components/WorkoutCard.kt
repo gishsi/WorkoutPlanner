@@ -36,14 +36,12 @@ import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.ui.theme.WorkoutPlannerTheme
 
 @Composable
 fun WorkoutCard(
-    temp: Boolean = false,
     workout: Workout,
     editAction: (Workout) -> Unit = {},
     deleteAction: (Workout) -> Unit = {},
 ) {
     var deleteConfirmationRequired by rememberSaveable { mutableStateOf(false) }
-    var isVerbose by rememberSaveable { mutableStateOf(temp) }
-
+    var isVerbose by rememberSaveable { mutableStateOf(false) }
 
     Card(
         colors = CardDefaults.cardColors(
@@ -109,7 +107,6 @@ fun WorkoutCard(
                         exercise = it,
                         containerColor = Color.White,
                         contentColor = Color.Black,
-                        modifier = Modifier.padding(8.dp)
                     )
                 }
             }
@@ -158,24 +155,6 @@ fun WorkoutCardPreview() {
         Surface {
             WorkoutCard(
                 workout = Workout(
-                    0, "Chest", 120, listOf(
-                        Exercise(0, "Bicep curl", 0, 0, 0F),
-                        Exercise(0, "Bicep curl", 0, 0, 0F),
-                        Exercise(0, "Bicep curl", 0, 0, 0F)
-                    )
-                )
-            )
-        }
-    }
-}
-
-@Preview
-@Composable
-fun WorkoutCardaPreview() {
-    WorkoutPlannerTheme(dynamicColor = false) {
-        Surface {
-            WorkoutCard(
-                temp = true, workout = Workout(
                     0, "Chest", 120, listOf(
                         Exercise(0, "Bicep curl", 0, 0, 0F),
                         Exercise(0, "Bicep curl", 0, 0, 0F),

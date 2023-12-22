@@ -8,6 +8,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.datasource.workouts.WorkoutDatabase
 import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.datasource.workouts.WorkoutRepository
+import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.models.DaysInWeek
 import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.models.Workout
 
 /**
@@ -29,6 +30,14 @@ class WorkoutViewModel(application: Application) : AndroidViewModel(application)
         return repository.getWorkout(id)
     }
 
+    fun getWorkoutForDay(day: DaysInWeek): LiveData<Workout> {
+        return repository.getWorkoutForDay(day)
+    }
+
+    fun getWorkoutsForEachDay(): LiveData<List<Workout>> {
+        return repository.getWorkoutsForEachDay()
+    }
+
     fun addWorkout(workout: Workout) {
         viewModelScope.launch(Dispatchers.IO) {
             repository.addWorkout(workout)
@@ -44,6 +53,12 @@ class WorkoutViewModel(application: Application) : AndroidViewModel(application)
     fun updateWorkout(workout: Workout) {
         viewModelScope.launch(Dispatchers.IO) {
             repository.updateWorkout(workout)
+        }
+    }
+
+    fun clearTable() {
+        viewModelScope.launch(Dispatchers.IO) {
+            repository.clearTable()
         }
     }
 }
