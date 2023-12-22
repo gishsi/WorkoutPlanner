@@ -27,6 +27,10 @@ class WorkoutRepository(private val workoutDao: WorkoutDao) {
         return workoutDao.getWorkoutForDay(day)
     }
 
+    fun getWorkoutsForEachDay() : LiveData<List<Workout>> {
+        return workoutDao.getWorkoutsForEachDay()
+    }
+
     suspend fun clearTable() {
         workoutDao.clearTable()
     }

@@ -63,11 +63,7 @@ fun WeeklyScreen(
     val coroutineScope = rememberCoroutineScope()
 
     val allWorkouts = workoutViewModel.allData.observeAsState(listOf()).value
-
-    val workoutForTuesday =
-        workoutViewModel.getWorkoutForDay(DaysInWeek.Tuesday).observeAsState().value
-
-
+    val assignedWorkouts = workoutViewModel.getWorkoutsForEachDay().observeAsState(listOf()).value
 
     ApplicationScaffold(
         navController = navController,
@@ -84,22 +80,24 @@ fun WeeklyScreen(
                     .fillMaxWidth()
                     .verticalScroll(rememberScrollState()),
             ) {
-                if (workoutForTuesday != null) {
+                assignedWorkouts.forEach {
                     WeekEntry(
-                        workoutForTuesday.assignedToWeek.toString(),
-                        workoutForTuesday,
-                        allWorkouts, onWorkoutAssign = {}, onWorkoutEntryDelete = {
-                            workoutViewModel.updateWorkout(it)
+                        weekDay = it.assignedToWeek.toString(),
+                        workout = it,
+                        allWorkouts,
+                        onWorkoutAssign = {
+                        }, onWorkoutEntryDelete = {
+
                         })
                 }
-                WeekEntry(
-                    weekDay = "Wednesday",
-                    workout = null,
-                    allWorkouts,
-                    onWorkoutAssign = {
-                        workoutViewModel.updateWorkout(it)
-
-                    }, onWorkoutEntryDelete = {})
+//                WeekEntry(
+//                    weekDay = "Wednesday",
+//                    workout = null,
+//                    allWorkouts,
+//                    onWorkoutAssign = {
+//                        workoutViewModel.updateWorkout(it)
+//
+//                    }, onWorkoutEntryDelete = {})
             }
         }
 

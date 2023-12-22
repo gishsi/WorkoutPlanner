@@ -29,6 +29,12 @@ interface WorkoutDao {
     @Query("SELECT * FROM workouts WHERE assignedToWeek = :day")
     fun getWorkoutForDay(day: DaysInWeek) : LiveData<Workout>
 
+    /**
+     *  Get all workouts that are assigned
+     */
+    @Query("SELECT * FROM workouts WHERE assignedToWeek != :notAssigned")
+    fun getWorkoutsForEachDay(notAssigned: DaysInWeek = DaysInWeek.NotAssigned) : LiveData<List<Workout>>
+
     @Query("DELETE FROM workouts")
     suspend fun clearTable()
 }
