@@ -34,7 +34,7 @@ class WorkoutViewModel(application: Application) : AndroidViewModel(application)
         return repository.getWorkoutForDay(day)
     }
 
-    fun getWorkoutsForEachDay() : LiveData<List<Workout>> {
+    fun getWorkoutsForEachDay(): LiveData<List<Workout>> {
         return repository.getWorkoutsForEachDay()
     }
 

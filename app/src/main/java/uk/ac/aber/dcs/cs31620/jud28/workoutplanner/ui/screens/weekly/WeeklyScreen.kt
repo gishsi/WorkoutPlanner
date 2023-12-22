@@ -63,7 +63,17 @@ fun WeeklyScreen(
     val coroutineScope = rememberCoroutineScope()
 
     val allWorkouts = workoutViewModel.allData.observeAsState(listOf()).value
-    val assignedWorkouts = workoutViewModel.getWorkoutsForEachDay().observeAsState(listOf()).value
+    val  assignedWorkouts = workoutViewModel.getWorkoutsForEachDay().observeAsState(listOf()).value
+
+    val workoutsMap = mapOf(
+        DaysInWeek.Monday to assignedWorkouts.find { workout -> workout.assignedToWeek == DaysInWeek.Monday },
+        DaysInWeek.Tuesday to assignedWorkouts.find { workout -> workout.assignedToWeek == DaysInWeek.Tuesday },
+        DaysInWeek.Wednesday to assignedWorkouts.find { workout -> workout.assignedToWeek == DaysInWeek.Wednesday },
+        DaysInWeek.Thursday to assignedWorkouts.find { workout -> workout.assignedToWeek == DaysInWeek.Thursday },
+        DaysInWeek.Friday to assignedWorkouts.find { workout -> workout.assignedToWeek == DaysInWeek.Friday },
+        DaysInWeek.Saturday to assignedWorkouts.find { workout -> workout.assignedToWeek == DaysInWeek.Saturday },
+        DaysInWeek.Sunday to assignedWorkouts.find { workout -> workout.assignedToWeek == DaysInWeek.Sunday },
+    )
 
     ApplicationScaffold(
         navController = navController,
@@ -80,24 +90,18 @@ fun WeeklyScreen(
                     .fillMaxWidth()
                     .verticalScroll(rememberScrollState()),
             ) {
-                assignedWorkouts.forEach {
+                workoutsMap.forEach {entry ->
                     WeekEntry(
-                        weekDay = it.assignedToWeek.toString(),
-                        workout = it,
+                        weekDay = entry.key,
+                        workout = entry.value,
                         allWorkouts,
                         onWorkoutAssign = {
-                        }, onWorkoutEntryDelete = {
-
+                            workoutViewModel.updateWorkout(it)
+                        },
+                        onWorkoutEntryDelete = {
+                            workoutViewModel.updateWorkout(it)
                         })
                 }
-//                WeekEntry(
-//                    weekDay = "Wednesday",
-//                    workout = null,
-//                    allWorkouts,
-//                    onWorkoutAssign = {
-//                        workoutViewModel.updateWorkout(it)
-//
-//                    }, onWorkoutEntryDelete = {})
             }
         }
 
@@ -173,7 +177,7 @@ fun WorkoutEntry(
 
 @Composable
 fun WeekEntry(
-    weekDay: String,
+    weekDay: DaysInWeek,
     workout: Workout?,
     allWorkouts: List<Workout>,
     onWorkoutAssign: (Workout) -> Unit,
@@ -185,7 +189,7 @@ fun WeekEntry(
             .padding(horizontal = 16.dp, vertical = 8.dp)
     ) {
         Text(
-            text = weekDay,
+            text = weekDay.toString(),
             color = MaterialTheme.colorScheme.onPrimaryContainer,
             style = MaterialTheme.typography.titleLarge,
             fontWeight = FontWeight.Bold,
@@ -194,7 +198,7 @@ fun WeekEntry(
         Spacer(modifier = Modifier.height(8.dp))
 
         if (workout == null) {
-            NoWorkoutEntryVariant(allWorkouts, onWorkoutAssign)
+            NoWorkoutEntryVariant(allWorkouts, weekDay, onWorkoutAssign)
         } else {
             WorkoutEntry(
                 workout = workout,
@@ -210,7 +214,7 @@ fun WeekEntry(
 fun WeekEntryPreview() {
     WorkoutPlannerTheme {
         WeekEntry(
-            weekDay = "Tuesday",
+            weekDay = DaysInWeek.Sunday,
             workout = Workout(0, "Chest", 90, listOf(), DaysInWeek.NotAssigned),
             onWorkoutAssign = {},
             allWorkouts = listOf(),
@@ -222,14 +226,13 @@ fun WeekEntryPreview() {
 @Composable
 fun NoWorkoutEntryVariant(
     allWorkouts: List<Workout>,
+    weekDay: DaysInWeek,
     onWorkoutAssign: (Workout) -> Unit
 ) {
     var showAssignWorkoutDialog by rememberSaveable { mutableStateOf(false) }
     Column(
         modifier = Modifier
             .clip(RoundedCornerShape(8.dp))
-            .background(MaterialTheme.colorScheme.primaryContainer)
-            .padding(vertical = 4.dp, horizontal = 16.dp)
             .fillMaxWidth(),
     ) {
         Text(
@@ -237,14 +240,16 @@ fun NoWorkoutEntryVariant(
             color = MaterialTheme.colorScheme.onPrimaryContainer,
         )
 
-        Button(onClick = { showAssignWorkoutDialog = true }) {
+        Button(
+            modifier = Modifier.fillMaxWidth(),
+            onClick = { showAssignWorkoutDialog = true }) {
             Text(text = "Add a workout")
             Icon(imageVector = Icons.Default.Add, contentDescription = "Add to weekly")
         }
 
         if (showAssignWorkoutDialog) {
             AssignWorkoutDialog(
-                DaysInWeek.Wednesday.toString(),
+                weekDay,
                 workouts = allWorkouts,
                 onClose = { showAssignWorkoutDialog = false },
                 onAddAction = onWorkoutAssign,
@@ -258,7 +263,7 @@ fun NoWorkoutEntryVariant(
 @Composable
 fun NoWorkoutEntryVariantPreview() {
     WorkoutPlannerTheme {
-        NoWorkoutEntryVariant(listOf(), onWorkoutAssign = {})
+        NoWorkoutEntryVariant(listOf(), DaysInWeek.Monday, onWorkoutAssign = {})
     }
 }
 
@@ -279,14 +284,4 @@ private fun DeleteConfirmationDialog(
                 Text(text = stringResource(R.string.remove))
             }
         })
-}
-
-
-@Preview
-@Composable
-private fun WeeklyScreenPreview() {
-    WorkoutPlannerTheme {
-        val navController = rememberNavController()
-        WeeklyScreen(navController)
-    }
 }

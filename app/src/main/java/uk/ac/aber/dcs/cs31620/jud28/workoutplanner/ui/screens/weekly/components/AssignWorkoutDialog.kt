@@ -45,7 +45,7 @@ import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.ui.theme.WorkoutPlannerTheme
 
 @Composable
 fun AssignWorkoutDialog(
-    weekName: String,
+    weekName: DaysInWeek,
     workouts: List<Workout>,
     onClose: () -> Unit, modifier: Modifier = Modifier,
     onAddAction: (Workout) -> Unit = {},
@@ -65,7 +65,7 @@ fun AssignWorkoutDialog(
                     color = MaterialTheme.colorScheme.onSecondaryContainer,
                 )
                 Text(
-                    text = weekName,
+                    text = weekName.toString(),
                     fontWeight = FontWeight.Bold,
                     color = MaterialTheme.colorScheme.onPrimaryContainer,
                 )
@@ -141,7 +141,7 @@ fun AssignWorkoutDialog(
                                         id = workout.id,
                                         name = workout.name,
                                         durationInMinutes = workout.durationInMinutes,
-                                        assignedToWeek = enumValueOf(weekName)
+                                        assignedToWeek = weekName
                                     )
 
                                     onAddAction(assignedWorkout)
@@ -197,7 +197,7 @@ fun AssignWorkoutDialogPreview() {
     WorkoutPlannerTheme {
         Surface {
             AssignWorkoutDialog(
-                "Monday",
+                DaysInWeek.Monday,
                 workouts = listOf(
                     Workout(
                         0,
