@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.AccessTime
 import androidx.compose.material.icons.outlined.Info
+import androidx.compose.material.icons.outlined.WatchLater
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -21,11 +22,15 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.R
+import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.models.DaysInWeek
 import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.models.Exercise
+import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.models.Workout
 import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.ui.screens.exercises.ExerciseCard
 
 @Composable
 fun WorkoutDetailDialog(
+    weekDay: DaysInWeek,
+    workout: Workout,
     onClose: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -37,7 +42,7 @@ fun WorkoutDetailDialog(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.Center,
             ) {
-                Text("Monday")
+                Text(weekDay.toString())
             }
         },
         text = {
@@ -45,40 +50,28 @@ fun WorkoutDetailDialog(
                 verticalArrangement = Arrangement.spacedBy(8.dp),
             ) {
                 Text(
-                    text = "Chest",
+                    text = workout.name,
                     style = MaterialTheme.typography.titleLarge,
                     fontWeight = FontWeight.Bold,
                 )
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
-                    Icon(imageVector = Icons.Outlined.AccessTime, contentDescription = "")
-
-                    Text(
-                        text = "1 hour 30 minutes",
-                        color = MaterialTheme.colorScheme.onPrimaryContainer
-                    )
+                    Text(text = "${workout.durationInMinutes} min")
+                    Icon(imageVector = Icons.Outlined.WatchLater, contentDescription = stringResource(R.string.clock))
                 }
 
-                ExerciseCard(
-                    exercise = Exercise(
-                        0,
-                        "Deadlift",
-                        3,
-                        10,
-                        60F,
-                        R.drawable.deadlift.toString()
-                    ),
-                    containerColor = Color.White,
-                    contentColor = Color.Black,
-                )
+                workout.exercises.forEach {
+                    ExerciseCard(
+                        exercise = it,
+//                        imageWidth = 96.dp,
+//                        imageHeight = 96.dp,
+                    )
+                }
             }
         },
         modifier = modifier,
-        textContentColor = MaterialTheme.colorScheme.onPrimaryContainer,
-        iconContentColor = MaterialTheme.colorScheme.onPrimaryContainer,
-        titleContentColor = MaterialTheme.colorScheme.onPrimaryContainer,
-        containerColor = MaterialTheme.colorScheme.primaryContainer,
+        containerColor = Color.White,
         icon = { Icons.Outlined.Info },
         dismissButton = {
             TextButton(onClick = onClose) {
@@ -91,5 +84,8 @@ fun WorkoutDetailDialog(
 @Preview
 @Composable
 private fun WorkoutDetailDialogPreview() {
-    WorkoutDetailDialog(onClose = { })
+    WorkoutDetailDialog(
+        DaysInWeek.Monday,
+        Workout(0, "Chest", 120, listOf(Exercise(0, "Crunches", 3, 20, 0.0F, R.drawable.crunches.toString()))),
+        onClose = { })
 }

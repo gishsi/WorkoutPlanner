@@ -35,12 +35,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
 import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.R
 import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.models.DaysInWeek
 import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.models.Workout
@@ -110,6 +111,7 @@ fun WeeklyScreen(
 
 @Composable
 fun WorkoutEntry(
+    weekDay: DaysInWeek,
     workout: Workout,
     onWorkoutEntryDelete: (Workout) -> Unit,
 ) {
@@ -151,6 +153,8 @@ fun WorkoutEntry(
 
         if (workoutInfoCancelRequired) {
             WorkoutDetailDialog(
+                weekDay = weekDay,
+                workout = workout,
                 onClose = { workoutInfoCancelRequired = false }
             )
         }
@@ -162,6 +166,7 @@ fun WorkoutEntry(
                         id = workout.id,
                         name = workout.name,
                         durationInMinutes = workout.durationInMinutes,
+                        exercises = workout.exercises,
                         assignedToWeek = DaysInWeek.NotAssigned
                     )
 
@@ -201,6 +206,7 @@ fun WeekEntry(
             NoWorkoutEntryVariant(allWorkouts, weekDay, onWorkoutAssign)
         } else {
             WorkoutEntry(
+                weekDay = weekDay,
                 workout = workout,
                 onWorkoutEntryDelete
             )
@@ -238,6 +244,7 @@ fun NoWorkoutEntryVariant(
         Text(
             text = stringResource(R.string.no_workout_in_weekly),
             color = MaterialTheme.colorScheme.onPrimaryContainer,
+            fontStyle = FontStyle.Italic,
         )
 
         Button(

@@ -51,7 +51,7 @@ fun NavigationGraph() {
         startDestination = Screen.Home.route,
     ) {
         // Home
-        composable(Screen.Home.route) { HomeScreen(navController, exerciseViewModel) }
+        composable(Screen.Home.route) { HomeScreen(navController, workoutsViewModel) }
 
         // Weekly
         composable(Screen.Weekly.route) { WeeklyScreen(navController) }

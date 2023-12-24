@@ -9,6 +9,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -20,10 +21,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.R
+import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.models.DaysInWeek
+import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.models.Workout
 import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.ui.components.ApplicationScaffold
 import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.ui.screens.exercises.ExerciseViewModel
 import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.ui.screens.home.components.NoWorkoutHomeScreenContentVariant
 import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.ui.screens.home.components.WorkoutHomeScreenContentVariant
+import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.ui.screens.workouts.WorkoutViewModel
 import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.ui.theme.WorkoutPlannerTheme
 import java.time.LocalDate
 import java.time.format.TextStyle
@@ -37,10 +41,12 @@ import java.util.Locale
 @Composable
 fun HomeScreen(
     navController: NavHostController,
-    exercisesViewModel: ExerciseViewModel = viewModel()
+    workoutsViewModel: WorkoutViewModel = viewModel()
 ) {
     val coroutineScope = rememberCoroutineScope()
     val day = getCurrentDayOfWeek()
+
+    val workoutForTheDay = workoutsViewModel.getWorkoutForDay(day).observeAsState(null).value
 
     // todo: get the guy from the view model
 
@@ -54,40 +60,35 @@ fun HomeScreen(
                 .padding(innerPadding)
                 .fillMaxSize()
         ) {
-            HomeScreenContent()
+            HomeScreenContent(workoutForTheDay)
         }
     }
 }
 
 @Composable
-fun getCurrentDayOfWeek(): String {
+fun getCurrentDayOfWeek(): DaysInWeek {
     val currentDayOfWeek = LocalDate.now().dayOfWeek
-    return currentDayOfWeek.getDisplayName(TextStyle.FULL, Locale.getDefault())
+    val name = currentDayOfWeek.getDisplayName(TextStyle.FULL, Locale.getDefault()).toString()
+
+    return DaysInWeek.valueOf(name)
 }
 
 @Composable
-fun HomeScreenContent() {
-    // todo: remove later
-    var switchBetweenVariants by remember { mutableStateOf(false) }
-
+fun HomeScreenContent(
+    workoutForTheDay: Workout?
+) {
     Column(
         modifier = Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center,
     ) {
         Text(
-            text = getCurrentDayOfWeek(),
+            text = getCurrentDayOfWeek().toString(),
         )
 
-        Checkbox(
-            checked = switchBetweenVariants,
-            onCheckedChange = { switchBetweenVariants = !switchBetweenVariants },
-        )
-
-        if (switchBetweenVariants) {
+        if (workoutForTheDay == null) {
             NoWorkoutHomeScreenContentVariant()
         } else {
-            WorkoutHomeScreenContentVariant()
+            WorkoutHomeScreenContentVariant(workoutForTheDay)
         }
     }
 
@@ -100,7 +101,17 @@ fun HomeScreenContent() {
 fun HomeScreenContentPreview() {
     WorkoutPlannerTheme {
         Surface {
-            HomeScreenContent()
+            HomeScreenContent(Workout(0, "Chest", 120, listOf(), DaysInWeek.Monday))
+        }
+    }
+}
+
+@Composable
+@Preview
+fun HomeScreenNoContentPreview() {
+    WorkoutPlannerTheme {
+        Surface {
+            HomeScreenContent(null)
         }
     }
 }

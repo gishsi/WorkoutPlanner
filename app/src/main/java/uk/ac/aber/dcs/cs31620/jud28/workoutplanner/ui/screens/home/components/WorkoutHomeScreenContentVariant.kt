@@ -16,28 +16,32 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.models.DaysInWeek
 import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.models.Exercise
+import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.models.Workout
 import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.ui.screens.exercises.ExerciseCard
 import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.ui.screens.exercises.components.photos
 import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.ui.theme.WorkoutPlannerTheme
 
 @Composable
-fun WorkoutHomeScreenContentVariant() {
+fun WorkoutHomeScreenContentVariant(
+    workout: Workout
+) {
     Column(
-        modifier = Modifier.padding(16.dp)
+        modifier = Modifier.padding(16.dp).fillMaxWidth(),
+        verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         Row(
             horizontalArrangement = Arrangement.SpaceBetween,
-            modifier = Modifier
-                .fillMaxWidth(),
+            modifier = Modifier.fillMaxWidth()
         ) {
             Column(
                 modifier = Modifier
             ) {
                 Text(text = "Focus for today")
                 Text(
-                    text = "Chest",
-                    style = MaterialTheme.typography.bodyLarge,
+                    text = workout.name,
+                    style = MaterialTheme.typography.headlineMedium,
                     fontWeight = FontWeight.Bold,
                 )
             }
@@ -45,26 +49,20 @@ fun WorkoutHomeScreenContentVariant() {
                 modifier = Modifier
             ) {
                 Icon(imageVector = Icons.Outlined.WatchLater, contentDescription = "Clock icon")
-                Text(text = "1 h 40 min")
+                Text(
+                    text = "${workout.durationInMinutes} min",
+                    fontWeight = FontWeight.Bold,
+                )
             }
         }
-        ExerciseCard(
-            exercise = Exercise(0, "Bicep curl", 3, 10, 10F, photos[0].toString()),
-            imageWidth = 96.dp,
-            imageHeight = 96.dp,
-        )
 
-        ExerciseCard(
-            exercise = Exercise(0, "Bicep curl", 3, 10, 10F, photos[0].toString()),
-            imageWidth = 96.dp,
-            imageHeight = 96.dp,
-        )
-
-        ExerciseCard(
-            exercise = Exercise(0, "Bicep curl", 3, 10, 10F, photos[0].toString()),
-            imageWidth = 96.dp,
-            imageHeight = 96.dp,
-        )
+        workout.exercises.forEach {
+            ExerciseCard(
+                exercise = it,
+                imageWidth = 96.dp,
+                imageHeight = 96.dp,
+            )
+        }
     }
 }
 
@@ -73,7 +71,7 @@ fun WorkoutHomeScreenContentVariant() {
 fun WorkoutHomeScreenContentVariantPreview() {
     WorkoutPlannerTheme {
         Surface {
-            WorkoutHomeScreenContentVariant()
+            WorkoutHomeScreenContentVariant(Workout(0, "Chest", 120, listOf(), DaysInWeek.Monday))
         }
     }
 }

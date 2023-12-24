@@ -141,6 +141,7 @@ fun AssignWorkoutDialog(
                                         id = workout.id,
                                         name = workout.name,
                                         durationInMinutes = workout.durationInMinutes,
+                                        exercises = workout.exercises,
                                         assignedToWeek = weekName
                                     )
 
