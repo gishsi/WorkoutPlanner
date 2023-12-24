@@ -14,6 +14,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Create
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
@@ -32,6 +33,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -45,6 +47,7 @@ import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.ui.navigation.Screen
 import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.ui.screens.exercises.ExerciseViewModel
 import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.ui.screens.workouts.components.ExerciseInWorkoutFormCard
 import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.ui.theme.WorkoutPlannerTheme
+import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.ui.theme.md_theme_dark_background
 
 /**
  *  Screen for editing a workout
@@ -156,12 +159,20 @@ fun WorkoutEditScreenContent(
 
                 var addingExercisesCancelRequired by rememberSaveable { mutableStateOf(false) }
 
-                OutlinedButton(
-                    modifier = Modifier.fillMaxWidth(),
+                Button(
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = MaterialTheme.colorScheme.secondaryContainer,
+                        contentColor = MaterialTheme.colorScheme.onSecondaryContainer
+                    ),
                     onClick = {
                         addingExercisesCancelRequired = true
                     }) {
-                    Text(text = "Add")
+                    Text(
+                        text = "Add",
+                        fontWeight = FontWeight.Bold
+                    )
                     Icon(imageVector = Icons.Default.Add, contentDescription = "Add")
                 }
 

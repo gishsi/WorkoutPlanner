@@ -89,7 +89,6 @@ fun WorkoutsScreenContent(
 
                         val serializedWorkout = Gson().toJson(workout)
 
-                        // todo: needs to be the id, not the name
                         navController.navigate(
                             Screen.WorkoutEdit.route.replace(
                                 "{workout}",

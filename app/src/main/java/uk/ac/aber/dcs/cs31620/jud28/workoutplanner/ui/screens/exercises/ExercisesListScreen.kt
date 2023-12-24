@@ -298,9 +298,14 @@ private fun RemoveExerciseFromListDialog(
         },
         confirmButton = {
             TextButton(onClick = onDeleteConfirm) {
-                Text(text = stringResource(R.string.remove))
+                Text(
+                    text = stringResource(R.string.remove),
+                    color = MaterialTheme.colorScheme.error,
+                )
             }
-        })
+        },
+        containerColor = Color.White
+    )
 }
 
 @Preview
@@ -311,20 +316,6 @@ fun ExerciseListScreenPreview() {
         ExercisesListContent(
             navHostController, listOf(
                 Exercise(0, "Dips", 3, 10, 10F, R.drawable.dips.toString()),
-                Exercise(0, "Dips", 3, 10, 10F, R.drawable.dips.toString()),
-                Exercise(0, "Dips", 3, 10, 10F, R.drawable.dips.toString()),
-                Exercise(0, "Dips", 3, 10, 10F, R.drawable.dips.toString()),
-                Exercise(0, "Dips", 3, 10, 10F, R.drawable.dips.toString()),
-                Exercise(0, "Dips", 3, 10, 10F, R.drawable.dips.toString()),
-                Exercise(0, "Dips", 3, 10, 10F, R.drawable.dips.toString()),
-                Exercise(0, "Dips", 3, 10, 10F, R.drawable.dips.toString()),
-                Exercise(0, "Dips", 3, 10, 10F, R.drawable.dips.toString()),
-                Exercise(0, "Dips", 3, 10, 10F, R.drawable.dips.toString()),
-                Exercise(0, "Dips", 3, 10, 10F, R.drawable.dips.toString()),
-                Exercise(0, "Dips", 3, 10, 10F, R.drawable.dips.toString()),
-                Exercise(0, "Dips", 3, 10, 10F, R.drawable.dips.toString()),
-                Exercise(0, "Dips", 3, 10, 10F, R.drawable.dips.toString()),
-                Exercise(0, "Dips", 3, 10, 10F, R.drawable.dips.toString())
             )
         )
     }

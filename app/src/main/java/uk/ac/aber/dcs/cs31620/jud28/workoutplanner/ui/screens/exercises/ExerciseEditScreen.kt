@@ -24,6 +24,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
@@ -186,6 +187,11 @@ fun ExerciseEditContent(
                         },
                         label = { Text("Weight (First)") },
                         keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number),
+                        colors = TextFieldDefaults.outlinedTextFieldColors(
+                            focusedBorderColor = MaterialTheme.colorScheme.secondary,
+                            unfocusedBorderColor = MaterialTheme.colorScheme.inversePrimary,
+                            focusedLabelColor = MaterialTheme.colorScheme.secondary,
+                            unfocusedLabelColor = MaterialTheme.colorScheme.secondary,)
                     )
                     OutlinedTextField(
                         modifier = Modifier
@@ -194,6 +200,11 @@ fun ExerciseEditContent(
                         onValueChange = { weightSecond = parseStringIntoFloat(it) },
                         label = { Text("Weight (Second)") },
                         keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number),
+                        colors = TextFieldDefaults.outlinedTextFieldColors(
+                            focusedBorderColor = MaterialTheme.colorScheme.secondary,
+                            unfocusedBorderColor = MaterialTheme.colorScheme.inversePrimary,
+                            focusedLabelColor = MaterialTheme.colorScheme.secondary,
+                            unfocusedLabelColor = MaterialTheme.colorScheme.secondary,)
                     )
                     OutlinedTextField(
                         modifier = Modifier
@@ -202,6 +213,11 @@ fun ExerciseEditContent(
                         onValueChange = { weightThird = parseStringIntoFloat(it) },
                         label = { Text("Weight (Third)") },
                         keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number),
+                        colors = TextFieldDefaults.outlinedTextFieldColors(
+                            focusedBorderColor = MaterialTheme.colorScheme.secondary,
+                            unfocusedBorderColor = MaterialTheme.colorScheme.inversePrimary,
+                            focusedLabelColor = MaterialTheme.colorScheme.secondary,
+                            unfocusedLabelColor = MaterialTheme.colorScheme.secondary,)
                     )
                 }
 
