@@ -24,4 +24,5 @@
     <string name="no_workout_in_weekly">Nothing here yet...</string>
     <string name="add">Add</string>
     <string name="clock">Clock icon</string>
+    <string name="menu_open">Menu open</string>
 </resources>

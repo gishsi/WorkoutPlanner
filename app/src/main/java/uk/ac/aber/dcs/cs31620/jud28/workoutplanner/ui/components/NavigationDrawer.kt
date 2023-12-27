@@ -2,17 +2,23 @@ package uk.ac.aber.dcs.cs31620.jud28.workoutplanner.ui.components
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.CalendarMonth
 import androidx.compose.material.icons.filled.FitnessCenter
 import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.MenuOpen
 import androidx.compose.material.icons.filled.SportsGymnastics
+import androidx.compose.material3.Divider
 import androidx.compose.material3.DrawerState
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalDrawerSheet
 import androidx.compose.material3.ModalNavigationDrawer
 import androidx.compose.material3.NavigationDrawerItem
@@ -25,6 +31,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
@@ -65,7 +72,8 @@ fun NavigationDrawer(
         NavigationDrawerItem(
             Icons.Default.Add,
             stringResource(id = R.string.nav_exercise_add),
-            Screen.ExerciseAdd.route
+            Screen.ExerciseAdd.route,
+            true
         ),
         NavigationDrawerItem(
             Icons.Default.FitnessCenter,
@@ -75,7 +83,8 @@ fun NavigationDrawer(
         NavigationDrawerItem(
             Icons.Default.Add,
             stringResource(id = R.string.nav_add_workout),
-            Screen.WorkoutAdd.route
+            Screen.WorkoutAdd.route,
+            true,
         ),
     )
 
@@ -85,12 +94,27 @@ fun NavigationDrawer(
             val selectedItem = rememberSaveable { mutableStateOf(0) }
 
             ModalDrawerSheet {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.End
+                ) {
+                    IconButton(onClick = { closeDrawer() }) {
+                        Icon(
+                            imageVector = Icons.Default.MenuOpen,
+                            contentDescription = stringResource(R.string.menu_open)
+                        )
+                    }
+                }
+
+
+                Divider()
+
                 Column(
                     horizontalAlignment = Alignment.CenterHorizontally,
                     modifier = Modifier
                         .fillMaxSize()
                         .padding(16.dp),
-                    verticalArrangement = Arrangement.spacedBy(8.dp)
+                    verticalArrangement = Arrangement.spacedBy(4.dp)
                 ) {
                     items.forEachIndexed { index, item ->
                         NavigationDrawerItem(
@@ -100,7 +124,20 @@ fun NavigationDrawer(
                                     contentDescription = item.label
                                 )
                             },
-                            label = { Text(item.label) },
+                            label = {
+                                if (item.isSubpage) {
+                                    Text(
+                                        text = item.label,
+                                        fontStyle = FontStyle.Italic,
+                                        style = MaterialTheme.typography.bodyMedium
+                                    )
+                                } else {
+                                    Text(
+                                        text = item.label,
+                                    )
+                                }
+
+                            },
                             selected = index == selectedItem.value,
                             onClick = {
                                 selectedItem.value = index
@@ -124,7 +161,12 @@ fun NavigationDrawer(
 /**
  *  Used to associate an icon and a label with a route.
  */
-data class NavigationDrawerItem(val icon: ImageVector, val label: String, val route: String)
+data class NavigationDrawerItem(
+    val icon: ImageVector,
+    val label: String,
+    val route: String,
+    val isSubpage: Boolean = false
+)
 
 @Preview
 @Composable
