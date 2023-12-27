@@ -1,0 +1,200 @@
+@startuml
+page 2x2
+skinparam pageMargin 10
+skinparam pageExternalColor gray
+skinparam pageBorderColor black
+skinparam groupInheritance 2
+
+class MainActivity {
++ void onCreate(savedInstanceState: Bundle?)
++ void MainActivityPreview()
+}
+
+namespace datasource {
+    abstract class datasource.exercises.ExercisesDatabase {
+    + ExerciseDao exercisesDao()
+    - ExercisesDatabase? INSTANCE
+    + ExercisesDatabase getInstance(Context)
+    }
+
+    class datasource.exercises.ExercisesRepository {
+    + LiveData<List<Exercise>> readAllData
+    + void addExercise(Exercise)
+    + void deleteExercise(Exercise)
+    + void updateExercise(Exercise)
+    + LiveData<Exercise> getExercise(Int)
+    }
+
+    interface datasource.exercises.ExerciseDao {
+    + void insert(Exercise)
+    + void update(Exercise)
+    + void delete(Exercise)
+    + LiveData<Exercise> getExercise(Int)
+    + LiveData<List<Exercise>> getAll()
+    }
+
+}
+
+namespace models {
+    class Dropset {
+    --
+    + enabled: Boolean,
+    + first: Int,
+    + second: Int,
+    + third: Int
+    --
+    }
+
+    class Exercise {
+    --
+    + id: Int = 0,
+    + name: String = "",
+    + numberOfSets: Int = 0,
+    + numberOfRepetitions: Int = 0,
+    + weightInKilos: Float = 0F,
+    + image: String = "",
+    + dropset: Int = 0
+    --
+    }
+}
+
+class ui.models.IconGroup {
++ filledIcon: ImageVector
++ outlineIcon: ImageVector
++ label: String
+}
+
+'===== 3.2.2 UI.models relations ==========
+ui.components.NavigationBar .[#red].> ui.models.IconGroup
+
+
+namespace ui.components {
+    class ApplicationScaffold {
+    --
+    ApplicationScaffold(
+        navController: NavHostController,
+        coroutineScope: CoroutineScope,
+        topBarLabel: String = stringResource(id = R.string.app_name),
+        pageContent: @Composable (innerPadding: PaddingValues) -> Unit = {})
+    --
+    }
+    class NavigationDrawer {
+    --
+    NavigationDrawer(
+    navController: NavController,
+    drawerState: DrawerState,
+    closeDrawer: () -> Unit = {},
+    content: @Composable () -> Unit = {})
+    --
+    }
+    class TopAppBar {
+    --
+    TopAppBar(
+        onClick: () -> Unit = {},
+        label: String = stringResource(id = R.string.app_name),)
+    --
+    }
+    class NavigationBar {
+    --
+    NavigationBar(navController: NavController)
+    --
+    }
+}
+
+
+
+class ui.navigation.NavigationGraph {
+}
+
+namespace ui.screens.exercises {
+    entity ExercisesListScreen {
+    --
+    ExercisesListScreen(
+    navController: NavHostController,
+    exerciseViewModel: ExerciseViewModel = viewModel())
+    --
+    }
+
+   class ExerciseViewModel {
+   + LiveData<List<Exercise>> allData
+   - ExercisesRepository repository
+   + LiveData<Exercise> getExercise(Int)
+   + void addExercise(Exercise)
+   + void deleteExercise(Exercise)
+   + void updateExercise(Exercise)
+   }
+
+   class ExerciseViewModelFactory {
+   + void T create(modelClass: Class<T>)
+   }
+
+   class ExercisesListContent {
+   + navController: NavHostController,
+   + exercisesList: List<Exercise>,
+   + onDelete: (Exercise) -> Unit = {},
+   }
+}
+
+namespace ui.screens.exercises.components {
+    class ExerciseCard {
+       modifier: Modifier = Modifier,
+        exercise: Exercise,
+        editAction: (Exercise) -> Unit = {},
+        deleteAction: (Exercise) -> Unit = {},
+        showAction: Boolean = false,
+        imageWidth: Dp = 64.dp,
+        imageHeight: Dp = 64.dp,
+        containerColor: Color = MaterialTheme.colorScheme.primaryContainer,
+        contentColor: Color = MaterialTheme.colorScheme.onPrimaryContainer
+    }
+    class RemoveExerciseFromListDialog {
+        name: String = "",
+        onDeleteConfirm: () -> Unit,
+        onDeleteCancel: () -> Unit,
+        modifier: Modifier = Modifier
+    }
+}
+
+class ui.navigation.Screen {
+    object Home : Screen("home")
+    object Weekly : Screen("weekly")
+    object ExercisesList : Screen("exercises")
+    object ExerciseAdd : Screen("exercises/add")
+    object ExerciseEdit : Screen("exercises/edit/{exercise}")
+    object Workouts : Screen("workouts")
+    object WorkoutAdd : Screen("workouts/add")
+    object WorkoutEdit : Screen("workouts/edit/{workout}")
+}
+
+ui.navigation.NavigationGraph .[#red].> ui.navigation.Screen
+
+
+
+ui.components.ApplicationScaffold ..> ui.components.NavigationBar
+ui.components.ApplicationScaffold ..> ui.components.NavigationDrawer
+ui.components.ApplicationScaffold ..> ui.components.TopAppBar
+
+'each screen uses components in ui
+MainActivity -[#green]-> ui.navigation.NavigationGraph
+ui.navigation.NavigationGraph ..> ui.screens.exercises.ExercisesListScreen
+ui.navigation.NavigationGraph ..> ui.screens.exercises.ExerciseViewModel
+ui.navigation.NavigationGraph ..> ui.screens.exercises.ExerciseViewModelFactory
+ui.screens.exercises.ExercisesListScreen ..> ui.components.ApplicationScaffold
+
+ui.screens.exercises.ExercisesListContent ..> models.Exercise
+ui.screens.exercises.components.ExerciseCard ..> models.Exercise
+models.Exercise ..> models.Dropset
+
+ui.screens.exercises.ExercisesListScreen ..> ui.screens.exercises.ExerciseViewModel
+
+ui.screens.exercises.ExerciseViewModel .[#green].> datasource.exercises.ExercisesRepository
+ui.screens.exercises.ExerciseViewModel .[#green].> datasource.exercises.ExercisesDatabase
+datasource.exercises.ExercisesRepository .[#green].> datasource.exercises.ExerciseDao
+
+datasource.exercises ..> models.Exercise
+
+ui.screens.exercises.ExercisesListContent ..> ui.screens.exercises.components.ExerciseCard
+ui.screens.exercises.ExercisesListContent ..> ui.screens.exercises.components.RemoveExerciseFromListDialog
+ui.screens.exercises.ExercisesListScreen ..> ui.screens.exercises.ExercisesListContent
+
+@enduml

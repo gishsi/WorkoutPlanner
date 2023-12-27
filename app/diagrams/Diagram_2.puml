@@ -1,0 +1,190 @@
+@startuml
+page 2x2
+skinparam pageMargin 10
+skinparam pageExternalColor gray
+skinparam pageBorderColor black
+skinparam groupInheritance 2
+
+class MainActivity {
++ void onCreate(Bundle?)
+}
+
+'============================= 1. Datasource =============================
+'=========== 1.1 Data source definitions ===============
+abstract class datasource.exercises.ExercisesDatabase {
++ ExerciseDao exercisesDao()
+- ExercisesDatabase? INSTANCE
++ ExercisesDatabase getInstance(Context)
+}
+
+class datasource.exercises.ExercisesRepository {
++ LiveData<List<Exercise>> readAllData
++ void addExercise(Exercise)
++ void deleteExercise(Exercise)
++ void updateExercise(Exercise)
++ LiveData<Exercise> getExercise(Int)
+}
+
+interface datasource.exercises.ExerciseDao {
++ void insert(Exercise)
++ void update(Exercise)
++ void delete(Exercise)
++ LiveData<Exercise> getExercise(Int)
++ LiveData<List<Exercise>> getAll()
+}
+
+'=========== 1.2 Data source relations ===============
+'Exercises database
+ui.screens.exercises.ExerciseViewModel .[#green].> datasource.exercises.ExercisesRepository
+ui.screens.exercises.ExerciseViewModel .[#green].> datasource.exercises.ExercisesDatabase
+datasource.exercises.ExercisesRepository .[#green].> datasource.exercises.ExerciseDao
+
+'============================= 2. Models =============================
+'=========== 2.1 Model definitions ===============
+class models.Dropset {
+--
++ enabled: Boolean,
++ first: Int,
++ second: Int,
++ third: Int
+--
+}
+
+class models.Exercise {
+--
++ id: Int = 0,
++ name: String = "",
++ numberOfSets: Int = 0,
++ numberOfRepetitions: Int = 0,
++ weightInKilos: Float = 0F,
++ image: String = "",
++ dropset: Int = 0
+--
+}
+
+'============================= 3. UI =============================
+'===== 3.1.1 UI.Components definitions ==========
+
+class ui.components.ApplicationScaffold {
+--
+ApplicationScaffold(
+    navController: NavHostController,
+    coroutineScope: CoroutineScope,
+    topBarLabel: String = stringResource(id = R.string.app_name),
+    pageContent: @Composable (innerPadding: PaddingValues) -> Unit = {})
+--
+}
+class ui.components.NavigationDrawer {
+--
+NavigationDrawer(
+navController: NavController,
+drawerState: DrawerState,
+closeDrawer: () -> Unit = {},
+content: @Composable () -> Unit = {})
+--
+}
+class ui.components.TopAppBar {
+--
+TopAppBar(
+    onClick: () -> Unit = {},
+    label: String = stringResource(id = R.string.app_name),)
+--
+}
+class ui.components.NavigationBar {
+--
+NavigationBar(navController: NavController)
+--
+}
+
+'===== 3.1.2 UI.Components relations ==========
+ui.components.ApplicationScaffold .[#red].> ui.components.NavigationBar
+ui.components.ApplicationScaffold .[#red].> ui.components.NavigationDrawer
+ui.components.ApplicationScaffold .[#red].> ui.components.TopAppBar
+
+'===== 3.2.1 UI.models definitions ==========
+class ui.models.IconGroup {
++ filledIcon: ImageVector
++ outlineIcon: ImageVector
++ label: String
+}
+
+'===== 3.2.2 UI.models relations ==========
+ui.components.NavigationBar .[#red].> ui.models.IconGroup
+
+'===== 3.3.1 UI.navigation definitions ==========
+class ui.navigation.Screen {
+    object Home : Screen("home")
+    object Weekly : Screen("weekly")
+    object ExercisesList : Screen("exercises")
+    object ExerciseAdd : Screen("exercises/add")
+    object ExerciseEdit : Screen("exercises/edit/{exercise}")
+    object Workouts : Screen("workouts")
+    object WorkoutAdd : Screen("workouts/add")
+    object WorkoutEdit : Screen("workouts/edit/{workout}")
+}
+
+'===== 3.3.2 UI.navigation relations ==========
+
+MainActivity .[#red].> ui.navigation.NavigationGraph
+ui.navigation.NavigationGraph .[#red].> ui.screens.exercises.ExerciseViewModel
+
+ui.navigation.NavigationGraph .[#red].> ui.screens.exercises.ExerciseViewModelFactory
+
+ui.components.NavigationBar .[#red].> ui.navigation.Screen
+ui.components.NavigationDrawer .[#red].> ui.navigation.Screen
+ui.navigation.NavigationGraph .[#red].> ui.navigation.Screen
+
+
+'===== 3.4.1 UI.screens.exercises definitions ==========
+class ui.screens.exercises.ExerciseViewModel {
++ LiveData<List<Exercise>> allData
+- ExercisesRepository repository
++ LiveData<Exercise> getExercise(Int)
++ void addExercise(Exercise)
++ void deleteExercise(Exercise)
++ void updateExercise(Exercise)
+}
+
+class ui.screens.exercises.ExerciseViewModelFactory {
+}
+
+entity ui.screens.exercises.ExerciseAddScreen {
+--
+ExerciseAddScreen(
+navController: NavHostController,
+exerciseViewModel: ExerciseViewModel = viewModel())
+--
+}
+
+entity ui.screens.exercises.ExerciseListScreen {
+--
+ExerciseAddScreen(
+navController: NavHostController,
+exerciseViewModel: ExerciseViewModel = viewModel())
+--
+}
+
+entity ui.screens.exercises.ExerciseEditScreen {
+--
+ExerciseAddScreen(
+navController: NavHostController,
+exerciseViewModel: ExerciseViewModel = viewModel())
+exercise: Exercise
+--
+}
+
+entity ui.screens.exercises.components.ImageChoices {
+}
+
+entity ui.screens.exercises.components.ExerciseCard {
+
+}
+
+'
+
+ui.screens.exercises.ExerciseAddScreen ..> ui.components.ApplicationScaffold
+ui.screens.exercises.ExerciseEditScreen ..> ui.components.ApplicationScaffold
+ui.screens.exercises.ExerciseListScreen ..> ui.components.ApplicationScaffold
+
+
+@enduml

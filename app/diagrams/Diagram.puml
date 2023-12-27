@@ -1,0 +1,250 @@
+@startuml
+page 2x2
+skinparam pageMargin 10
+skinparam pageExternalColor gray
+skinparam pageBorderColor black
+skinparam groupInheritance 2
+
+class MainActivity {
++ void onCreate(Bundle?)
+}
+
+'============================= 1. Datasource =============================
+'=========== 1.1 Data source definitions ===============
+abstract class datasource.exercises.ExercisesDatabase {
++ ExerciseDao exercisesDao()
+- ExercisesDatabase? INSTANCE
++ ExercisesDatabase getInstance(Context)
+}
+
+abstract class datasource.workouts.WorkoutDatabase {
++ WorkoutDao workoutDao()
+- WorkoutDatabase? INSTANCE
++ WorkoutDatabase getInstance(Context)
+}
+
+class datasource.workouts.WorkoutRepository {
++ LiveData<List<Workout>> readAllData
++ void addWorkout(Workout)
++ void deleteWorkout(Workout)
++ void updateWorkout(Workout)
++ LiveData<Workout> getWorkout(Int)
++ LiveData<Workout> getWorkoutForDay(DaysInWeek)
++ LiveData<List<Workout>> getWorkoutsForEachDay()
++ void clearTable()
+}
+class datasource.workouts.converters.ExerciseListConverter {
++ String? fromExerciseList(List<Exercise>?)
++ List<Exercise>? toExerciseList(String?)
+}
+class datasource.workouts.converters.DaysInWeekConverter {
++ String fromDaysInWeek(DaysInWeek)
++ DaysInWeek toExerciseList(String)
+}
+
+class datasource.exercises.ExercisesRepository {
++ LiveData<List<Exercise>> readAllData
++ void addExercise(Exercise)
++ void deleteExercise(Exercise)
++ void updateExercise(Exercise)
++ LiveData<Exercise> getExercise(Int)
+}
+
+interface datasource.workouts.WorkoutDao {
++ void insert(Workout)
++ void update(Workout)
++ void delete(Workout)
++ LiveData<Workout> getWorkout(Int)
++ LiveData<List<Workout>> getAll()
++ LiveData<Workout> getWorkoutForDay(DaysInWeek)
++ LiveData<List<Workout>> getWorkoutsForEachDay(DaysInWeek)
++ void clearTable()
+}
+interface datasource.exercises.ExerciseDao {
++ void insert(Exercise)
++ void update(Exercise)
++ void delete(Exercise)
++ LiveData<Exercise> getExercise(Int)
++ LiveData<List<Exercise>> getAll()
+}
+
+'=========== 1.2 Data source relations ===============
+'Exercises database
+ui.screens.exercises.ExerciseViewModel .[#green].> datasource.exercises.ExercisesRepository
+ui.screens.exercises.ExerciseViewModel .[#green].> datasource.exercises.ExercisesDatabase
+datasource.exercises.ExercisesRepository .[#green].> datasource.exercises.ExerciseDao
+
+'Workouts database
+ui.screens.workouts.WorkoutViewModel .[#green].> datasource.workouts.WorkoutDatabase
+datasource.workouts.WorkoutDatabase .[#green].> datasource.workouts.converters.DaysInWeekConverter
+datasource.workouts.WorkoutDatabase .[#green].> datasource.workouts.converters.ExerciseListConverter
+ui.screens.workouts.WorkoutViewModel .[#green].> datasource.workouts.WorkoutRepository
+datasource.workouts.WorkoutRepository .[#green].> datasource.workouts.WorkoutDao
+
+'============================= 2. Models =============================
+'=========== 2.1 Model definitions ===============
+class models.Workout {
+--
++ id: Int = 0,
++ name: String = "",
++ durationInMinutes: Int = 0,
++ exercises: List<Exercise> = listOf(),
++ assignedToWeek: DaysInWeek = DaysInWeek.NotAssigned,
+--
+}
+
+enum models.DaysInWeek {
+    NotAssigned
+    Monday
+    Tuesday
+    Wednesday
+    Thursday
+    Friday
+    Saturday
+    Sunday
+}
+
+class models.Dropset {
+--
++ enabled: Boolean,
++ first: Int,
++ second: Int,
++ third: Int
+--
+}
+
+class models.Exercise {
+--
++ id: Int = 0,
++ name: String = "",
++ numberOfSets: Int = 0,
++ numberOfRepetitions: Int = 0,
++ weightInKilos: Float = 0F,
++ image: String = "",
++ dropset: Int = 0
+--
+}
+
+'============================= 3. UI =============================
+'===== 3.1.1 UI.Components definitions ==========
+
+
+
+'===== 3.2.1 UI.models definitions ==========
+class ui.models.IconGroup {
++ filledIcon: ImageVector
++ outlineIcon: ImageVector
++ label: String
+}
+
+'===== 3.2.2 UI.models relations ==========
+ui.components.NavigationBar .[#red].> ui.models.IconGroup
+
+'===== 3.3.1 UI.navigation definitions ==========
+class ui.navigation.Screen {
+    object Home : Screen("home")
+    object Weekly : Screen("weekly")
+    object ExercisesList : Screen("exercises")
+    object ExerciseAdd : Screen("exercises/add")
+    object ExerciseEdit : Screen("exercises/edit/{exercise}")
+    object Workouts : Screen("workouts")
+    object WorkoutAdd : Screen("workouts/add")
+    object WorkoutEdit : Screen("workouts/edit/{workout}")
+}
+
+'===== 3.3.2 UI.navigation relations ==========
+
+MainActivity .[#red].> ui.navigation.NavigationGraph
+ui.navigation.NavigationGraph .[#red].> ui.screens.exercises.ExerciseViewModel
+ui.navigation.NavigationGraph .[#red].> ui.screens.workouts.WorkoutViewModel
+
+ui.navigation.NavigationGraph .[#red].> ui.screens.exercises.ExerciseViewModelFactory
+ui.navigation.NavigationGraph .[#red].> ui.screens.workouts.WorkoutViewModelFactory
+
+ui.components.NavigationBar .[#red].> ui.navigation.Screen
+ui.components.NavigationDrawer .[#red].> ui.navigation.Screen
+ui.navigation.NavigationGraph .[#red].> ui.navigation.Screen
+
+
+'===== 3.4.1 UI.screens.exercises definitions ==========
+class ui.screens.exercises.ExerciseViewModel {
++ LiveData<List<Exercise>> allData
+- ExercisesRepository repository
++ LiveData<Exercise> getExercise(Int)
++ void addExercise(Exercise)
++ void deleteExercise(Exercise)
++ void updateExercise(Exercise)
+}
+
+class ui.screens.exercises.ExerciseViewModelFactory {
+}
+
+entity ui.screens.exercises.ExerciseAddScreen {
+--
+ExerciseAddScreen(
+navController: NavHostController,
+exerciseViewModel: ExerciseViewModel = viewModel())
+--
+}
+
+entity ui.screens.exercises.ExerciseListScreen {
+--
+ExerciseAddScreen(
+navController: NavHostController,
+exerciseViewModel: ExerciseViewModel = viewModel())
+--
+}
+
+entity ui.screens.exercises.ExerciseEditScreen {
+--
+ExerciseAddScreen(
+navController: NavHostController,
+exerciseViewModel: ExerciseViewModel = viewModel())
+exercise: Exercise
+--
+}
+
+entity ui.screens.exercises.components.ImageChoices {
+}
+
+entity ui.screens.exercises.components.ExerciseCard {
+
+}
+
+'
+
+ui.screens.exercises.ExerciseAddScreen ..> ui.components.ApplicationScaffold
+ui.screens.exercises.ExerciseEditScreen ..> ui.components.ApplicationScaffold
+ui.screens.exercises.ExerciseListScreen ..> ui.components.ApplicationScaffold
+
+
+
+class ui.screens.workouts.WorkoutViewModel {
++ LiveData<List<Workout>> allData
+- WorkoutRepository repository
++ LiveData<Workout> getWorkout(Int)
++ LiveData<Workout> getWorkoutForDay(DaysInWeek)
++ LiveData<List<Workout>> getWorkoutsForEachDay()
++ void addWorkout(Workout)
++ void deleteWorkout(Workout)
++ void updateWorkout(Workout)
++ void clearTable()
+}
+
+class ui.screens.workouts.WorkoutViewModelFactory {
+}
+
+'Home screen
+entity ui.screens.home.HomeScreen {}
+entity ui.screens.home.NoWorkoutHomeScreenContentVariant {}
+entity ui.screens.home.WorkoutHomeScreenContentVariant {}
+
+
+''HomeScreen relations
+ui.navigation.NavigationGraph <.. ui.screens.home.HomeScreen
+ui.screens.home.HomeScreen <.. ui.screens.home.NoWorkoutHomeScreenContentVariant
+ui.screens.home.HomeScreen <.. ui.screens.home.WorkoutHomeScreenContentVariant
+
+ui.screens.home.HomeScreen ..> ui.components.ApplicationScaffold
+
+@enduml
