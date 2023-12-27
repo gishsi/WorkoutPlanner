@@ -262,7 +262,7 @@ fun ExerciseAddContent(navController: NavHostController, onExerciseAdd: (Exercis
                     }
                 }) {
                 Text(text = "Add an exercise")
-                Icon(imageVector = Icons.Default.Add, contentDescription = "Add")
+                Icon(imageVector = Icons.Default.Add, contentDescription = stringResource(R.string.add))
             }
         }
     }

@@ -25,4 +25,7 @@
     <string name="add">Add</string>
     <string name="clock">Clock icon</string>
     <string name="menu_open">Menu open</string>
+    <string name="watchIcon">Watch icon</string>
+    <string name="editExercise">Edit an exercise</string>
+    <string name="deleteExercise">Delete an exercise</string>
 </resources>

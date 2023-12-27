@@ -146,7 +146,7 @@ fun ExercisesListContent(
                 }
             }) {
             Text(text = "Add an exercise")
-            Icon(imageVector = Icons.Filled.Add, contentDescription = "Add")
+            Icon(imageVector = Icons.Filled.Add, contentDescription = stringResource(R.string.add))
         }
     }
 

@@ -173,7 +173,7 @@ fun WorkoutEditScreenContent(
                         text = "Add",
                         fontWeight = FontWeight.Bold
                     )
-                    Icon(imageVector = Icons.Default.Add, contentDescription = "Add")
+                    Icon(imageVector = Icons.Default.Add, contentDescription = stringResource(R.string.add))
                 }
 
                 if (addingExercisesCancelRequired) {
