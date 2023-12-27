@@ -48,8 +48,6 @@ fun HomeScreen(
 
     val workoutForTheDay = workoutsViewModel.getWorkoutForDay(day).observeAsState(null).value
 
-    // todo: get the guy from the view model
-
     ApplicationScaffold(
         navController = navController,
         coroutineScope = coroutineScope,

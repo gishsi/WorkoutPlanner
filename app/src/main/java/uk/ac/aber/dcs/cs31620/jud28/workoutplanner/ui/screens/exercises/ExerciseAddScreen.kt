@@ -89,7 +89,6 @@ fun ExerciseAddContent(navController: NavHostController, onExerciseAdd: (Exercis
     var weight by remember { mutableFloatStateOf(0F) }
     var imageResource by remember { mutableStateOf(photos[0]) }
 
-    // todo: dropset
     var weightFirst by remember { mutableFloatStateOf(0.0F) }
     var weightSecond by remember { mutableFloatStateOf(0.0F) }
     var weightThird by remember { mutableFloatStateOf(0.0F) }
@@ -167,7 +166,9 @@ fun ExerciseAddContent(navController: NavHostController, onExerciseAdd: (Exercis
                 ) {
                     Checkbox(
                         checked = isDropset,
-                        onCheckedChange = { isDropset = !isDropset },
+                        onCheckedChange = {
+                            isDropset = !isDropset
+                      },
                     )
                     Text("Dropset?")
 
@@ -217,7 +218,6 @@ fun ExerciseAddContent(navController: NavHostController, onExerciseAdd: (Exercis
                     )
                 }
 
-                // todo: functionality
                 Text(text = "Choose an image")
                 ImageChoices() {
                     imageResource = it
@@ -239,15 +239,18 @@ fun ExerciseAddContent(navController: NavHostController, onExerciseAdd: (Exercis
                     .fillMaxWidth()
                     .padding(16.dp),
                 onClick = {
-                    //todo: validate data
                     onExerciseAdd(
                         Exercise(
-                            0,
-                            exerciseName,
-                            numOfSets.toInt(),
-                            numOfRepetitions.toInt(),
-                            weight,
-                            imageResource.toString()
+                            id = 0,
+                            name = exerciseName,
+                            numberOfSets = numOfSets.toInt(),
+                            numberOfRepetitions = numOfRepetitions.toInt(),
+                            weightInKilos = weight,
+                            image = imageResource.toString(),
+                            dropSetEnabled = isDropset,
+                            firstWeight = weightFirst,
+                            secondWeight = weightSecond,
+                            thirdWeight = weightThird,
                         )
                     )
                     navController.navigate(Screen.ExercisesList.route) {

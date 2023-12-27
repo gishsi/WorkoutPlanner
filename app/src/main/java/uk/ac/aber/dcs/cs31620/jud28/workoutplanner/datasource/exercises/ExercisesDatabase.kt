@@ -6,7 +6,7 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.models.Exercise
 
-@Database(entities = [Exercise::class], version = 2, exportSchema = false)
+@Database(entities = [Exercise::class], version = 3, exportSchema = false)
 abstract class ExercisesDatabase : RoomDatabase() {
     abstract fun exercisesDao(): ExerciseDao
 

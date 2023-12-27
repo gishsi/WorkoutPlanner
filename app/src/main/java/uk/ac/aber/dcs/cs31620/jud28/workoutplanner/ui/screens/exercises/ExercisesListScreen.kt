@@ -113,7 +113,6 @@ fun ExercisesListContent(
 
                         val serializedExercise = Gson().toJson(it)
 
-                        // todo: needs to be the id, not the name
                         navController.navigate(
                             Screen.ExerciseEdit.route.replace(
                                 "{exercise}",
@@ -178,7 +177,6 @@ fun ExerciseCard(
             .padding(4.dp)
             .fillMaxWidth()
     ) {
-        // todo: use constraint layout
         Row(
             verticalAlignment = Alignment.CenterVertically,
             modifier = modifier.padding(8.dp)
@@ -214,10 +212,18 @@ fun ExerciseCard(
                     color = MaterialTheme.colorScheme.onPrimaryContainer
                 )
 
-                Text(
-                    text = "${exercise.weightInKilos} kg",
-                    color = MaterialTheme.colorScheme.onPrimaryContainer
-                )
+                if(exercise.dropSetEnabled) {
+                    Text(
+                        text = "${exercise.firstWeight} kg | ${exercise.secondWeight} kg | ${exercise.thirdWeight} kg",
+                        color = MaterialTheme.colorScheme.onPrimaryContainer
+                    )
+                } else {
+                    Text(
+                        text = "${exercise.weightInKilos} kg",
+                        color = MaterialTheme.colorScheme.onPrimaryContainer
+                    )
+                }
+
             }
 
             if (showAction) {
@@ -330,6 +336,24 @@ fun ExerciseCardPreview() {
         }
     }
 }
+
+@Preview
+@Composable
+fun ExerciseCardDropSetPreview() {
+    WorkoutPlannerTheme(dynamicColor = false) {
+        Surface {
+            ExerciseCard(exercise = Exercise(
+                0,
+                "Dips",
+                3,
+                10,
+                10F,
+                R.drawable.dips.toString(),
+                dropSetEnabled = true))
+        }
+    }
+}
+
 
 @Preview
 @Composable
