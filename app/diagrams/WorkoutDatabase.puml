@@ -1,0 +1,156 @@
+@startuml
+page 1x2
+skinparam pageMargin 10
+skinparam pageExternalColor gray
+skinparam pageBorderColor black
+'https://plantuml.com/class-diagram
+
+'========================== WORKOUTS ==============================
+namespace datasource.workouts {
+    class WorkoutsDatabase {
+    + WorkoutDao workoutsDao()
+    - WorkoutsDatabase? INSTANCE
+    + WorkoutsDatabase getInstance(Context)
+    }
+
+    class WorkoutsRepository {
+        + LiveData<List<Workout>> readAllData
+        + void addWorkout(Workout)
+        + void deleteWorkout(Workout)
+        + void updateWorkout(Workout)
+        + LiveData<Workout> getWorkout(Int)
+        + LiveData<Workout> getWorkoutForDay(DaysInWeek)
+        + LiveData<List<Workout>> getWorkoutsForEachDay()
+        + void clearTable()
+    }
+
+    class WorkoutDao {
+        + void insert(Workout)
+        + void update(Workout)
+        + void delete(Workout)
+        + LiveData<Workout> getWorkout(Int)
+        + LiveData<List<Workout>> getAll()
+        + LiveData<Workout> getWorkoutForDay(DaysInWeek)
+        + LiveData<List<Workout>> getWorkoutsForEachDay(DaysInWeek)
++ void clearTable()
+    }
+
+    namespace converters {
+        class DaysInWeekConverter {
+            + fromDaysInWeek(dayInWeek: DaysInWeek) : String
+            + toExerciseList(day: String): DaysInWeek
+        }
+
+        class ExerciseListConverter {
+            + fun fromExerciseList(exercises: List<Exercise>?)
+            + toExerciseList(exerciseListString: String?): List<Exercise>?
+        }
+    }
+}
+
+datasource.workouts.converters.ExerciseListConverter ..> models.Exercise
+datasource.workouts.converters.DaysInWeekConverter ..> models.DaysInWeek
+
+datasource.workouts.WorkoutsDatabase ..>  datasource.workouts.converters.ExerciseListConverter
+datasource.workouts.WorkoutsDatabase ..>  datasource.workouts.converters.DaysInWeekConverter
+
+
+namespace models {
+    class Exercise {
+    --
+    + id: Int = 0,
+    + name: String = "",
+    + numberOfSets: Int = 0,
+    + numberOfRepetitions: Int = 0,
+    + weightInKilos: Float = 0F,
+    + image: String = "",
+    + dropSetEnabled: Boolean = false,
+    + firstWeight: Float = 0F,
+    + secondWeight: Float = 0F,
+    + thirdWeight: Float = 0F,
+    --
+    }
+
+    class Workout {
+--
++ id: Int = 0,
++ name: String = "",
++ durationInMinutes: Int = 0,
++ exercises: List<Exercise> = listOf(),
++ assignedToWeek: DaysInWeek = DaysInWeek.NotAssigned,
+--
+    }
+
+    enum DaysInWeek {
+        NotAssigned
+        Monday
+        Tuesday
+        Wednesday
+        Thursday
+        Friday
+        Saturday
+        Sunday
+    }
+}
+
+models.Workout ..> models.Exercise
+models.Workout ..> models.DaysInWeek
+
+namespace ui.screens.workouts {
+   class WorkoutViewModel {
+    + LiveData<List<Workout>> allData
+    - WorkoutRepository repository
+    + LiveData<Workout> getWorkout(Int)
+    + LiveData<Workout> getWorkoutForDay(DaysInWeek)
+    + LiveData<List<Workout>> getWorkoutsForEachDay()
+    + void addWorkout(Workout)
+    + void deleteWorkout(Workout)
+    + void updateWorkout(Workout)
+    + void clearTable()
+   }
+
+   class WorkoutViewModelFactory {
+   + void T create(modelClass: Class<T>)
+   }
+
+   namespace components {
+   }
+}
+
+'datasource to models
+datasource.workouts.WorkoutsRepository ..> models.Workout
+datasource.workouts.WorkoutsRepository ..> datasource.workouts.WorkoutDao
+datasource.workouts.WorkoutsDatabase ..> datasource.workouts.WorkoutDao
+datasource.workouts.WorkoutDao ..> models.Workout
+
+'screen to model
+ui.screens.workouts ..> models.Workout
+
+'datasource to ui
+ui.screens.workouts.WorkoutsScreens ..> ui.screens.workouts.WorkoutViewModel
+
+
+'========================== SHARED ==============================
+namespace ui.navigation {
+    class ui.navigation.NavigationGraph {
+    }
+}
+
+class MainActivity {
++ void onCreate(savedInstanceState: Bundle?)
++ void MainActivityPreview()
+}
+
+
+ui.navigation.NavigationGraph .[#blue].> ui.screens.workouts.WorkoutsScreens
+ui.screens.workouts.WorkoutsScreens ..> ui.screens.workouts.components
+note top of ui.screens.workouts.WorkoutsScreens: Brevity
+
+ui.navigation.NavigationGraph .[#blue].> ui.screens.workouts.WorkoutViewModel
+ui.navigation.NavigationGraph .[#blue].> ui.screens.workouts.WorkoutViewModelFactory
+
+MainActivity --> ui.navigation.NavigationGraph
+
+ui.screens.workouts.WorkoutViewModel ..> datasource.workouts.WorkoutsRepository
+
+@enduml

@@ -1,0 +1,104 @@
+@startuml
+page 1x2
+skinparam pageMargin 10
+skinparam pageExternalColor gray
+skinparam pageBorderColor black
+'https://plantuml.com/class-diagram
+
+'========================== EXERCISES ==============================
+namespace datasource.exercises {
+    class ExercisesDatabase {
+    + ExerciseDao exercisesDao()
+    - ExercisesDatabase? INSTANCE
+    + ExercisesDatabase getInstance(Context)
+    }
+
+    class ExercisesRepository {
+    + LiveData<List<Exercise>> readAllData
+    + void addExercise(Exercise)
+    + void deleteExercise(Exercise)
+    + void updateExercise(Exercise)
+    + LiveData<Exercise> getExercise(Int)
+    }
+
+    class ExerciseDao {
+    + void insert(Exercise)
+    + void update(Exercise)
+    + void delete(Exercise)
+    + LiveData<Exercise> getExercise(Int)
+    + LiveData<List<Exercise>> getAll()
+    }
+}
+
+namespace models {
+    class Exercise {
+    --
+    + id: Int = 0,
+    + name: String = "",
+    + numberOfSets: Int = 0,
+    + numberOfRepetitions: Int = 0,
+    + weightInKilos: Float = 0F,
+    + image: String = "",
+    + dropSetEnabled: Boolean = false,
+    + firstWeight: Float = 0F,
+    + secondWeight: Float = 0F,
+    + thirdWeight: Float = 0F,
+    --
+    }
+}
+
+namespace ui.screens.exercises {
+   class ExerciseViewModel {
+   + LiveData<List<Exercise>> allData
+   - ExercisesRepository repository
+   + LiveData<Exercise> getExercise(Int)
+   + void addExercise(Exercise)
+   + void deleteExercise(Exercise)
+   + void updateExercise(Exercise)
+   }
+
+   class ExerciseViewModelFactory {
+   + void T create(modelClass: Class<T>)
+   }
+
+   namespace components {
+   }
+}
+
+'datasource to models
+datasource.exercises.ExercisesRepository ..> models.Exercise
+datasource.exercises.ExercisesRepository ..> datasource.exercises.ExerciseDao
+datasource.exercises.ExercisesDatabase ..> datasource.exercises.ExerciseDao
+datasource.exercises.ExerciseDao ..> models.Exercise
+
+'screen to model
+ui.screens.exercises ..> models.Exercise
+
+'datasource to ui
+ui.screens.exercises.ExercisesScreens ..> ui.screens.exercises.ExerciseViewModel
+
+
+'========================== SHARED ==============================
+namespace ui.navigation {
+    class ui.navigation.NavigationGraph {
+    }
+}
+
+class MainActivity {
++ void onCreate(savedInstanceState: Bundle?)
++ void MainActivityPreview()
+}
+
+
+ui.navigation.NavigationGraph .[#blue].> ui.screens.exercises.ExercisesScreens
+ui.screens.exercises.ExercisesScreens ..> ui.screens.exercises.components
+note top of ui.screens.exercises.ExercisesScreens: Brevity
+
+ui.navigation.NavigationGraph .[#blue].> ui.screens.exercises.ExerciseViewModel
+ui.navigation.NavigationGraph .[#blue].> ui.screens.exercises.ExerciseViewModelFactory
+
+MainActivity --> ui.navigation.NavigationGraph
+
+ui.screens.exercises.ExerciseViewModel ..> datasource.exercises.ExercisesRepository
+
+@enduml
