@@ -1,0 +1,155 @@
+@startuml
+page 2x2
+skinparam pageMargin 10
+skinparam pageExternalColor gray
+skinparam pageBorderColor black
+skinparam groupInheritance 2
+
+
+
+namespace datasource {
+}
+
+namespace models {
+    class Dropset {
+    --
+    + enabled: Boolean,
+    + first: Int,
+    + second: Int,
+    + third: Int
+    --
+    }
+
+    class Exercise {
+    --
+    + id: Int = 0,
+    + name: String = "",
+    + numberOfSets: Int = 0,
+    + numberOfRepetitions: Int = 0,
+    + weightInKilos: Float = 0F,
+    + image: String = "",
+    + dropset: Int = 0
+    --
+    }
+}
+
+
+namespace ui.screens.exercises {
+    class ExercisesListScreen {
+    --
+    + ExercisesListScreen(
+    navController: NavHostController,
+    exerciseViewModel: ExerciseViewModel = viewModel())
+    --
+    }
+
+  class ExercisesAddScreen {
+    --
+   +  ExercisesListScreen(
+    navController: NavHostController,
+    exerciseViewModel: ExerciseViewModel = viewModel())
+    --
+    }
+
+  class ExercisesEditScreen {
+    --
+    + ExercisesListScreen(
+    navController: NavHostController,
+    exerciseViewModel: ExerciseViewModel = viewModel()
+    exercise: Exercise)
+
+    --
+    }
+
+together {
+   class ExerciseViewModel {
+   + LiveData<List<Exercise>> allData
+   - ExercisesRepository repository
+   + LiveData<Exercise> getExercise(Int)
+   + void addExercise(Exercise)
+   + void deleteExercise(Exercise)
+   + void updateExercise(Exercise)
+   }
+
+   class ExerciseViewModelFactory {
+   + void T create(modelClass: Class<T>)
+   }
+}
+
+
+   class ExercisesListContent {
+   + navController: NavHostController,
+   + exercisesList: List<Exercise>,
+   + onDelete: (Exercise) -> Unit = {},
+   }
+
+   class ExerciseAddContent {
+   }
+
+   class ExerciseEditContent {
+       navController: NavHostController,
+       exercise: Exercise,
+       onExerciseUpdate: (Exercise) -> Unit = {}
+   }
+}
+
+namespace ui.screens.exercises.components {
+    class ExerciseCard {
+      +  modifier: Modifier,
+        + exercise: Exercise,
+        + editAction: (Exercise),
+        + deleteAction: (Exercise),
+        + showAction: Boolean,
+        + imageWidth: Dp,
+        + imageHeight: Dp ,
+       +  containerColor: Color,
+       +  contentColor: Color
+    }
+    class RemoveExerciseFromListDialog {
+        + name: String = "",
+        + onDeleteConfirm: () -> Unit,
+        + onDeleteCancel: () -> Unit,
+        + modifier: Modifier = Modifier
+    }
+    class  ImageChoices {
+        + onImageSelect: (Int) -> Unit),
+        + photos: List<Int>
+    }
+}
+
+class ui.navigation.Screen {
+}
+
+ui.screens.exercises.ExercisesEditScreen .[#blue].> ui.screens.exercises.ExerciseEditContent
+ui.screens.exercises.ExercisesAddScreen ..> ui.screens.exercises.ExerciseAddContent
+ui.screens.exercises.ExercisesEditScreen .[#blue].> ui.screens.exercises.ExerciseViewModel
+ui.screens.exercises.ExercisesAddScreen ..> ui.screens.exercises.ExerciseViewModel
+
+ui.screens.exercises.ExercisesAddScreen ..> ui.screens.exercises.components.ImageChoices
+ui.screens.exercises.ExercisesEditScreen .[#blue].> ui.screens.exercises.components.ImageChoices
+
+ui.screens.exercises.ExerciseAddContent .[#gray].> ui.navigation.Screen
+ui.screens.exercises.ExerciseEditContent .[#gray].> ui.navigation.Screen
+ui.screens.exercises.ExercisesListScreen .[#gray].> ui.navigation.Screen
+
+'each screen uses components in ui
+ui.navigation.NavigationGraph ..> ui.screens.exercises.ExercisesListScreen
+ui.navigation.NavigationGraph ..> ui.screens.exercises.ExerciseViewModelFactory
+
+ui.screens.exercises.ExerciseViewModelFactory ..> ui.screens.exercises.ExerciseViewModel
+
+ui.screens.exercises.ExercisesListContent .[#green].> models.Exercise
+ui.screens.exercises.components.ExerciseCard ..> models.Exercise
+models.Exercise ..> models.Dropset
+
+ui.screens.exercises.ExercisesListScreen .[#green].> ui.screens.exercises.ExerciseViewModel
+
+ui.screens.exercises.ExerciseViewModel ..> datasource
+
+ui.screens.exercises.ExercisesListContent .[#green].> ui.screens.exercises.components.ExerciseCard
+ui.screens.exercises.ExercisesListContent .[#green].> ui.screens.exercises.components.RemoveExerciseFromListDialog
+ui.screens.exercises.ExercisesListScreen .[#green].> ui.screens.exercises.ExercisesListContent
+
+'asdasd
+
+@enduml

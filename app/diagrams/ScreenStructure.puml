@@ -1,0 +1,96 @@
+@startuml
+'https://plantuml.com/class-diagram
+
+namespace ui.components {
+    class ApplicationScaffold {
+    --
+    ApplicationScaffold(
+        navController: NavHostController,
+        coroutineScope: CoroutineScope,
+        topBarLabel: String = stringResource(id = R.string.app_name),
+        pageContent: @Composable (innerPadding: PaddingValues) -> Unit = {})
+    --
+    }
+    class NavigationDrawer {
+    --
+    NavigationDrawer(
+    navController: NavController,
+    drawerState: DrawerState,
+    closeDrawer: () -> Unit = {},
+    content: @Composable () -> Unit = {})
+    --
+    }
+    class TopAppBar {
+    --
+    TopAppBar(
+        onClick: () -> Unit = {},
+        label: String = stringResource(id = R.string.app_name),)
+    --
+    }
+    class NavigationBar {
+    --
+    NavigationBar(navController: NavController)
+    --
+    }
+}
+
+class ui.navigation.Screen {
+    object Home : Screen("home")
+    object Weekly : Screen("weekly")
+    object ExercisesList : Screen("exercises")
+    object ExerciseAdd : Screen("exercises/add")
+    object ExerciseEdit : Screen("exercises/edit/{exercise}")
+    object Workouts : Screen("workouts")
+    object WorkoutAdd : Screen("workouts/add")
+    object WorkoutEdit : Screen("workouts/edit/{workout}")
+
+    + screensInBottomBar: List<Screen>
+}
+
+
+
+class ui.navigation.NavigationGraph {
+}
+
+class ui.models.IconGroup {
++ filledIcon: ImageVector
++ outlineIcon: ImageVector
++ label: String
+}
+
+class MainActivity {
++ void onCreate(savedInstanceState: Bundle?)
++ void MainActivityPreview()
+}
+
+together {
+    namespace ui.screens {
+        together {
+         class HomeScreen {}
+                class ExercisesScreens {}
+                class WorkoutScreens {}
+                class Weekly {}
+        }
+
+    }
+
+    namespace datasource {
+    }
+}
+
+
+'===== 3.2.2 UI.models relations ==========
+ui.components.NavigationBar ..> ui.models.IconGroup
+ui.navigation.NavigationGraph ..> ui.navigation.Screen
+ui.components.NavigationBar ..> ui.navigation.Screen
+ui.components.NavigationDrawer ..> ui.navigation.Screen
+ui.components.ApplicationScaffold ..> ui.components.NavigationBar
+ui.components.ApplicationScaffold ..> ui.components.NavigationDrawer
+ui.components.ApplicationScaffold ..> ui.components.TopAppBar
+MainActivity .[#red].> ui.navigation.NavigationGraph
+
+ui.navigation.NavigationGraph .[#red].> ui.screens
+ui.screens ..> ui.components.ApplicationScaffold
+ui.screens .[#gray].> datasource
+
+@enduml
