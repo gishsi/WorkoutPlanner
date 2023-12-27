@@ -1,5 +1,6 @@
 package uk.ac.aber.dcs.cs31620.jud28.workoutplanner.ui.components
 
+import androidx.compose.foundation.background
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.CalendarMonth
 import androidx.compose.material.icons.filled.FitnessCenter
@@ -10,9 +11,12 @@ import androidx.compose.material.icons.outlined.Home
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavController
@@ -24,6 +28,7 @@ import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.R
 import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.ui.models.IconGroup
 import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.ui.navigation.Screen
 import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.ui.navigation.screensInBottomBar
+import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.ui.theme.WorkoutPlannerTheme
 
 /**
  * Bottom bar for pages for navigation between the main pages.
@@ -52,7 +57,9 @@ fun NavigationBar(
         ),
     )
 
-    NavigationBar {
+    NavigationBar(
+        containerColor = Color.Transparent
+    ) {
         val navBackStackEntry by navController.currentBackStackEntryAsState()
         val currentDestination = navBackStackEntry?.destination
 
@@ -89,5 +96,9 @@ fun NavigationBar(
 @Composable
 fun Preview() {
     val navController = rememberNavController()
-    NavigationBar(navController)
+    WorkoutPlannerTheme {
+        Surface {
+            NavigationBar(navController)
+        }
+    }
 }

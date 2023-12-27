@@ -47,7 +47,8 @@ import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.ui.theme.WorkoutPlannerTheme
 fun AssignWorkoutDialog(
     weekName: DaysInWeek,
     workouts: List<Workout>,
-    onClose: () -> Unit, modifier: Modifier = Modifier,
+    onClose: () -> Unit,
+    modifier: Modifier = Modifier,
     onAddAction: (Workout) -> Unit = {},
 ) {
     var isVerbose by rememberSaveable { mutableStateOf(false) }
