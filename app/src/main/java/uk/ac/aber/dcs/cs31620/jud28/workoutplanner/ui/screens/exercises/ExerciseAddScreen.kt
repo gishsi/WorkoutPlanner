@@ -16,7 +16,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.Button
 import androidx.compose.material3.Checkbox
-import androidx.compose.material3.CheckboxColors
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
@@ -168,7 +167,7 @@ fun ExerciseAddContent(navController: NavHostController, onExerciseAdd: (Exercis
                         checked = isDropset,
                         onCheckedChange = {
                             isDropset = !isDropset
-                      },
+                        },
                     )
                     Text("Dropset?")
 
@@ -188,7 +187,8 @@ fun ExerciseAddContent(navController: NavHostController, onExerciseAdd: (Exercis
                             focusedBorderColor = MaterialTheme.colorScheme.secondary,
                             unfocusedBorderColor = MaterialTheme.colorScheme.inversePrimary,
                             focusedLabelColor = MaterialTheme.colorScheme.secondary,
-                            unfocusedLabelColor = MaterialTheme.colorScheme.secondary,)
+                            unfocusedLabelColor = MaterialTheme.colorScheme.secondary,
+                        )
                     )
                     OutlinedTextField(
                         modifier = Modifier
@@ -201,7 +201,8 @@ fun ExerciseAddContent(navController: NavHostController, onExerciseAdd: (Exercis
                             focusedBorderColor = MaterialTheme.colorScheme.secondary,
                             unfocusedBorderColor = MaterialTheme.colorScheme.inversePrimary,
                             focusedLabelColor = MaterialTheme.colorScheme.secondary,
-                            unfocusedLabelColor = MaterialTheme.colorScheme.secondary,)
+                            unfocusedLabelColor = MaterialTheme.colorScheme.secondary,
+                        )
                     )
                     OutlinedTextField(
                         modifier = Modifier
@@ -214,7 +215,8 @@ fun ExerciseAddContent(navController: NavHostController, onExerciseAdd: (Exercis
                             focusedBorderColor = MaterialTheme.colorScheme.secondary,
                             unfocusedBorderColor = MaterialTheme.colorScheme.inversePrimary,
                             focusedLabelColor = MaterialTheme.colorScheme.secondary,
-                            unfocusedLabelColor = MaterialTheme.colorScheme.secondary,)
+                            unfocusedLabelColor = MaterialTheme.colorScheme.secondary,
+                        )
                     )
                 }
 
@@ -262,7 +264,10 @@ fun ExerciseAddContent(navController: NavHostController, onExerciseAdd: (Exercis
                     }
                 }) {
                 Text(text = "Add an exercise")
-                Icon(imageVector = Icons.Default.Add, contentDescription = stringResource(R.string.add))
+                Icon(
+                    imageVector = Icons.Default.Add,
+                    contentDescription = stringResource(R.string.add)
+                )
             }
         }
     }

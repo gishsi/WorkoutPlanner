@@ -19,10 +19,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.R
 import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.models.DaysInWeek
-import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.models.Exercise
 import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.models.Workout
-import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.ui.screens.exercises.ExerciseCard
-import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.ui.screens.exercises.components.photos
+import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.ui.screens.exercises.components.ExerciseCard
 import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.ui.theme.WorkoutPlannerTheme
 
 @Composable
@@ -52,7 +50,10 @@ fun WorkoutHomeScreenContentVariant(
             Column(
                 modifier = Modifier
             ) {
-                Icon(imageVector = Icons.Outlined.WatchLater, contentDescription = stringResource(R.string.watchIcon))
+                Icon(
+                    imageVector = Icons.Outlined.WatchLater,
+                    contentDescription = stringResource(R.string.watchIcon)
+                )
                 Text(
                     text = "${workout.durationInMinutes} min",
                     fontWeight = FontWeight.Bold,
@@ -75,7 +76,15 @@ fun WorkoutHomeScreenContentVariant(
 fun WorkoutHomeScreenContentVariantPreview() {
     WorkoutPlannerTheme {
         Surface {
-            WorkoutHomeScreenContentVariant(Workout(0, "Chest", 120, listOf(), DaysInWeek.Monday))
+            WorkoutHomeScreenContentVariant(
+                Workout(
+                    0,
+                    "Chest",
+                    120,
+                    listOf(),
+                    listOf(DaysInWeek.Monday)
+                )
+            )
         }
     }
 }

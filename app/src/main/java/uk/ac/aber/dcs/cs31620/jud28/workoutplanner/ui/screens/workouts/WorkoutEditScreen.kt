@@ -17,7 +17,6 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -47,7 +46,6 @@ import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.ui.navigation.Screen
 import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.ui.screens.exercises.ExerciseViewModel
 import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.ui.screens.workouts.components.ExerciseInWorkoutFormCard
 import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.ui.theme.WorkoutPlannerTheme
-import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.ui.theme.md_theme_dark_background
 
 /**
  *  Screen for editing a workout
@@ -173,7 +171,10 @@ fun WorkoutEditScreenContent(
                         text = "Add",
                         fontWeight = FontWeight.Bold
                     )
-                    Icon(imageVector = Icons.Default.Add, contentDescription = stringResource(R.string.add))
+                    Icon(
+                        imageVector = Icons.Default.Add,
+                        contentDescription = stringResource(R.string.add)
+                    )
                 }
 
                 if (addingExercisesCancelRequired) {
@@ -197,7 +198,7 @@ fun WorkoutEditScreenContent(
                             workoutName,
                             duration.toInt(),
                             exercises,
-                            workout.assignedToWeek
+                            workout.assignedTo
                         )
                     )
 

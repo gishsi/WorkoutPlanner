@@ -189,7 +189,8 @@ fun ExerciseEditContent(
                             focusedBorderColor = MaterialTheme.colorScheme.secondary,
                             unfocusedBorderColor = MaterialTheme.colorScheme.inversePrimary,
                             focusedLabelColor = MaterialTheme.colorScheme.secondary,
-                            unfocusedLabelColor = MaterialTheme.colorScheme.secondary,)
+                            unfocusedLabelColor = MaterialTheme.colorScheme.secondary,
+                        )
                     )
                     OutlinedTextField(
                         modifier = Modifier
@@ -202,7 +203,8 @@ fun ExerciseEditContent(
                             focusedBorderColor = MaterialTheme.colorScheme.secondary,
                             unfocusedBorderColor = MaterialTheme.colorScheme.inversePrimary,
                             focusedLabelColor = MaterialTheme.colorScheme.secondary,
-                            unfocusedLabelColor = MaterialTheme.colorScheme.secondary,)
+                            unfocusedLabelColor = MaterialTheme.colorScheme.secondary,
+                        )
                     )
                     OutlinedTextField(
                         modifier = Modifier
@@ -215,7 +217,8 @@ fun ExerciseEditContent(
                             focusedBorderColor = MaterialTheme.colorScheme.secondary,
                             unfocusedBorderColor = MaterialTheme.colorScheme.inversePrimary,
                             focusedLabelColor = MaterialTheme.colorScheme.secondary,
-                            unfocusedLabelColor = MaterialTheme.colorScheme.secondary,)
+                            unfocusedLabelColor = MaterialTheme.colorScheme.secondary,
+                        )
                     )
                 }
 

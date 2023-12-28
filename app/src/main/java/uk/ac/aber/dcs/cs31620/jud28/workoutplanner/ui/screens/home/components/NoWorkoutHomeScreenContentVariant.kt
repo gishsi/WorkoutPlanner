@@ -34,7 +34,11 @@ import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.ui.theme.WorkoutPlannerTheme
 
 // Variants
 @Composable
-fun NoWorkoutHomeScreenContentVariant() {
+fun NoWorkoutHomeScreenContentVariant(
+    weekName: DaysInWeek,
+    allWorkouts: List<Workout>,
+    onWorkoutAssign: (Workout) -> Unit
+) {
     var showAssignWorkoutDialog by rememberSaveable { mutableStateOf(false) }
 
     Column(
@@ -78,9 +82,10 @@ fun NoWorkoutHomeScreenContentVariant() {
 
         if (showAssignWorkoutDialog) {
             AssignWorkoutDialog(
-                DaysInWeek.Monday,
-                workouts = listOf(Workout(0, "Chest", 120, listOf(Exercise(0, "Crunches", 3, 20, 0.0F, R.drawable.crunches.toString())))),
+                weekName,
+                workouts = allWorkouts,
                 onClose = { showAssignWorkoutDialog = false },
+                onAddAction = onWorkoutAssign
             )
         }
     }
@@ -90,6 +95,16 @@ fun NoWorkoutHomeScreenContentVariant() {
 @Preview
 fun NoWorkoutHomeScreenContentVariantPreview() {
     WorkoutPlannerTheme(dynamicColor = false) {
-        NoWorkoutHomeScreenContentVariant()
+        NoWorkoutHomeScreenContentVariant(
+            DaysInWeek.Sunday,
+            listOf(
+                Workout(
+                    0,
+                    "Chest",
+                    120,
+                    listOf(Exercise(0, "Crunches", 3, 20, 0.0F, R.drawable.crunches.toString()))
+                )
+            )
+        ) {}
     }
 }

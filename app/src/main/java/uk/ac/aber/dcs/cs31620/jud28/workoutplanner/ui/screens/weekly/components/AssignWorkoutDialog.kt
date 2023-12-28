@@ -40,7 +40,7 @@ import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.R
 import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.models.DaysInWeek
 import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.models.Exercise
 import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.models.Workout
-import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.ui.screens.exercises.ExerciseCard
+import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.ui.screens.exercises.components.ExerciseCard
 import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.ui.theme.WorkoutPlannerTheme
 
 @Composable
@@ -138,12 +138,16 @@ fun AssignWorkoutDialog(
                             // Add button
                             IconButton(
                                 onClick = {
+                                    val assignedTo =
+                                        workout.assignedTo.toMutableSet() // avoids duplicates
+                                    assignedTo.add(weekName)
+
                                     val assignedWorkout = Workout(
                                         id = workout.id,
                                         name = workout.name,
                                         durationInMinutes = workout.durationInMinutes,
                                         exercises = workout.exercises,
-                                        assignedToWeek = weekName
+                                        assignedTo = assignedTo.toList(),
                                     )
 
                                     onAddAction(assignedWorkout)

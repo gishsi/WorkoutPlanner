@@ -66,7 +66,8 @@ fun ExerciseInWorkoutFormCardPreview() {
                     3,
                     8,
                     50.0F,
-                    R.drawable.bicep_curl.toString()),
+                    R.drawable.bicep_curl.toString()
+                ),
                 onDelete = {},
             )
         }

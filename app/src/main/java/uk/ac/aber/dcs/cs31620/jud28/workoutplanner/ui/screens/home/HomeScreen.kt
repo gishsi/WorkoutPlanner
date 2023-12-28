@@ -1,19 +1,13 @@
 package uk.ac.aber.dcs.cs31620.jud28.workoutplanner.ui.screens.home
 
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Checkbox
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -22,9 +16,9 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.R
 import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.models.DaysInWeek
+import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.models.Exercise
 import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.models.Workout
 import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.ui.components.ApplicationScaffold
-import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.ui.screens.exercises.ExerciseViewModel
 import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.ui.screens.home.components.NoWorkoutHomeScreenContentVariant
 import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.ui.screens.home.components.WorkoutHomeScreenContentVariant
 import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.ui.screens.workouts.WorkoutViewModel
@@ -47,6 +41,7 @@ fun HomeScreen(
     val day = getCurrentDayOfWeek()
 
     val workoutForTheDay = workoutsViewModel.getWorkoutForDay(day).observeAsState(null).value
+    val allWorkouts = workoutsViewModel.allData.observeAsState(listOf()).value
 
     ApplicationScaffold(
         navController = navController,
@@ -58,7 +53,12 @@ fun HomeScreen(
                 .padding(innerPadding)
                 .fillMaxSize()
         ) {
-            HomeScreenContent(workoutForTheDay)
+            HomeScreenContent(
+                workoutForTheDay, allWorkouts,
+                onWorkoutAssign = {
+                    workoutsViewModel.updateWorkout(it)
+                },
+            )
         }
     }
 }
@@ -73,7 +73,9 @@ fun getCurrentDayOfWeek(): DaysInWeek {
 
 @Composable
 fun HomeScreenContent(
-    workoutForTheDay: Workout?
+    workoutForTheDay: Workout?,
+    allWorkouts: List<Workout>,
+    onWorkoutAssign: (Workout) -> Unit,
 ) {
     Column(
         modifier = Modifier.fillMaxSize(),
@@ -84,12 +86,11 @@ fun HomeScreenContent(
         )
 
         if (workoutForTheDay == null) {
-            NoWorkoutHomeScreenContentVariant()
+            NoWorkoutHomeScreenContentVariant(getCurrentDayOfWeek(), allWorkouts, onWorkoutAssign)
         } else {
             WorkoutHomeScreenContentVariant(workoutForTheDay)
         }
     }
-
 }
 
 /*************** Previews ***************/
@@ -99,7 +100,10 @@ fun HomeScreenContent(
 fun HomeScreenContentPreview() {
     WorkoutPlannerTheme {
         Surface {
-            HomeScreenContent(Workout(0, "Chest", 120, listOf(), DaysInWeek.Monday))
+            HomeScreenContent(
+                Workout(0, "Chest", 120, listOf(), listOf(DaysInWeek.Monday)),
+                listOf()
+            ) {}
         }
     }
 }
@@ -109,7 +113,17 @@ fun HomeScreenContentPreview() {
 fun HomeScreenNoContentPreview() {
     WorkoutPlannerTheme {
         Surface {
-            HomeScreenContent(null)
+            HomeScreenContent(
+                null,
+                listOf(
+                    Workout(
+                        0,
+                        "Chest",
+                        120,
+                        listOf(Exercise(0, "Crunches", 3, 20, 0.0F, R.drawable.crunches.toString()))
+                    )
+                )
+            ) {}
         }
     }
 }

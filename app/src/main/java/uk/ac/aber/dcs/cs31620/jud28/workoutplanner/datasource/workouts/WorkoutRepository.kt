@@ -23,11 +23,11 @@ class WorkoutRepository(private val workoutDao: WorkoutDao) {
         return workoutDao.getWorkout(id)
     }
 
-    fun getWorkoutForDay(day: DaysInWeek) : LiveData<Workout> {
+    fun getWorkoutForDay(day: DaysInWeek): LiveData<Workout> {
         return workoutDao.getWorkoutForDay(day)
     }
 
-    fun getWorkoutsForEachDay() : LiveData<List<Workout>> {
+    fun getWorkoutsForEachDay(): LiveData<List<Workout>> {
         return workoutDao.getWorkoutsForEachDay()
     }
 
