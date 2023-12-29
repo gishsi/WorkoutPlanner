@@ -55,9 +55,7 @@ fun NavigationBar(
         ),
     )
 
-    NavigationBar(
-        containerColor = Color.Transparent
-    ) {
+    NavigationBar{
         val navBackStackEntry by navController.currentBackStackEntryAsState()
         val currentDestination = navBackStackEntry?.destination
 
