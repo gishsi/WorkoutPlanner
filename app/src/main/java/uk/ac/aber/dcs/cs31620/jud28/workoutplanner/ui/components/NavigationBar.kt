@@ -55,8 +55,7 @@ fun NavigationBar(
         ),
     )
 
-    NavigationBar(
-    ) {
+    NavigationBar{
         val navBackStackEntry by navController.currentBackStackEntryAsState()
         val currentDestination = navBackStackEntry?.destination
 
