@@ -21,6 +21,8 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -29,6 +31,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.google.gson.Gson
 import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.R
+import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.models.Exercise
 import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.models.Workout
 import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.ui.components.ApplicationScaffold
 import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.ui.navigation.Screen
@@ -72,6 +75,24 @@ fun WorkoutsScreenContent(
     workouts: List<Workout>,
     deleteAction: (Workout) -> Unit = {},
 ) {
+    // https://stackoverflow.com/questions/53351465/sort-array-by-alphabet-using-kotlin
+    val sortedWorkouts = workouts.sortedBy { it.name.uppercase() }
+
+    val mapOfSorted = mutableMapOf<Char, MutableList<Workout>>()
+
+    for (workout in sortedWorkouts) {
+        try {
+            val key = workout.name.uppercase().first()
+
+            if (mapOfSorted.containsKey(key)) {
+                mapOfSorted[workout.name.uppercase().first()]?.add(workout)
+            } else {
+                mapOfSorted[workout.name.uppercase().first()] = mutableListOf(workout)
+            }
+
+        } catch (_: NoSuchElementException) {}
+    }
+
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -81,27 +102,38 @@ fun WorkoutsScreenContent(
         LazyColumn(
             modifier = Modifier.fillMaxWidth()
         ) {
-            items(workouts) { workout ->
-                WorkoutCard(
-                    workout = workout,
-                    editAction = {
-                        Log.d("_WORKOUTS", "Editing a workout [${it.name}]")
+            mapOfSorted.forEach { (key, workouts) ->
+                item {
+                    Text(
+                        text = key.toString(),
+                        style = MaterialTheme.typography.titleLarge,
+                        fontWeight = FontWeight.Bold,
+                        fontStyle = FontStyle.Italic,
+                        modifier = Modifier.padding(4.dp)
+                    )
+                    for (workout in workouts) {
+                        WorkoutCard(
+                            workout = workout,
+                            editAction = {
+                                Log.d("_WORKOUTS", "Editing a workout [${it.name}]")
 
-                        val serializedWorkout = Gson().toJson(workout)
+                                val serializedWorkout = Gson().toJson(workout)
 
-                        navController.navigate(
-                            Screen.WorkoutEdit.route.replace(
-                                "{workout}",
-                                serializedWorkout
-                            )
+                                navController.navigate(
+                                    Screen.WorkoutEdit.route.replace(
+                                        "{workout}",
+                                        serializedWorkout
+                                    )
+                                )
+                            },
+                            deleteAction = {
+                                Log.d("_WORKOUTS", "Deleting a workout [${it.name}]")
+
+                                deleteAction(workout)
+                            },
                         )
-                    },
-                    deleteAction = {
-                        Log.d("_WORKOUTS", "Deleting a workout [${it.name}]")
-
-                        deleteAction(workout)
-                    },
-                )
+                    }
+                }
             }
         }
         Button(

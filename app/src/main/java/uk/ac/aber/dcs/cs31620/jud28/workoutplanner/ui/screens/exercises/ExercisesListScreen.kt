@@ -9,11 +9,11 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -21,6 +21,8 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -49,7 +51,6 @@ fun ExercisesListScreen(
     val coroutineScope = rememberCoroutineScope()
     val exercisesList = exerciseViewModel.allData.observeAsState(listOf()).value
 
-
     ApplicationScaffold(
         navController = navController,
         coroutineScope = coroutineScope,
@@ -73,6 +74,25 @@ fun ExercisesListContent(
     exercisesList: List<Exercise>,
     onDelete: (Exercise) -> Unit = {},
 ) {
+    // https://stackoverflow.com/questions/53351465/sort-array-by-alphabet-using-kotlin
+    val sortedExercises = exercisesList.sortedBy { it.name.uppercase() }
+
+    val mapOfSorted = mutableMapOf<Char, MutableList<Exercise>>()
+
+    for (exercise in sortedExercises) {
+        try {
+            val key = exercise.name.uppercase().first()
+
+            if (mapOfSorted.containsKey(key)) {
+                mapOfSorted[exercise.name.uppercase().first()]?.add(exercise)
+            } else {
+                mapOfSorted[exercise.name.uppercase().first()] = mutableListOf(exercise)
+            }
+
+        } catch (_: NoSuchElementException) {
+        }
+    }
+
     Column(
         modifier = Modifier
             .padding(32.dp)
@@ -81,27 +101,39 @@ fun ExercisesListContent(
         LazyColumn(
             modifier = Modifier.padding(bottom = 32.dp)
         ) {
-            items(exercisesList) { exercise ->
-                ExerciseCard(
-                    exercise = exercise,
-                    editAction = {
-                        Log.d("EXE_LIST", "Editing an exercise [${it.id}]")
+            mapOfSorted.forEach { (key, exercises) ->
+                item {
+                    Text(
+                        text = key.toString(),
+                        style = MaterialTheme.typography.titleLarge,
+                        fontWeight = FontWeight.Bold,
+                        fontStyle = FontStyle.Italic,
+                        modifier = Modifier.padding(4.dp)
+                    )
+                    for (exercise in exercises) {
+                        ExerciseCard(
+                            exercise = exercise,
+                            editAction = {
+                                Log.d("EXE_LIST", "Editing an exercise [${it.id}]")
 
-                        val serializedExercise = Gson().toJson(it)
+                                val serializedExercise = Gson().toJson(it)
 
-                        navController.navigate(
-                            Screen.ExerciseEdit.route.replace(
-                                "{exercise}",
-                                serializedExercise
-                            )
+                                navController.navigate(
+                                    Screen.ExerciseEdit.route.replace(
+                                        "{exercise}",
+                                        serializedExercise
+                                    )
+                                )
+                            },
+                            deleteAction = {
+                                Log.d("EXE_LIST", "Deleting an exercise [${it.name}]")
+                                onDelete(exercise)
+                            },
+                            showAction = true,
                         )
-                    },
-                    deleteAction = {
-                        Log.d("EXE_LIST", "Deleting an exercise [${it.name}]")
-                        onDelete(exercise)
-                    },
-                    showAction = true,
-                )
+                    }
+                }
+
             }
         }
 
