@@ -1,27 +1,70 @@
 @startuml
-'https://plantuml.com/class-diagram
+namespace weekly {
+class  WeeklyScreen {
+   + workoutViewModel: WorkoutViewModel = viewModel(),
+}
+namespace components {
+    class WeekEntry {
+            + weekDay: DaysInWeek,
+            + workouts: List<Workout>,
+            + allWorkouts: List<Workout>,
+            + onWorkoutAssign: (Workout) -> Unit,
+            + onWorkoutEntryDelete: (Workout) -> Unit,
 
-abstract class WeeklyScreen
-abstract AbstractCollection
-interface List
-interface Collection
+    }
 
-List <|-- AbstractList
-Collection <|-- AbstractCollection
+    class WorkoutEntry {
+        + weekDay: DaysInWeek,
+        + workout: Workout,
+        + onWorkoutEntryDelete: (Workout) -> Unit,
+    }
 
-Collection <|- List
-AbstractCollection <|- AbstractList
-AbstractList <|-- ArrayList
+    class AssignWorkoutDialog {
+          +  weekName: DaysInWeek,
+           + workouts: List<Workout>,
+            + onClose: () -> Unit,
+            + modifier: Modifier = Modifier,
+            + onAddAction: (Workout) -> Unit = {},
 
-class ArrayList {
-Object[] elementData
-size()
+    }
+
+    class DeleteConfirmationDialog {
+    + onDeleteConfirm: () -> Unit,
+    + onDeleteCancel: () -> Unit,
+    + modifier: Modifier = Modifier
+    }
+
+    class NoWorkoutEntryVariant {
+       + allWorkouts: List<Workout>,
+        +    weekDay: DaysInWeek,
+         +   onWorkoutAssign: (Workout) -> Unit
+
+    }
+
+    class WorkoutDetailDialog {
+
+   +     weekDay: DaysInWeek,
+   +     workout: Workout,
+    +    onClose: () -> Unit,
+     +   modifier: Modifier = Modifier,
+    }
+
+}
 }
 
-enum TimeUnit {
-DAYS
-HOURS
-MINUTES
-}
+
+
+WeeklyScreen ..> WeekEntry
+WeeklyScreen ..> datasource
+WeeklyScreen ..> ui.components
+WeeklyScreen ..> models.Workout
+
+WeekEntry ..> WorkoutEntry
+WeekEntry ..> NoWorkoutEntryVariant
+
+WorkoutEntry ..> DeleteConfirmationDialog
+WorkoutEntry ..> WorkoutDetailDialog
+
+NoWorkoutEntryVariant ..> AssignWorkoutDialog
 
 @enduml

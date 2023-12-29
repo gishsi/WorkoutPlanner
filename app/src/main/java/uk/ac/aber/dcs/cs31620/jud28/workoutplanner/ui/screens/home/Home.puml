@@ -1,5 +1,8 @@
 @startuml
+namespace home {
 class HomeScreen {
++ navController: NavHostController,
+    + workoutsViewModel: WorkoutViewModel = viewModel()
    + getCurrentDayOfWeek(): DaysInWeek
 }
 class HomeScreenContent {
@@ -10,7 +13,7 @@ class HomeScreenContent {
     + HomeScreenNoContentPreview(),
 }
 
-namespace components.HomeScreen {
+namespace components {
     class NoWorkoutHomeScreenContentVariant {
         + weekName: DaysInWeek,
         + allWorkouts: List<Workout>,
@@ -21,6 +24,8 @@ namespace components.HomeScreen {
         + workout: Workout
         + WorkoutHomeScreenContentVariantPreview()
     }
+}
+
 }
 
 
