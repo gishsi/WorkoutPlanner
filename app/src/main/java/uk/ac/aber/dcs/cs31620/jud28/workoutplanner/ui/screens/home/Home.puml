@@ -1,0 +1,37 @@
+@startuml
+class HomeScreen {
+   + getCurrentDayOfWeek(): DaysInWeek
+}
+class HomeScreenContent {
+    + workoutForTheDay: Workout?,
+    + allWorkouts: List<Workout>,
+    + onWorkoutAssign: (Workout) -> Unit,
+    + HomeScreenContentPreview(),
+    + HomeScreenNoContentPreview(),
+}
+
+namespace components.HomeScreen {
+    class NoWorkoutHomeScreenContentVariant {
+        + weekName: DaysInWeek,
+        + allWorkouts: List<Workout>,
+        + onWorkoutAssign: (Workout) -> Unit,
+        + NoWorkoutHomeScreenContentVariantPreview
+    }
+    class WorkoutHomeScreenContentVariant {
+        + workout: Workout
+        + WorkoutHomeScreenContentVariantPreview()
+    }
+}
+
+
+HomeScreen ..> HomeScreenContent
+HomeScreenContent ..> NoWorkoutHomeScreenContentVariant
+HomeScreenContent ..> WorkoutHomeScreenContentVariant
+
+HomeScreen ..> datasource
+HomeScreen ..> ui.components
+HomeScreen ..> models.Workout
+
+HomeScreen ..> ui.navigation.ScreenRoutes
+
+@enduml
