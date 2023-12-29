@@ -94,11 +94,10 @@ fun ExerciseEditContent(
     var exerciseName by remember { mutableStateOf(exercise.name) }
     var numOfSets by remember { mutableStateOf(exercise.numberOfSets.toString()) }
     var numOfRepetitions by remember { mutableStateOf(exercise.numberOfRepetitions.toString()) }
-    var isDropset by remember { mutableStateOf(false) }
+    var isDropset by remember { mutableStateOf(exercise.dropSetEnabled) }
     var weight by remember { mutableFloatStateOf(exercise.weightInKilos) }
     var imageResource by remember { mutableStateOf(exercise.image) }
 
-    // todo: dropset
     var weightFirst by remember { mutableFloatStateOf(0.0F) }
     var weightSecond by remember { mutableFloatStateOf(0.0F) }
     var weightThird by remember { mutableFloatStateOf(0.0F) }
@@ -182,7 +181,6 @@ fun ExerciseEditContent(
                             .fillMaxWidth(),
                         value = weightFirst.toString(),
                         onValueChange = {
-                            // todo: try catch here
                             weightFirst = parseStringIntoFloat(it)
                         },
                         label = { Text("Weight (First)") },
@@ -191,7 +189,8 @@ fun ExerciseEditContent(
                             focusedBorderColor = MaterialTheme.colorScheme.secondary,
                             unfocusedBorderColor = MaterialTheme.colorScheme.inversePrimary,
                             focusedLabelColor = MaterialTheme.colorScheme.secondary,
-                            unfocusedLabelColor = MaterialTheme.colorScheme.secondary,)
+                            unfocusedLabelColor = MaterialTheme.colorScheme.secondary,
+                        )
                     )
                     OutlinedTextField(
                         modifier = Modifier
@@ -204,7 +203,8 @@ fun ExerciseEditContent(
                             focusedBorderColor = MaterialTheme.colorScheme.secondary,
                             unfocusedBorderColor = MaterialTheme.colorScheme.inversePrimary,
                             focusedLabelColor = MaterialTheme.colorScheme.secondary,
-                            unfocusedLabelColor = MaterialTheme.colorScheme.secondary,)
+                            unfocusedLabelColor = MaterialTheme.colorScheme.secondary,
+                        )
                     )
                     OutlinedTextField(
                         modifier = Modifier
@@ -217,11 +217,11 @@ fun ExerciseEditContent(
                             focusedBorderColor = MaterialTheme.colorScheme.secondary,
                             unfocusedBorderColor = MaterialTheme.colorScheme.inversePrimary,
                             focusedLabelColor = MaterialTheme.colorScheme.secondary,
-                            unfocusedLabelColor = MaterialTheme.colorScheme.secondary,)
+                            unfocusedLabelColor = MaterialTheme.colorScheme.secondary,
+                        )
                     )
                 }
 
-                // todo: functionality
                 Text(text = "Choose an image")
                 ImageChoices {
                     imageResource = it.toString()
@@ -243,15 +243,18 @@ fun ExerciseEditContent(
                     .fillMaxWidth()
                     .padding(16.dp),
                 onClick = {
-                    // todo: Validation
                     onExerciseUpdate(
                         Exercise(
                             exercise.id,
                             exerciseName,
                             numOfSets.toInt(),
                             numOfRepetitions.toInt(),
-                            exercise.weightInKilos,
-                            imageResource,
+                            weightInKilos = weight,
+                            image = imageResource,
+                            dropSetEnabled = isDropset,
+                            firstWeight = weightFirst,
+                            secondWeight = weightSecond,
+                            thirdWeight = weightThird,
                         )
                     )
                     navController.navigate(Screen.ExercisesList.route)

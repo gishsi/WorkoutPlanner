@@ -5,7 +5,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.AccessTime
 import androidx.compose.material.icons.outlined.Info
 import androidx.compose.material.icons.outlined.WatchLater
 import androidx.compose.material3.AlertDialog
@@ -25,7 +24,7 @@ import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.R
 import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.models.DaysInWeek
 import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.models.Exercise
 import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.models.Workout
-import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.ui.screens.exercises.ExerciseCard
+import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.ui.screens.exercises.components.ExerciseCard
 
 @Composable
 fun WorkoutDetailDialog(
@@ -58,7 +57,10 @@ fun WorkoutDetailDialog(
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
                     Text(text = "${workout.durationInMinutes} min")
-                    Icon(imageVector = Icons.Outlined.WatchLater, contentDescription = stringResource(R.string.clock))
+                    Icon(
+                        imageVector = Icons.Outlined.WatchLater,
+                        contentDescription = stringResource(R.string.clock)
+                    )
                 }
 
                 workout.exercises.forEach {
@@ -86,6 +88,11 @@ fun WorkoutDetailDialog(
 private fun WorkoutDetailDialogPreview() {
     WorkoutDetailDialog(
         DaysInWeek.Monday,
-        Workout(0, "Chest", 120, listOf(Exercise(0, "Crunches", 3, 20, 0.0F, R.drawable.crunches.toString()))),
+        Workout(
+            0,
+            "Chest",
+            120,
+            listOf(Exercise(0, "Crunches", 3, 20, 0.0F, R.drawable.crunches.toString()))
+        ),
         onClose = { })
 }

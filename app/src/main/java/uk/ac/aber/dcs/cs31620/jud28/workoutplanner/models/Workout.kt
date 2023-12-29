@@ -16,16 +16,5 @@ data class Workout(
     val name: String = "",
     val durationInMinutes: Int = 0,
     val exercises: List<Exercise> = listOf(),
-    val assignedToWeek: DaysInWeek = DaysInWeek.NotAssigned,
+    val assignedTo: List<DaysInWeek> = listOf(),
 )
-
-enum class DaysInWeek {
-    NotAssigned,
-    Monday,
-    Tuesday,
-    Wednesday,
-    Thursday,
-    Friday,
-    Saturday,
-    Sunday,
-}

@@ -23,7 +23,7 @@ fun ApplicationScaffold(
     topBarLabel: String = stringResource(id = R.string.app_name),
     pageContent: @Composable (innerPadding: PaddingValues) -> Unit = {},
 ) {
-    var drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
+    val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
 
     NavigationDrawer(
         navController,

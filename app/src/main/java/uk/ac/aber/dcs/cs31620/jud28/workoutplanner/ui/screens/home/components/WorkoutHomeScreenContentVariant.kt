@@ -13,14 +13,14 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.R
 import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.models.DaysInWeek
-import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.models.Exercise
 import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.models.Workout
-import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.ui.screens.exercises.ExerciseCard
-import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.ui.screens.exercises.components.photos
+import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.ui.screens.exercises.components.ExerciseCard
 import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.ui.theme.WorkoutPlannerTheme
 
 @Composable
@@ -28,7 +28,9 @@ fun WorkoutHomeScreenContentVariant(
     workout: Workout
 ) {
     Column(
-        modifier = Modifier.padding(16.dp).fillMaxWidth(),
+        modifier = Modifier
+            .padding(16.dp)
+            .fillMaxWidth(),
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         Row(
@@ -48,7 +50,10 @@ fun WorkoutHomeScreenContentVariant(
             Column(
                 modifier = Modifier
             ) {
-                Icon(imageVector = Icons.Outlined.WatchLater, contentDescription = "Clock icon")
+                Icon(
+                    imageVector = Icons.Outlined.WatchLater,
+                    contentDescription = stringResource(R.string.watchIcon)
+                )
                 Text(
                     text = "${workout.durationInMinutes} min",
                     fontWeight = FontWeight.Bold,
@@ -71,7 +76,15 @@ fun WorkoutHomeScreenContentVariant(
 fun WorkoutHomeScreenContentVariantPreview() {
     WorkoutPlannerTheme {
         Surface {
-            WorkoutHomeScreenContentVariant(Workout(0, "Chest", 120, listOf(), DaysInWeek.Monday))
+            WorkoutHomeScreenContentVariant(
+                Workout(
+                    0,
+                    "Chest",
+                    120,
+                    listOf(),
+                    listOf(DaysInWeek.Monday)
+                )
+            )
         }
     }
 }

@@ -118,7 +118,7 @@ fun WorkoutsScreenContent(
                 }
             }) {
             Text(text = "Add a workout")
-            Icon(imageVector = Icons.Default.Add, contentDescription = "Add")
+            Icon(imageVector = Icons.Default.Add, contentDescription = stringResource(R.string.add))
         }
     }
 

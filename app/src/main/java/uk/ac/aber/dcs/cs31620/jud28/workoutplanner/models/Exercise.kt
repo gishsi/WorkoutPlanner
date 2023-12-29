@@ -11,7 +11,9 @@ data class Exercise(
     val numberOfSets: Int = 0,
     val numberOfRepetitions: Int = 0,
     val weightInKilos: Float = 0F,
-    val image: String = "", //todo: change to int
-    // todo: type converter: Dropset? = null
-    // val dropset: Int = 0
+    val image: String = "",
+    val dropSetEnabled: Boolean = false,
+    val firstWeight: Float = 0F,
+    val secondWeight: Float = 0F,
+    val thirdWeight: Float = 0F,
 )

@@ -26,12 +26,14 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.R
 import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.models.Exercise
 import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.models.Workout
-import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.ui.screens.exercises.ExerciseCard
+import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.ui.screens.exercises.components.ExerciseCard
 import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.ui.theme.WorkoutPlannerTheme
 
 @Composable
@@ -119,7 +121,7 @@ fun WorkoutCard(
                 IconButton(onClick = { editAction(workout) }) {
                     Icon(
                         imageVector = Icons.Filled.Create,
-                        contentDescription = "Edit an exercise todo: resource"
+                        contentDescription = stringResource(R.string.editExercise)
                     )
                 }
                 IconButton(onClick = {
@@ -127,7 +129,7 @@ fun WorkoutCard(
                 }) {
                     Icon(
                         imageVector = Icons.Filled.Delete,
-                        contentDescription = "Delete an exercise todo: resource",
+                        contentDescription = stringResource(R.string.deleteExercise),
                         tint = MaterialTheme.colorScheme.error,
                     )
 

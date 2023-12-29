@@ -16,7 +16,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.Button
 import androidx.compose.material3.Checkbox
-import androidx.compose.material3.CheckboxColors
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
@@ -89,7 +88,6 @@ fun ExerciseAddContent(navController: NavHostController, onExerciseAdd: (Exercis
     var weight by remember { mutableFloatStateOf(0F) }
     var imageResource by remember { mutableStateOf(photos[0]) }
 
-    // todo: dropset
     var weightFirst by remember { mutableFloatStateOf(0.0F) }
     var weightSecond by remember { mutableFloatStateOf(0.0F) }
     var weightThird by remember { mutableFloatStateOf(0.0F) }
@@ -167,7 +165,9 @@ fun ExerciseAddContent(navController: NavHostController, onExerciseAdd: (Exercis
                 ) {
                     Checkbox(
                         checked = isDropset,
-                        onCheckedChange = { isDropset = !isDropset },
+                        onCheckedChange = {
+                            isDropset = !isDropset
+                        },
                     )
                     Text("Dropset?")
 
@@ -187,7 +187,8 @@ fun ExerciseAddContent(navController: NavHostController, onExerciseAdd: (Exercis
                             focusedBorderColor = MaterialTheme.colorScheme.secondary,
                             unfocusedBorderColor = MaterialTheme.colorScheme.inversePrimary,
                             focusedLabelColor = MaterialTheme.colorScheme.secondary,
-                            unfocusedLabelColor = MaterialTheme.colorScheme.secondary,)
+                            unfocusedLabelColor = MaterialTheme.colorScheme.secondary,
+                        )
                     )
                     OutlinedTextField(
                         modifier = Modifier
@@ -200,7 +201,8 @@ fun ExerciseAddContent(navController: NavHostController, onExerciseAdd: (Exercis
                             focusedBorderColor = MaterialTheme.colorScheme.secondary,
                             unfocusedBorderColor = MaterialTheme.colorScheme.inversePrimary,
                             focusedLabelColor = MaterialTheme.colorScheme.secondary,
-                            unfocusedLabelColor = MaterialTheme.colorScheme.secondary,)
+                            unfocusedLabelColor = MaterialTheme.colorScheme.secondary,
+                        )
                     )
                     OutlinedTextField(
                         modifier = Modifier
@@ -213,11 +215,11 @@ fun ExerciseAddContent(navController: NavHostController, onExerciseAdd: (Exercis
                             focusedBorderColor = MaterialTheme.colorScheme.secondary,
                             unfocusedBorderColor = MaterialTheme.colorScheme.inversePrimary,
                             focusedLabelColor = MaterialTheme.colorScheme.secondary,
-                            unfocusedLabelColor = MaterialTheme.colorScheme.secondary,)
+                            unfocusedLabelColor = MaterialTheme.colorScheme.secondary,
+                        )
                     )
                 }
 
-                // todo: functionality
                 Text(text = "Choose an image")
                 ImageChoices() {
                     imageResource = it
@@ -239,15 +241,18 @@ fun ExerciseAddContent(navController: NavHostController, onExerciseAdd: (Exercis
                     .fillMaxWidth()
                     .padding(16.dp),
                 onClick = {
-                    //todo: validate data
                     onExerciseAdd(
                         Exercise(
-                            0,
-                            exerciseName,
-                            numOfSets.toInt(),
-                            numOfRepetitions.toInt(),
-                            weight,
-                            imageResource.toString()
+                            id = 0,
+                            name = exerciseName,
+                            numberOfSets = numOfSets.toInt(),
+                            numberOfRepetitions = numOfRepetitions.toInt(),
+                            weightInKilos = weight,
+                            image = imageResource.toString(),
+                            dropSetEnabled = isDropset,
+                            firstWeight = weightFirst,
+                            secondWeight = weightSecond,
+                            thirdWeight = weightThird,
                         )
                     )
                     navController.navigate(Screen.ExercisesList.route) {
@@ -259,7 +264,10 @@ fun ExerciseAddContent(navController: NavHostController, onExerciseAdd: (Exercis
                     }
                 }) {
                 Text(text = "Add an exercise")
-                Icon(imageVector = Icons.Default.Add, contentDescription = "Add")
+                Icon(
+                    imageVector = Icons.Default.Add,
+                    contentDescription = stringResource(R.string.add)
+                )
             }
         }
     }

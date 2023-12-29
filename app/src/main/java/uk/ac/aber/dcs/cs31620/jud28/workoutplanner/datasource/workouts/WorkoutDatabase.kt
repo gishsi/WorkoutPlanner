@@ -9,7 +9,7 @@ import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.datasource.workouts.converter
 import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.datasource.workouts.converters.ExerciseListConverter
 import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.models.Workout
 
-@Database(entities = [Workout::class], version = 1, exportSchema = false)
+@Database(entities = [Workout::class], version = 2, exportSchema = false)
 @TypeConverters(ExerciseListConverter::class, DaysInWeekConverter::class)
 abstract class WorkoutDatabase : RoomDatabase() {
     abstract fun workoutDao(): WorkoutDao
