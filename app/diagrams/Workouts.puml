@@ -1,0 +1,152 @@
+@startuml
+page 2x2
+skinparam pageMargin 10
+skinparam pageExternalColor gray
+skinparam pageBorderColor black
+skinparam groupInheritance 2
+
+
+
+namespace datasource {
+}
+
+namespace models {
+    class Workout {
+--
++ id: Int = 0,
++ name: String = "",
++ durationInMinutes: Int = 0,
++ exercises: List<Exercise> = listOf(),
++ assignedToWeek: DaysInWeek = DaysInWeek.NotAssigned,
+--
+    }
+
+    enum DaysInWeek {
+        NotAssigned
+        Monday
+        Tuesday
+        Wednesday
+        Thursday
+        Friday
+        Saturday
+        Sunday
+    }
+}
+
+
+namespace ui.screens.Workouts {
+    class WorkoutsScreen {
+    --
+    + WorkoutsScreen(
+    navController: NavHostController,
+    WorkoutViewModel: WorkoutViewModel = viewModel())
+    --
+    }
+
+  class WorkoutsAddScreen {
+    --
+   +  WorkoutsScreen(
+    navController: NavHostController,
+    WorkoutViewModel: WorkoutViewModel = viewModel())
+    --
+    }
+
+  class WorkoutsEditScreen {
+    --
+    + WorkoutsScreen(
+    navController: NavHostController,
+    WorkoutViewModel: WorkoutViewModel = viewModel()
+    Workout: Workout)
+
+    --
+    }
+
+together {
+   class WorkoutViewModel {
+   + LiveData<List<Workout>> allData
+   - WorkoutsRepository repository
+   + LiveData<Workout> getWorkout(Int)
+   + void addWorkout(Workout)
+   + void deleteWorkout(Workout)
+   + void updateWorkout(Workout)
+   }
+
+   class WorkoutViewModelFactory {
+   + void T create(modelClass: Class<T>)
+   }
+}
+
+
+   class WorkoutsContent {
+   + navController: NavHostController,
+   + Workouts: List<Workout>,
+   + void onDelete(Workout),
+   }
+
+   class WorkoutAddContent {
+   + navController: NavHostController,
+   +onExerciseAdd(Exercise)
+   }
+
+   class WorkoutEditContent {
+       navController: NavHostController,
+       Workout: Workout,
+       void onWorkoutUpdate(Workout)
+   }
+}
+
+namespace ui.screens.Workouts.components {
+    class WorkoutCard {
+    + workout: Workout,
+    + void editAction(workout: Workout),
+    + void deleteAction(workout: Workout),
+    + void WorkoutCardPreview(),
+    }
+    class ExerciseInWorkoutFormCard {
+    + name: String = "",
+    + void onDeleteConfirm(),
+    + void onDeleteCancel(),
+    + modifier: Modifier
+    }
+    class  DeleteWorkoutConfirmationDialog {
+        + void onImageSelect(Int),
+        + photos: List<Int>
+        + void DeleteWorkoutConfirmationDialogPreview()
+    }
+}
+
+class ui.navigation.Screen {
+}
+
+ui.screens.Workouts.WorkoutsEditScreen .[#blue].> ui.screens.Workouts.WorkoutEditContent
+ui.screens.Workouts.WorkoutsEditScreen .[#blue].> ui.screens.Workouts.WorkoutViewModel
+ui.screens.Workouts.WorkoutsAddScreen ..> ui.screens.Workouts.WorkoutViewModel
+
+ui.screens.Workouts.WorkoutAddContent .[#gray].> ui.navigation.Screen
+ui.screens.Workouts.WorkoutEditContent .[#gray].> ui.navigation.Screen
+ui.screens.Workouts.WorkoutsScreen .[#gray].> ui.navigation.Screen
+
+'each screen uses components in ui
+ui.navigation.NavigationGraph ..> ui.screens.Workouts.WorkoutsScreen
+ui.navigation.NavigationGraph ..> ui.screens.Workouts.WorkoutViewModelFactory
+
+ui.screens.Workouts.WorkoutViewModelFactory ..> ui.screens.Workouts.WorkoutViewModel
+
+ui.screens.Workouts.WorkoutsContent .[#green].> models.Workout
+ui.screens.Workouts.components.WorkoutCard ..> models.Workout
+
+ui.screens.Workouts.WorkoutsScreen .[#green].> ui.screens.Workouts.WorkoutViewModel
+
+ui.screens.Workouts.WorkoutViewModel ..> datasource
+
+ui.screens.Workouts.WorkoutsContent .[#green].> ui.screens.Workouts.components.WorkoutCard
+ui.screens.Workouts.WorkoutsContent .[#green].> ui.screens.Workouts.components.DeleteWorkoutConfirmationDialog
+
+ui.screens.Workouts.WorkoutsScreen .[#green].> ui.screens.Workouts.WorkoutsContent
+
+ui.screens.Workouts .[#gray].> ui.components
+
+ui.screens.Workouts.WorkoutAddContent ..>  ui.screens.Workouts.components.ExerciseInWorkoutFormCard
+ui.screens.Workouts.WorkoutEditContent ..> ui.screens.Workouts.components.ExerciseInWorkoutFormCard
+
+@enduml

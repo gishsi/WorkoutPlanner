@@ -150,6 +150,6 @@ ui.screens.exercises.ExercisesListContent .[#green].> ui.screens.exercises.compo
 ui.screens.exercises.ExercisesListContent .[#green].> ui.screens.exercises.components.RemoveExerciseFromListDialog
 ui.screens.exercises.ExercisesListScreen .[#green].> ui.screens.exercises.ExercisesListContent
 
-'asdasd
+ui.screens.exercises ..> ui.components
 
 @enduml
