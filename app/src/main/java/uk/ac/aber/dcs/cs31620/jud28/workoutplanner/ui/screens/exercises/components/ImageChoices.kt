@@ -23,6 +23,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.R
@@ -59,7 +60,7 @@ fun ImageChoices(onImageSelect: (Int) -> Unit) {
 
                     Image(
                         painter = painterResource(id = photo),
-                        contentDescription = "",
+                        contentDescription = stringResource(R.string.imageChoice),
                         modifier = Modifier
                             .size(64.dp)
                             .clip(RoundedCornerShape(8.dp))

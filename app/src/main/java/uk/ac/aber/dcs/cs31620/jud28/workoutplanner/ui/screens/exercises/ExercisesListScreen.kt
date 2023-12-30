@@ -125,7 +125,7 @@ fun ExercisesListContent(
                 Spacer(modifier = Modifier.height(32.dp))
 
                 Image(
-                    painter = painterResource(R.drawable.undraw_fitness_tracker_3033_1),
+                    painter = painterResource(R.drawable.undraw_personal_trainer_re_cnua_1),
                     contentDescription = stringResource(id = R.string.vec_graphics_no_exercises),
                     modifier = Modifier.padding(horizontal = 64.dp, vertical = 0.dp)
                 )
