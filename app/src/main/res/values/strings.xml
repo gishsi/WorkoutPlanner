@@ -30,4 +30,5 @@
     <string name="deleteExercise">Delete an exercise</string>
     <string name="vec_graphics_no_workouts">No workouts yet</string>
     <string name="vec_graphics_no_exercises">No exercises yet</string>
+    <string name="imageChoice">Image choice</string>
 </resources>

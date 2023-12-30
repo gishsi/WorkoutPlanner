@@ -1,3 +1,5 @@
+import com.android.build.gradle.internal.scope.ProjectInfo.Companion.getBaseName
+
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
@@ -41,8 +43,30 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+//            enableAndroidTestCoverage = true
         }
     }
+
+    // https://developer.android.com/build/build-variants#filter-variants
+    flavorDimensions += "testing"
+    productFlavors {
+        create("in_memory_database") {
+            dimension = "testing"
+        }
+
+        create("persistent_database") {
+            dimension = "testing"
+        }
+    }
+
+    androidComponents {
+        beforeVariants { variantBuilder ->
+            if(variantBuilder.buildType == "release" && variantBuilder.flavorName?.contains("in_memory_database") == true) {
+                variantBuilder.enable = false
+            }
+        }
+    }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
@@ -95,6 +119,9 @@ dependencies {
     implementation("androidx.compose.ui:ui-tooling:1.6.0-beta03")
     implementation("androidx.compose.runtime:runtime:1.6.0-beta03")
     implementation("androidx.compose.ui:ui-graphics:1.6.0-beta03")
+    implementation("androidx.compose.ui:ui-test-junit4:1.6.0-beta03")
+    implementation("androidx.navigation:navigation-testing:2.7.6")
+    debugImplementation("androidx.compose.ui:ui-test-manifest:1.6.0-beta03")
     ksp("androidx.room:room-compiler:2.5.1")
     implementation("androidx.room:room-runtime:2.6.1")
     implementation("androidx.room:room-ktx:2.6.1")
@@ -103,9 +130,11 @@ dependencies {
     // Testing
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
+    androidTestImplementation("androidx.test.espresso:espresso-core:3.5.0")
     androidTestImplementation(platform("androidx.compose:compose-bom:2023.03.00"))
     androidTestImplementation("androidx.compose.ui:ui-test-junit4")
     debugImplementation("androidx.compose.ui:ui-tooling")
     debugImplementation("androidx.compose.ui:ui-test-manifest")
+
+    androidTestImplementation("androidx.compose.ui:ui-test-junit4:1.6.0-beta03")
 }
