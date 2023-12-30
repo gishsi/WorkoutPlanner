@@ -6,9 +6,8 @@ import androidx.room.PrimaryKey
 /**
  *  Represents a workout.
  *
- *  @author Julia Drozdz
+ *  @author Julia Drozdz [jud28]
  */
-
 @Entity(tableName = "workouts")
 data class Workout(
     @PrimaryKey(autoGenerate = true)

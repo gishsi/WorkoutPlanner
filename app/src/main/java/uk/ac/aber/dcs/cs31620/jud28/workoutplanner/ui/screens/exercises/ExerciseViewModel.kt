@@ -10,6 +10,11 @@ import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.datasource.exercises.Exercise
 import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.datasource.exercises.ExercisesRepository
 import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.models.Exercise
 
+/**
+ *  View model that allows the application to manage the data in the database
+ *
+ *  @author Julia Drozdz [jud28]
+ */
 class ExerciseViewModel(application: Application) : AndroidViewModel(application) {
     val allData: LiveData<List<Exercise>>
     private val repository: ExercisesRepository

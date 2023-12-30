@@ -6,6 +6,11 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.models.Exercise
 
+/**
+ *  Database for the exercises
+ *
+ *  @author Julia Drozdz [jud28]
+ */
 @Database(entities = [Exercise::class], version = 3, exportSchema = false)
 abstract class ExercisesDatabase : RoomDatabase() {
     abstract fun exercisesDao(): ExerciseDao

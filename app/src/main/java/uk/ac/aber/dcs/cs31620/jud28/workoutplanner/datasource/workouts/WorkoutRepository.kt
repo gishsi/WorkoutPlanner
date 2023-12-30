@@ -4,6 +4,11 @@ import androidx.lifecycle.LiveData
 import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.models.DaysInWeek
 import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.models.Workout
 
+/**
+ *  Repository for the exercises
+ *
+ *  @author Julia Drozdz [jud28]
+ */
 class WorkoutRepository(private val workoutDao: WorkoutDao) {
     val readAllData: LiveData<List<Workout>> = workoutDao.getAll()
 

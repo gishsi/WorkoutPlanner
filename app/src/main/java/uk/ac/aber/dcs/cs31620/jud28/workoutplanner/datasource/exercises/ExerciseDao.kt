@@ -8,6 +8,11 @@ import androidx.room.Query
 import androidx.room.Update
 import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.models.Exercise
 
+/**
+ *  Data access object for the exercises
+ *
+ *  @author Julia Drozdz [jud28]
+ */
 @Dao
 interface ExerciseDao {
     @Insert

@@ -3,6 +3,11 @@ package uk.ac.aber.dcs.cs31620.jud28.workoutplanner.models
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
+/**
+ * Represents an exercise
+ *
+ * @author Julia Drozdz [jud28]
+ */
 @Entity(tableName = "exercises")
 data class Exercise(
     @PrimaryKey(autoGenerate = true)

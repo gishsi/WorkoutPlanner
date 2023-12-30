@@ -41,6 +41,11 @@ var photos = listOf<Int>(
     R.drawable.mountain_climber,
 )
 
+/**
+ *  Components which allow the user to choose an image for an exercise
+ *
+ *  @author Julia Drozdz [jud28]
+ */
 @Composable
 fun ImageChoices(onImageSelect: (Int) -> Unit) {
     val rows = photos.chunked(5)

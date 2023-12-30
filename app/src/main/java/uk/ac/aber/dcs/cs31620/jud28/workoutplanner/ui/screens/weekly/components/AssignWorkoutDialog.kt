@@ -43,6 +43,11 @@ import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.models.Workout
 import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.ui.screens.exercises.components.ExerciseCard
 import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.ui.theme.WorkoutPlannerTheme
 
+/**
+ *  Assign a workout to the weekly list
+ *
+ *  @author Julia Drozdz [jud28]
+ */
 @Composable
 fun AssignWorkoutDialog(
     weekName: DaysInWeek,

@@ -12,6 +12,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.ui.navigation.NavigationGraph
 import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.ui.theme.WorkoutPlannerTheme
 
+/**
+ *  Entry point for the application
+ *
+ *  @author Julia Drozdz [jud28]
+ */
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

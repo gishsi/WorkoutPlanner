@@ -6,7 +6,6 @@ package uk.ac.aber.dcs.cs31620.jud28.workoutplanner.models
  *  @author Julia Drozdz
  */
 enum class DaysInWeek {
-    NotAssigned, // todo: remove
     Monday,
     Tuesday,
     Wednesday,

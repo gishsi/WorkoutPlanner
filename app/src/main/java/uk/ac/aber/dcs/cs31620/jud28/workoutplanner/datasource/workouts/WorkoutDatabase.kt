@@ -9,6 +9,11 @@ import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.datasource.workouts.converter
 import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.datasource.workouts.converters.ExerciseListConverter
 import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.models.Workout
 
+/**
+ *  Data access object for the workouts
+ *
+ *  @author Julia Drozdz [jud28]
+ */
 @Database(entities = [Workout::class], version = 2, exportSchema = false)
 @TypeConverters(ExerciseListConverter::class, DaysInWeekConverter::class)
 abstract class WorkoutDatabase : RoomDatabase() {

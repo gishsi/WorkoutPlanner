@@ -25,6 +25,11 @@ import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.models.DaysInWeek
 import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.models.Workout
 import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.ui.theme.WorkoutPlannerTheme
 
+/**
+ *  Shown if there is no workout assigned to the given day
+ *
+ *  @author Julia Drozdz [jud28]
+ */
 @Composable
 fun NoWorkoutEntryVariant(
     allWorkouts: List<Workout>,

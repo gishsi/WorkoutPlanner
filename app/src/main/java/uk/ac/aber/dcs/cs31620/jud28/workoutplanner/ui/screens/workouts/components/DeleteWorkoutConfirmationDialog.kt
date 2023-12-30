@@ -17,6 +17,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.R
 import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.ui.theme.WorkoutPlannerTheme
 
+/**
+ *  Dialog which is shown before removing a workout.
+ *
+ *  @author Julia Drozdz [jud28]
+ */
 @Composable
 fun DeleteWorkoutConfirmationDialog(
     name: String = "",

@@ -26,6 +26,12 @@ import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.models.Exercise
 import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.models.Workout
 import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.ui.screens.exercises.components.ExerciseCard
 
+/**
+ *  Details about a workout are shown after clicking the info icon on a workout entry.
+ *
+ *  @see WorkoutEntry
+ *  @author Julia Drozdz [jud28]
+ */
 @Composable
 fun WorkoutDetailDialog(
     weekDay: DaysInWeek,

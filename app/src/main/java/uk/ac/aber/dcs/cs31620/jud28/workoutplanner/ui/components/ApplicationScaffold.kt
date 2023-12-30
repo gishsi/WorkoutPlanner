@@ -14,7 +14,7 @@ import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.R
 /**
  * Top level scaffold for all pages.
  *
- * @author Julia Drozdz
+ * @author Julia Drozdz [jud28]
  */
 @Composable
 fun ApplicationScaffold(

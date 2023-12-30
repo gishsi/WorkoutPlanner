@@ -44,7 +44,7 @@ import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.ui.theme.WorkoutPlannerTheme
 /**
  * Navigation drawer for pages
  *
- * @author Julia Drozdz
+ * @author Julia Drozdz [jud28]
  */
 @Composable
 fun NavigationDrawer(
@@ -160,6 +160,7 @@ fun NavigationDrawer(
 
 /**
  *  Used to associate an icon and a label with a route.
+ *  Subpage is true for pages like "Add a workout" or "Add an exercise"
  */
 data class NavigationDrawerItem(
     val icon: ImageVector,

@@ -31,7 +31,7 @@ import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.ui.theme.WorkoutPlannerTheme
 /**
  * Bottom bar for pages for navigation between the main pages.
  *
- * @author Julia Drozdz
+ * @author Julia Drozdz [jud28]
  */
 @Composable
 fun NavigationBar(

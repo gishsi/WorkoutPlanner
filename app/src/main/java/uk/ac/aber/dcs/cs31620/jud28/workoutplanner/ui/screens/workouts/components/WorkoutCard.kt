@@ -36,6 +36,11 @@ import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.models.Workout
 import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.ui.screens.exercises.components.ExerciseCard
 import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.ui.theme.WorkoutPlannerTheme
 
+/**
+ *  Workout card is expandable. After expanding verbose information and actionable icon buttons  is shown (exercises).
+ *
+ *  @author Julia Drozdz [jud28]
+ */
 @Composable
 fun WorkoutCard(
     workout: Workout,

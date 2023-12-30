@@ -14,6 +14,11 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.withStyle
 import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.R
 
+/**
+ *  Dialog which is shown after the user tries to remove an exercise from the list
+ *
+ *  @author Julia Drozdz [jud28]
+ */
 @Composable
 fun RemoveExerciseFromListDialog(
     name: String = "",

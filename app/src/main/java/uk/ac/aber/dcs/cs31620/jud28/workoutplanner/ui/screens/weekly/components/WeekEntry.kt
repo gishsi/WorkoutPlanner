@@ -16,6 +16,13 @@ import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.models.DaysInWeek
 import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.models.Workout
 import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.ui.theme.WorkoutPlannerTheme
 
+/**
+ *  Week entry for every day of the week. Has two variants
+ *  @see WorkoutEntry
+ *  @see NoWorkoutEntryVariant
+ *
+ *  @author Julia Drozdz [jud28]
+ */
 @Composable
 fun WeekEntry(
     weekDay: DaysInWeek,

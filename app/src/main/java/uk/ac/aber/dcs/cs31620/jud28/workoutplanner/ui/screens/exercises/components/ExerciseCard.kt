@@ -37,6 +37,12 @@ import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.R
 import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.models.Exercise
 import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.ui.theme.WorkoutPlannerTheme
 
+/**
+ *  Exercise card represents an exercise in the application.
+ *  There are two variants: actionable card, and not actionable card - defined by the showAction parameter.
+ *
+ *  @author Julia Drozdz [jud28]
+ */
 @Composable
 fun ExerciseCard(
     modifier: Modifier = Modifier,

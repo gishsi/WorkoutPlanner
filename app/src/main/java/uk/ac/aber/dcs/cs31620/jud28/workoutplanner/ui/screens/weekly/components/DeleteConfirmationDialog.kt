@@ -8,6 +8,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import uk.ac.aber.dcs.cs31620.jud28.workoutplanner.R
 
+/**
+ *  Delete a workout from a weekly entry
+ *
+ *  @author Julia Drozdz [jud28]
+ */
 @Composable
 fun DeleteConfirmationDialog(
     onDeleteConfirm: () -> Unit, onDeleteCancel: () -> Unit, modifier: Modifier = Modifier
